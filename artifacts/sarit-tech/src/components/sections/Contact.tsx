@@ -2,24 +2,26 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { useAnalytics, useSectionTracking } from '@/hooks/use-analytics';
+import { useContent } from '@/hooks/use-content';
 import { Calendar, Linkedin, Twitter, Github, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 
 export function Contact() {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.2 });
   const { trackEvent } = useAnalytics();
+  const { settings } = useContent();
   useSectionTracking('contact', inView);
 
   const handleBooking = () => {
     trackEvent('cta_clicked', { button: 'book_calendar_contact' });
-    window.open('https://calendar.app.google/PTXjuRKDb97Qyp3B6', '_blank');
+    window.open(settings.calendarBookingUrl, '_blank');
   };
 
   return (
     <section id="contact" className="py-32 relative overflow-hidden">
       {/* Background glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[100px] pointer-events-none" />
-      
+
       <div className="max-w-4xl mx-auto px-6 md:px-8 text-center relative z-10">
         <motion.div
           ref={ref}
@@ -30,11 +32,12 @@ export function Contact() {
         >
           <h2 className="text-4xl md:text-6xl font-display font-bold mb-6">Let's Build the Future.</h2>
           <p className="text-xl text-muted-foreground mb-12 max-w-2xl mx-auto font-light">
-            Currently open to AI leadership opportunities, fractional advisory roles, and strategic consulting. Let's discuss how we can drive ROI through intelligent systems.
+            Currently open to AI leadership opportunities, fractional advisory roles, and strategic
+            consulting. Let's discuss how we can drive ROI through intelligent systems.
           </p>
 
-          <Button 
-            size="lg" 
+          <Button
+            size="lg"
             className="w-full sm:w-auto text-lg h-16 px-10 rounded-2xl group"
             onClick={handleBooking}
           >
@@ -44,10 +47,10 @@ export function Contact() {
 
           <div className="mt-16 pt-12 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex gap-4">
-              <SocialLink href="#" icon={<Linkedin />} label="LinkedIn" />
-              <SocialLink href="#" icon={<Twitter />} label="Twitter" />
-              <SocialLink href="#" icon={<Github />} label="GitHub" />
-              <SocialLink href="#" icon={<Mail />} label="Email" />
+              <SocialLink href={settings.social.linkedin} icon={<Linkedin />} label="LinkedIn" trackEvent={trackEvent} />
+              <SocialLink href={settings.social.twitter} icon={<Twitter />} label="Twitter" trackEvent={trackEvent} />
+              <SocialLink href={settings.social.github} icon={<Github />} label="GitHub" trackEvent={trackEvent} />
+              <SocialLink href={settings.social.email} icon={<Mail />} label="Email" trackEvent={trackEvent} />
             </div>
             <p className="text-sm text-muted-foreground">
               © {new Date().getFullYear()} Sarit Sethi. All rights reserved.
@@ -59,10 +62,16 @@ export function Contact() {
   );
 }
 
-function SocialLink({ href, icon, label }: { href: string, icon: React.ReactNode, label: string }) {
-  const { trackEvent } = useAnalytics();
+interface SocialLinkProps {
+  href: string;
+  icon: React.ReactElement;
+  label: string;
+  trackEvent: (event: string, props: Record<string, unknown>) => void;
+}
+
+function SocialLink({ href, icon, label, trackEvent }: SocialLinkProps) {
   return (
-    <a 
+    <a
       href={href}
       target="_blank"
       rel="noreferrer"
@@ -70,7 +79,7 @@ function SocialLink({ href, icon, label }: { href: string, icon: React.ReactNode
       onClick={() => trackEvent('social_clicked', { network: label })}
       className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all hover:scale-110"
     >
-      {React.cloneElement(icon as React.ReactElement, { className: "w-5 h-5" })}
+      {React.cloneElement(icon, { className: 'w-5 h-5' })}
     </a>
-  )
+  );
 }
