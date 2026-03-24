@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/Button';
 import { useAnalytics } from '@/hooks/use-analytics';
@@ -6,6 +6,11 @@ import { ArrowRight, Bot } from 'lucide-react';
 
 export function Hero() {
   const { trackEvent } = useAnalytics();
+
+  useEffect(() => {
+    trackEvent('section_viewed', { section: 'hero' });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleChatOpen = () => {
     trackEvent('cta_clicked', { button: 'meet_digital_twin_hero' });

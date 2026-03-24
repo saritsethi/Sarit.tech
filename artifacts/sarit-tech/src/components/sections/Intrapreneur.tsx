@@ -3,14 +3,20 @@ import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { useContent } from '@/hooks/use-content';
 import * as Icons from 'lucide-react';
+import { type LucideProps } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useSectionTracking } from '@/hooks/use-analytics';
+
+type LucideIconName = keyof typeof Icons;
 
 export function Intrapreneur() {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
   const { pillars, articles, isLoading } = useContent();
+  useSectionTracking('intrapreneur', inView);
 
   const getIcon = (name: string) => {
-    const IconComponent = (Icons as any)[name] || Icons.Code;
+    const key = name as LucideIconName;
+    const IconComponent = (key in Icons ? Icons[key] : Icons.Code) as React.ComponentType<LucideProps>;
     return <IconComponent className="w-6 h-6 text-primary" />;
   };
 

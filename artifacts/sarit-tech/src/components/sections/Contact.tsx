@@ -1,13 +1,14 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { useAnalytics } from '@/hooks/use-analytics';
+import { useAnalytics, useSectionTracking } from '@/hooks/use-analytics';
 import { Calendar, Linkedin, Twitter, Github, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 
 export function Contact() {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.2 });
   const { trackEvent } = useAnalytics();
+  useSectionTracking('contact', inView);
 
   const handleBooking = () => {
     trackEvent('cta_clicked', { button: 'book_calendar_contact' });

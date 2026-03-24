@@ -2,10 +2,12 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { useContent } from '@/hooks/use-content';
+import { useSectionTracking } from '@/hooks/use-analytics';
 
 export function About() {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
   const { timeline } = useContent();
+  useSectionTracking('about', inView);
 
   return (
     <section id="about" className="py-32 relative bg-secondary/30 border-y border-white/5">

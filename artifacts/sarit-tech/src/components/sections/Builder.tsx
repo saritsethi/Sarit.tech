@@ -4,9 +4,11 @@ import { useInView } from 'react-intersection-observer';
 import { useContent } from '@/hooks/use-content';
 import { ArrowUpRight, Github, ExternalLink, FileText } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
+import { useSectionTracking } from '@/hooks/use-analytics';
 
 export function Builder() {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
+  useSectionTracking('builder', inView);
   const { ref: articlesRef, inView: articlesInView } = useInView({ triggerOnce: true, threshold: 0.1 });
   const { projects, articles } = useContent();
 

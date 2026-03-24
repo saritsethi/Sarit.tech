@@ -83,9 +83,10 @@ export function useGeminiChat() {
             }
           }
         }
-      } catch (err: any) {
+      } catch (err) {
         console.error(err);
-        setError(err.message || 'An error occurred while communicating with the twin.');
+        const message = err instanceof Error ? err.message : 'An error occurred while communicating with the twin.';
+        setError(message);
         setMessages((prev) => {
           const lastMsg = prev[prev.length - 1];
           if (lastMsg?.role === 'assistant' && !lastMsg.content) {

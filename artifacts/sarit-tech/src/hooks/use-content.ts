@@ -159,7 +159,14 @@ async function fetchSubstackArticles(): Promise<Article[]> {
     if (!res.ok) return FALLBACK_ARTICLES;
     const data = await res.json();
     if (!data.items || data.items.length === 0) return FALLBACK_ARTICLES;
-    return data.items.map((item: any, i: number) => ({
+    interface RssFeedItem {
+      guid?: string;
+      title: string;
+      pubDate?: string;
+      description: string;
+      link: string;
+    }
+    return (data.items as RssFeedItem[]).map((item, i) => ({
       id: item.guid || String(i),
       title: item.title,
       date: item.pubDate ? new Date(item.pubDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : '',
