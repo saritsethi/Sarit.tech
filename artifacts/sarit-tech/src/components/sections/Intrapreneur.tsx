@@ -11,7 +11,7 @@ type LucideIconName = keyof typeof Icons;
 
 export function Intrapreneur() {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
-  const { pillars, articles, isLoading } = useContent();
+  const { pillars, articles, isLoading, settings } = useContent();
   useSectionTracking('intrapreneur', inView);
 
   const getIcon = (name: string) => {
@@ -67,9 +67,9 @@ export function Intrapreneur() {
         <div className="mt-20">
           <div className="flex items-center justify-between mb-8">
             <h3 className="text-2xl font-display font-bold">Recent Writing</h3>
-            <a 
-              href="https://substack.com" 
-              target="_blank" 
+            <a
+              href={settings.substackUrl}
+              target="_blank"
               rel="noreferrer"
               className="text-sm text-primary hover:underline flex items-center gap-1"
             >
