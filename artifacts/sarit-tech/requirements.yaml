@@ -1,0 +1,21 @@
+packages:
+  "framer-motion": "For smooth scroll, section reveals, and premium UI animations"
+  "posthog-js": "For analytics tracking (page views, CTA clicks, chatbot usage)"
+  "@sanity/client": "For CMS integration (with static fallback)"
+  "react-intersection-observer": "For scroll-spy navigation and trigger-on-view animations"
+  "clsx": "Utility for constructing className strings conditionally"
+  "tailwind-merge": "Utility to safely merge Tailwind CSS classes"
+
+images:
+  - path: "artifacts/sarit-tech/public/images/hero-grid.png"
+    description: "A dark, subtle, high-tech engineering grid pattern or technical schematic. Deep charcoal background with faint, glowing electric teal nodes and intersecting precise lines. Very low opacity, minimalist, industrial aesthetic."
+    aspect_ratio: "16:9"
+  - path: "artifacts/sarit-tech/public/images/sarit-portrait.png"
+    description: "A professional, cinematic, and stylized portrait silhouette or minimal avatar of a modern tech executive. Dramatic rim lighting, dark background, subtle electric teal highlights. Minimalist, premium aesthetic, avoiding generic photo realism."
+    aspect_ratio: "3:4"
+
+notes:
+  - "PostHog analytics expects VITE_POSTHOG_KEY (defaults to phc_PLACEHOLDER)"
+  - "Sanity CMS expects VITE_SANITY_PROJECT_ID, VITE_SANITY_DATASET (defaults to placeholder static content)"
+  - "Substack RSS feed uses static fallback as /api/rss/substack is not in the OpenAPI spec"
+  - "Gemini Chat widget utilizes SSE on /api/gemini/conversations/{id}/messages"

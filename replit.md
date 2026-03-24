@@ -2,7 +2,7 @@
 
 ## Overview
 
-pnpm workspace monorepo using TypeScript. Each package manages its own dependencies.
+pnpm workspace monorepo using TypeScript. This project is sarit.tech — a premium personal portfolio website for Sarit Sethi, an AI Product Leader with a background in construction technology. It features an AI "Digital Twin" chat experience powered by Gemini.
 
 ## Stack
 
@@ -15,82 +15,111 @@ pnpm workspace monorepo using TypeScript. Each package manages its own dependenc
 - **Validation**: Zod (`zod/v4`), `drizzle-zod`
 - **API codegen**: Orval (from OpenAPI spec)
 - **Build**: esbuild (CJS bundle)
+- **Frontend**: React + Vite (Tailwind CSS, Framer Motion, shadcn/ui)
+- **AI**: Gemini 2.5 Flash via Replit AI Integrations (`@workspace/integrations-gemini-ai`)
+- **Analytics**: PostHog (placeholder key — swap VITE_POSTHOG_KEY env var)
+- **CMS**: Sanity.io (placeholder — swap VITE_SANITY_PROJECT_ID, VITE_SANITY_DATASET, VITE_SANITY_API_TOKEN env vars)
 
 ## Structure
 
 ```text
 artifacts-monorepo/
-├── artifacts/              # Deployable applications
-│   └── api-server/         # Express API server
+├── artifacts/
+│   ├── api-server/         # Express API server
+│   └── sarit-tech/         # React + Vite frontend (sarit.tech)
 ├── lib/                    # Shared libraries
 │   ├── api-spec/           # OpenAPI spec + Orval codegen config
 │   ├── api-client-react/   # Generated React Query hooks
 │   ├── api-zod/            # Generated Zod schemas from OpenAPI
-│   └── db/                 # Drizzle ORM schema + DB connection
-├── scripts/                # Utility scripts (single workspace package)
-│   └── src/                # Individual .ts scripts, run via `pnpm --filter @workspace/scripts run <script>`
-├── pnpm-workspace.yaml     # pnpm workspace (artifacts/*, lib/*, lib/integrations/*, scripts)
-├── tsconfig.base.json      # Shared TS options (composite, bundler resolution, es2022)
-├── tsconfig.json           # Root TS project references
-└── package.json            # Root package with hoisted devDeps
+│   ├── db/                 # Drizzle ORM schema + DB connection
+│   └── integrations-gemini-ai/  # Gemini AI integration package
+├── scripts/                # Utility scripts
+├── pnpm-workspace.yaml
+├── tsconfig.base.json
+├── tsconfig.json
+└── package.json
 ```
 
 ## TypeScript & Composite Projects
 
-Every package extends `tsconfig.base.json` which sets `composite: true`. The root `tsconfig.json` lists all packages as project references. This means:
+Every package extends `tsconfig.base.json` which sets `composite: true`. The root `tsconfig.json` lists all lib packages as project references.
 
-- **Always typecheck from the root** — run `pnpm run typecheck` (which runs `tsc --build --emitDeclarationOnly`). This builds the full dependency graph so that cross-package imports resolve correctly. Running `tsc` inside a single package will fail if its dependencies haven't been built yet.
-- **`emitDeclarationOnly`** — we only emit `.d.ts` files during typecheck; actual JS bundling is handled by esbuild/tsx/vite...etc, not `tsc`.
-- **Project references** — when package A depends on package B, A's `tsconfig.json` must list B in its `references` array. `tsc --build` uses this to determine build order and skip up-to-date packages.
+- **Always typecheck from the root** — run `pnpm run typecheck`
+- **`emitDeclarationOnly`** — only `.d.ts` files during typecheck
 
 ## Root Scripts
 
-- `pnpm run build` — runs `typecheck` first, then recursively runs `build` in all packages that define it
+- `pnpm run build` — runs `typecheck` first, then recursively runs `build` in all packages
 - `pnpm run typecheck` — runs `tsc --build --emitDeclarationOnly` using project references
 
 ## Packages
 
+### `artifacts/sarit-tech` (`@workspace/sarit-tech`)
+
+React + Vite frontend for sarit.tech. Serves at `/` (root preview path).
+
+Key files:
+- `src/App.tsx` — Root router and providers (TanStack Query, Tooltip)
+- `src/pages/Home.tsx` — Main page composing all sections
+- `src/components/sections/` — Hero, About, Intrapreneur, Builder, Contact sections
+- `src/components/chat/ChatWidget.tsx` — AI Digital Twin floating chat widget
+- `src/components/layout/Navbar.tsx` — Sticky responsive navigation
+- `src/hooks/use-content.ts` — Content fetching (Sanity CMS with static fallback + Substack RSS)
+- `src/hooks/use-analytics.ts` — PostHog analytics hook (mock mode when key is placeholder)
+- `src/hooks/use-gemini-chat.ts` — Gemini SSE chat streaming hook
+
+Environment variables (frontend — prefix with `VITE_`):
+- `VITE_POSTHOG_KEY` — PostHog API key (default: `phc_PLACEHOLDER` = analytics mocked)
+- `VITE_SANITY_PROJECT_ID` — Sanity project ID (default: `placeholder` = static fallback)
+- `VITE_SANITY_DATASET` — Sanity dataset (default: `production`)
+- `VITE_SANITY_API_TOKEN` — Sanity read token (optional)
+
 ### `artifacts/api-server` (`@workspace/api-server`)
 
-Express 5 API server. Routes live in `src/routes/` and use `@workspace/api-zod` for request and response validation and `@workspace/db` for persistence.
+Express 5 API server. Serves at `/api`.
 
-- Entry: `src/index.ts` — reads `PORT`, starts Express
-- App setup: `src/app.ts` — mounts CORS, JSON/urlencoded parsing, routes at `/api`
-- Routes: `src/routes/index.ts` mounts sub-routers; `src/routes/health.ts` exposes `GET /health` (full path: `/api/health`)
-- Depends on: `@workspace/db`, `@workspace/api-zod`
-- `pnpm --filter @workspace/api-server run dev` — run the dev server
-- `pnpm --filter @workspace/api-server run build` — production esbuild bundle (`dist/index.cjs`)
-- Build bundles an allowlist of deps (express, cors, pg, drizzle-orm, zod, etc.) and externalizes the rest
+Routes:
+- `GET /api/healthz` — health check
+- `GET/POST /api/gemini/conversations` — list/create AI chat conversations
+- `GET/DELETE /api/gemini/conversations/:id` — get/delete a conversation
+- `GET /api/gemini/conversations/:id/messages` — list messages
+- `POST /api/gemini/conversations/:id/messages` — send message (SSE streaming response from Gemini)
+- `GET /api/rss/substack` — proxy Sarit's Substack RSS feed (parsed to JSON)
 
 ### `lib/db` (`@workspace/db`)
 
-Database layer using Drizzle ORM with PostgreSQL. Exports a Drizzle client instance and schema models.
+Database layer using Drizzle ORM with PostgreSQL.
 
-- `src/index.ts` — creates a `Pool` + Drizzle instance, exports schema
-- `src/schema/index.ts` — barrel re-export of all models
-- `src/schema/<modelname>.ts` — table definitions with `drizzle-zod` insert schemas (no models definitions exist right now)
-- `drizzle.config.ts` — Drizzle Kit config (requires `DATABASE_URL`, automatically provided by Replit)
-- Exports: `.` (pool, db, schema), `./schema` (schema only)
+Tables:
+- `conversations` — AI chat conversation sessions
+- `messages` — individual chat messages (role: user | assistant)
 
-Production migrations are handled by Replit when publishing. In development, we just use `pnpm --filter @workspace/db run push`, and we fallback to `pnpm --filter @workspace/db run push-force`.
+### `lib/integrations-gemini-ai` (`@workspace/integrations-gemini-ai`)
+
+Gemini AI SDK wrapper using Replit AI Integrations proxy. Auto-configured via:
+- `AI_INTEGRATIONS_GEMINI_BASE_URL`
+- `AI_INTEGRATIONS_GEMINI_API_KEY`
 
 ### `lib/api-spec` (`@workspace/api-spec`)
 
-Owns the OpenAPI 3.1 spec (`openapi.yaml`) and the Orval config (`orval.config.ts`). Running codegen produces output into two sibling packages:
+OpenAPI 3.1 spec and Orval codegen config. Run codegen:
+```bash
+pnpm --filter @workspace/api-spec run codegen
+```
 
-1. `lib/api-client-react/src/generated/` — React Query hooks + fetch client
-2. `lib/api-zod/src/generated/` — Zod schemas
+## AI Digital Twin — System Prompt
 
-Run codegen: `pnpm --filter @workspace/api-spec run codegen`
+The Gemini system prompt (in `artifacts/api-server/src/routes/gemini/index.ts`) seeds the AI with Sarit's background as an AI Product Leader with construction tech expertise. To enhance it, edit `SARIT_SYSTEM_PROMPT` in that file or upload documents via the Gemini Files API.
 
-### `lib/api-zod` (`@workspace/api-zod`)
+## CMS Activation (Sanity)
 
-Generated Zod schemas from the OpenAPI spec (e.g. `HealthCheckResponse`). Used by `api-server` for response validation.
+1. Create a Sanity project at sanity.io
+2. Set `VITE_SANITY_PROJECT_ID`, `VITE_SANITY_DATASET`, and optionally `VITE_SANITY_API_TOKEN` in environment variables
+3. Deploy Sanity schemas (defined in the content types used by `use-content.ts`)
+4. Content will automatically load from Sanity; static fallback remains for any missing content
 
-### `lib/api-client-react` (`@workspace/api-client-react`)
+## Analytics Activation (PostHog)
 
-Generated React Query hooks and fetch client from the OpenAPI spec (e.g. `useHealthCheck`, `healthCheck`).
-
-### `scripts` (`@workspace/scripts`)
-
-Utility scripts package. Each script is a `.ts` file in `src/` with a corresponding npm script in `package.json`. Run scripts via `pnpm --filter @workspace/scripts run <script>`. Scripts can import any workspace package (e.g., `@workspace/db`) by adding it as a dependency in `scripts/package.json`.
+1. Create a PostHog project at posthog.com
+2. Set `VITE_POSTHOG_KEY` to your project API key in environment variables
+3. Events tracked: `page_view`, `chatbot_opened`, `chatbot_closed`, `cta_clicked`

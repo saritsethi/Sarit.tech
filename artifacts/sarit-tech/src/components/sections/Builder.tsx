@@ -1,0 +1,77 @@
+import React from 'react';
+import { motion } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
+import { useContent } from '@/hooks/use-content';
+import { ArrowUpRight, Github } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
+
+export function Builder() {
+  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
+  const { projects } = useContent();
+
+  return (
+    <section id="builder" className="py-32 relative bg-secondary/20 border-t border-white/5">
+      <div className="max-w-7xl mx-auto px-6 md:px-8">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+          <motion.div 
+            ref={ref}
+            initial={{ opacity: 0, x: -30 }}
+            animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
+            className="max-w-2xl"
+          >
+            <h2 className="text-4xl md:text-5xl font-display font-bold mb-6">The Builder</h2>
+            <p className="text-lg text-muted-foreground">
+              Prototyping the future. I believe the best product leaders remain hands-on. Here are selected systems and architectures I've built.
+            </p>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={inView ? { opacity: 1 } : { opacity: 0 }}
+            transition={{ delay: 0.4 }}
+          >
+            <Button variant="outline" className="border-white/10">
+              <Github className="w-4 h-4 mr-2" />
+              View GitHub
+            </Button>
+          </motion.div>
+        </div>
+
+        <div className="grid lg:grid-cols-3 gap-8">
+          {projects.map((project, i) => (
+            <motion.div
+              key={project.id}
+              initial={{ opacity: 0, y: 40 }}
+              animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+              transition={{ duration: 0.6, delay: i * 0.15 }}
+              className="group relative flex flex-col justify-between p-8 rounded-3xl bg-card border border-white/10 hover:border-primary/50 overflow-hidden transition-all duration-500"
+            >
+              {/* Hover gradient background effect */}
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+              
+              <div className="relative z-10 mb-8">
+                <div className="flex justify-between items-start mb-6">
+                  <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center">
+                    <span className="font-display font-bold text-xl text-primary">{i + 1}</span>
+                  </div>
+                  <a href={project.link} className="p-2 rounded-full bg-white/5 hover:bg-primary hover:text-primary-foreground transition-colors">
+                    <ArrowUpRight className="w-5 h-5" />
+                  </a>
+                </div>
+                <h3 className="text-2xl font-bold mb-4">{project.title}</h3>
+                <p className="text-muted-foreground leading-relaxed">{project.description}</p>
+              </div>
+
+              <div className="relative z-10 flex flex-wrap gap-2">
+                {project.tech.map((t) => (
+                  <span key={t} className="px-3 py-1 rounded-full text-xs font-medium bg-secondary text-white/70 border border-white/5">
+                    {t}
+                  </span>
+                ))}
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}

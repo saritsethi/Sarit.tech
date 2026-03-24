@@ -1,0 +1,132 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Manrope:wght@400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+@theme inline {
+  --font-sans: 'Inter', sans-serif;
+  --font-display: 'Manrope', sans-serif;
+
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  
+  --color-border: hsl(var(--border));
+  --color-ring: hsl(var(--ring));
+  
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+
+  --animate-fade-in: fade-in 0.5s ease-out;
+  --animate-slide-up: slide-up 0.5s ease-out;
+  --animate-pulse-slow: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+:root {
+  /* Industrial Minimalist Dark Mode Palette */
+  /* Deep Charcoal Background */
+  --background: 222 47% 7%;
+  /* Slate-50 Text */
+  --foreground: 210 40% 98%;
+  
+  /* AI-Electric Teal */
+  --primary: 173 70% 50%;
+  --primary-foreground: 222 47% 7%;
+  
+  /* Slightly lighter charcoal for secondary elements */
+  --secondary: 222 47% 12%;
+  --secondary-foreground: 210 40% 98%;
+  
+  /* Muted text and backgrounds */
+  --muted: 222 47% 15%;
+  --muted-foreground: 215 20% 65%;
+  
+  /* Accents */
+  --accent: 173 70% 50%;
+  --accent-foreground: 222 47% 7%;
+  
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 210 40% 98%;
+  
+  /* Borders and Rings */
+  --border: 222 47% 16%;
+  --ring: 173 70% 50%;
+  
+  /* Cards */
+  --card: 222 47% 10%;
+  --card-foreground: 210 40% 98%;
+
+  --radius: 0.75rem;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased font-sans selection:bg-primary/30 selection:text-primary-foreground;
+    /* Custom scrollbar for webkit */
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+    &::-webkit-scrollbar-track {
+      background: hsl(var(--background));
+    }
+    &::-webkit-scrollbar-thumb {
+      background: hsl(var(--muted));
+      border-radius: 4px;
+    }
+    &::-webkit-scrollbar-thumb:hover {
+      background: hsl(var(--border));
+    }
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    @apply font-bold tracking-tight text-foreground;
+  }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Glassmorphism utilities */
+.glass {
+  @apply bg-background/80 backdrop-blur-md border border-white/5;
+}
+
+.glass-card {
+  @apply bg-card/60 backdrop-blur-sm border border-white/10 shadow-xl shadow-black/40;
+}
+
+/* Gradient text */
+.text-gradient {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-white to-white/60;
+}
+.text-gradient-primary {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/60;
+}
