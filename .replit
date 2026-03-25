@@ -24,3 +24,8 @@ expertMode = true
 [postMerge]
 path = "scripts/post-merge.sh"
 timeoutMs = 20000
+
+[userenv]
+
+[userenv.shared]
+VITE_POSTHOG_KEY = "phc_K4uS18HeEdIVTkWFiGgaURoaWYbHirm1M4LJw64Lj06"
