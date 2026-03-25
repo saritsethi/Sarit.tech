@@ -18,7 +18,7 @@ pnpm workspace monorepo using TypeScript. This project is sarit.tech — a premi
 - **Frontend**: React + Vite (Tailwind CSS, Framer Motion, shadcn/ui)
 - **AI**: Gemini 2.5 Flash via Replit AI Integrations (`@workspace/integrations-gemini-ai`)
 - **Analytics**: PostHog (placeholder key — swap VITE_POSTHOG_KEY env var)
-- **CMS**: Sanity.io (placeholder — swap VITE_SANITY_PROJECT_ID, VITE_SANITY_DATASET, VITE_SANITY_API_TOKEN env vars)
+- **CMS**: Sanity.io — project `z0ibsj2d`, dataset `production`; credentials in `SANITY_PROJECT_ID`, `SANITY_DATASET`, `SANITY_API_TOKEN` env vars (editor-level token); all 15 documents seeded
 
 ## Routes (Multi-Page)
 
