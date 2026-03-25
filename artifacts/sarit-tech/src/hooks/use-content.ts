@@ -65,7 +65,7 @@ const FALLBACK_SETTINGS: SiteSettings = {
     github: 'https://github.com/saritsethi',
     email: 'mailto:hello@sarit.tech',
   },
-  substackUrl: 'https://saritsethi.substack.com',
+  substackUrl: 'https://substack.com/@saritsethi',
 };
 
 const FALLBACK_TIMELINE: TimelineItem[] = [

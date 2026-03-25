@@ -2,7 +2,7 @@ import { Router, type IRouter } from "express";
 
 const router: IRouter = Router();
 
-const SUBSTACK_RSS_URL = "https://saritsethi.substack.com/feed";
+const SUBSTACK_RSS_URL = "https://substack.com/@saritsethi/feed";
 
 interface RssItem {
   title: string;
