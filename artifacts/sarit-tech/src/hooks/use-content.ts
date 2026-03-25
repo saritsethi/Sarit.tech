@@ -1,20 +1,4 @@
 import { useState, useEffect } from 'react';
-import { createClient } from '@sanity/client';
-
-const SANITY_PROJECT_ID = import.meta.env.VITE_SANITY_PROJECT_ID || 'placeholder';
-const SANITY_DATASET = import.meta.env.VITE_SANITY_DATASET || 'production';
-const SANITY_TOKEN = import.meta.env.VITE_SANITY_API_TOKEN;
-const sanityReady = SANITY_PROJECT_ID !== 'placeholder';
-
-const sanityClient = sanityReady
-  ? createClient({
-      projectId: SANITY_PROJECT_ID,
-      dataset: SANITY_DATASET,
-      useCdn: true,
-      apiVersion: '2024-01-01',
-      token: SANITY_TOKEN,
-    })
-  : null;
 
 export interface TimelineItem {
   year: string;
@@ -192,14 +176,17 @@ const FALLBACK_ARTICLES: Article[] = [
   },
 ];
 
-async function fetchSanityContent<T>(query: string, fallback: T): Promise<T> {
-  if (!sanityClient) return fallback;
-  try {
-    const result = await sanityClient.fetch<T>(query);
-    return result && (Array.isArray(result) ? result.length > 0 : true) ? result : fallback;
-  } catch {
-    return fallback;
-  }
+function blockContentToText(
+  blocks?: Array<{ children?: Array<{ text?: string }> }>,
+): string[] {
+  if (!blocks || blocks.length === 0) return [];
+  return blocks
+    .map((block) =>
+      (block.children ?? [])
+        .map((child) => child.text ?? '')
+        .join(''),
+    )
+    .filter(Boolean);
 }
 
 interface SanitySiteSettings {
@@ -216,50 +203,69 @@ interface SanitySiteSettings {
   substackUrl?: string;
 }
 
-function blockContentToText(
-  blocks?: Array<{ children?: Array<{ text?: string }> }>,
-): string[] {
-  if (!blocks || blocks.length === 0) return [];
-  return blocks
-    .map((block) =>
-      (block.children ?? [])
-        .map((child) => child.text ?? '')
-        .join(''),
-    )
-    .filter(Boolean);
-}
+const baseUrl = () => import.meta.env.BASE_URL?.replace(/\/$/, '') || '';
 
-async function fetchSiteSettings(): Promise<SiteSettings> {
-  if (!sanityClient) return FALLBACK_SETTINGS;
+async function fetchSettings(): Promise<SiteSettings> {
   try {
-    const raw = await sanityClient.fetch<SanitySiteSettings>(
-      `*[_type == "siteSettings"][0]{
-        heroHeadline, heroSubheadline, heroBadgeText,
-        aboutNarrative, profileImageUrl,
-        calendarBookingUrl, linkedinUrl, twitterUrl, githubUrl, emailAddress,
-        substackUrl
-      }`,
-    );
-    if (!raw) return FALLBACK_SETTINGS;
-    const paragraphs = blockContentToText(raw.aboutNarrative);
+    const res = await fetch(`${baseUrl()}/api/content/settings`);
+    if (!res.ok) return FALLBACK_SETTINGS;
+    const { data, ready } = (await res.json()) as { data: SanitySiteSettings | null; ready: boolean };
+    if (!ready || !data) return FALLBACK_SETTINGS;
+    const paragraphs = blockContentToText(data.aboutNarrative);
     return {
-      heroHeadline: raw.heroHeadline || FALLBACK_SETTINGS.heroHeadline,
-      heroSubheadline: raw.heroSubheadline || FALLBACK_SETTINGS.heroSubheadline,
-      heroBadgeText: raw.heroBadgeText || FALLBACK_SETTINGS.heroBadgeText,
+      heroHeadline: data.heroHeadline || FALLBACK_SETTINGS.heroHeadline,
+      heroSubheadline: data.heroSubheadline || FALLBACK_SETTINGS.heroSubheadline,
+      heroBadgeText: data.heroBadgeText || FALLBACK_SETTINGS.heroBadgeText,
       aboutNarrativeParagraphs:
         paragraphs.length > 0 ? paragraphs : FALLBACK_SETTINGS.aboutNarrativeParagraphs,
-      profileImageUrl: raw.profileImageUrl || FALLBACK_SETTINGS.profileImageUrl,
-      calendarBookingUrl: raw.calendarBookingUrl || FALLBACK_SETTINGS.calendarBookingUrl,
+      profileImageUrl: data.profileImageUrl || FALLBACK_SETTINGS.profileImageUrl,
+      calendarBookingUrl: data.calendarBookingUrl || FALLBACK_SETTINGS.calendarBookingUrl,
       social: {
-        linkedin: raw.linkedinUrl || FALLBACK_SETTINGS.social.linkedin,
-        twitter: raw.twitterUrl || FALLBACK_SETTINGS.social.twitter,
-        github: raw.githubUrl || FALLBACK_SETTINGS.social.github,
-        email: raw.emailAddress ? `mailto:${raw.emailAddress}` : FALLBACK_SETTINGS.social.email,
+        linkedin: data.linkedinUrl || FALLBACK_SETTINGS.social.linkedin,
+        twitter: data.twitterUrl || FALLBACK_SETTINGS.social.twitter,
+        github: data.githubUrl || FALLBACK_SETTINGS.social.github,
+        email: data.emailAddress ? `mailto:${data.emailAddress}` : FALLBACK_SETTINGS.social.email,
       },
-      substackUrl: raw.substackUrl || FALLBACK_SETTINGS.substackUrl,
+      substackUrl: data.substackUrl || FALLBACK_SETTINGS.substackUrl,
     };
   } catch {
     return FALLBACK_SETTINGS;
+  }
+}
+
+async function fetchTimeline(): Promise<TimelineItem[]> {
+  try {
+    const res = await fetch(`${baseUrl()}/api/content/timeline`);
+    if (!res.ok) return FALLBACK_TIMELINE;
+    const { data, ready } = (await res.json()) as { data: TimelineItem[] | null; ready: boolean };
+    if (!ready || !data || data.length === 0) return FALLBACK_TIMELINE;
+    return data;
+  } catch {
+    return FALLBACK_TIMELINE;
+  }
+}
+
+async function fetchPillars(): Promise<StrategyPillar[]> {
+  try {
+    const res = await fetch(`${baseUrl()}/api/content/pillars`);
+    if (!res.ok) return FALLBACK_PILLARS;
+    const { data, ready } = (await res.json()) as { data: StrategyPillar[] | null; ready: boolean };
+    if (!ready || !data || data.length === 0) return FALLBACK_PILLARS;
+    return data;
+  } catch {
+    return FALLBACK_PILLARS;
+  }
+}
+
+async function fetchProjects(): Promise<Project[]> {
+  try {
+    const res = await fetch(`${baseUrl()}/api/content/projects`);
+    if (!res.ok) return FALLBACK_PROJECTS;
+    const { data, ready } = (await res.json()) as { data: Project[] | null; ready: boolean };
+    if (!ready || !data || data.length === 0) return FALLBACK_PROJECTS;
+    return data;
+  } catch {
+    return FALLBACK_PROJECTS;
   }
 }
 
@@ -273,8 +279,7 @@ interface RssFeedItem {
 
 async function fetchSubstackArticles(): Promise<Article[]> {
   try {
-    const baseUrl = import.meta.env.BASE_URL?.replace(/\/$/, '') || '';
-    const res = await fetch(`${baseUrl}/api/rss/substack`);
+    const res = await fetch(`${baseUrl()}/api/rss/substack`);
     if (!res.ok) return FALLBACK_ARTICLES;
     const data = (await res.json()) as { items?: RssFeedItem[] };
     if (!data.items || data.items.length === 0) return FALLBACK_ARTICLES;
@@ -314,19 +319,10 @@ export function useContent() {
         fetchedProjects,
         fetchedArticles,
       ] = await Promise.all([
-        fetchSiteSettings(),
-        fetchSanityContent<TimelineItem[]>(
-          `*[_type == "timeline"] | order(order asc)`,
-          FALLBACK_TIMELINE,
-        ),
-        fetchSanityContent<StrategyPillar[]>(
-          `*[_type == "strategyPillar"] | order(order asc)`,
-          FALLBACK_PILLARS,
-        ),
-        fetchSanityContent<Project[]>(
-          `*[_type == "project"] | order(order asc)`,
-          FALLBACK_PROJECTS,
-        ),
+        fetchSettings(),
+        fetchTimeline(),
+        fetchPillars(),
+        fetchProjects(),
         fetchSubstackArticles(),
       ]);
       if (!mounted) return;
