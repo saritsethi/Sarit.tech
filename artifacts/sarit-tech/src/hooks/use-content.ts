@@ -307,7 +307,6 @@ export function useContent() {
   const [timeline, setTimeline] = useState<TimelineItem[]>(FALLBACK_TIMELINE);
   const [pillars, setPillars] = useState<StrategyPillar[]>(FALLBACK_PILLARS);
   const [projects, setProjects] = useState<Project[]>(FALLBACK_PROJECTS);
-  const [articles, setArticles] = useState<Article[]>(FALLBACK_ARTICLES);
 
   useEffect(() => {
     let mounted = true;
@@ -317,20 +316,17 @@ export function useContent() {
         fetchedTimeline,
         fetchedPillars,
         fetchedProjects,
-        fetchedArticles,
       ] = await Promise.all([
         fetchSettings(),
         fetchTimeline(),
         fetchPillars(),
         fetchProjects(),
-        fetchSubstackArticles(),
       ]);
       if (!mounted) return;
       setSettings(fetchedSettings);
       setTimeline(fetchedTimeline);
       setPillars(fetchedPillars);
       setProjects(fetchedProjects);
-      setArticles(fetchedArticles);
       setIsLoading(false);
     }
     load();
@@ -339,5 +335,5 @@ export function useContent() {
     };
   }, []);
 
-  return { isLoading, settings, timeline, pillars, projects, articles };
+  return { isLoading, settings, timeline, pillars, projects };
 }

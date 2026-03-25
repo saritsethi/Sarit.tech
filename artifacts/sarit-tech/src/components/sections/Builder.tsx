@@ -2,15 +2,14 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { useContent } from '@/hooks/use-content';
-import { ArrowUpRight, Github, ExternalLink, FileText } from 'lucide-react';
+import { ArrowUpRight, Github } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { useSectionTracking } from '@/hooks/use-analytics';
 
 export function Builder() {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
   useSectionTracking('builder', inView);
-  const { ref: articlesRef, inView: articlesInView } = useInView({ triggerOnce: true, threshold: 0.1 });
-  const { projects, articles } = useContent();
+  const { projects } = useContent();
 
   return (
     <section id="builder" className="py-32 relative bg-secondary/20 border-t border-white/5">
@@ -84,57 +83,6 @@ export function Builder() {
           ))}
         </div>
 
-        {/* Substack RSS Articles */}
-        <motion.div
-          ref={articlesRef}
-          initial={{ opacity: 0, y: 30 }}
-          animate={articlesInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-          transition={{ duration: 0.7 }}
-        >
-          <div className="flex items-center justify-between mb-10">
-            <div>
-              <div className="flex items-center gap-2 mb-2">
-                <FileText className="w-5 h-5 text-primary" />
-                <span className="text-sm font-medium text-primary uppercase tracking-widest">From the Blog</span>
-              </div>
-              <h3 className="text-3xl font-display font-bold">Latest Writing</h3>
-            </div>
-            <a
-              href="https://saritsethi.substack.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors group"
-            >
-              View all on Substack
-              <ExternalLink className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-            </a>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-6">
-            {articles.map((article, i) => (
-              <motion.a
-                key={article.id}
-                href={article.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                initial={{ opacity: 0, y: 20 }}
-                animate={articlesInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                transition={{ duration: 0.5, delay: 0.1 + i * 0.12 }}
-                className="group flex flex-col p-6 rounded-2xl bg-card border border-white/10 hover:border-primary/40 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5"
-              >
-                <span className="text-xs text-muted-foreground mb-3">{article.date}</span>
-                <h4 className="text-lg font-semibold mb-3 group-hover:text-primary transition-colors leading-snug">
-                  {article.title}
-                </h4>
-                <p className="text-sm text-muted-foreground leading-relaxed flex-1">{article.excerpt}</p>
-                <div className="flex items-center gap-1 mt-4 text-primary text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">
-                  Read on Substack
-                  <ArrowUpRight className="w-4 h-4" />
-                </div>
-              </motion.a>
-            ))}
-          </div>
-        </motion.div>
       </div>
     </section>
   );

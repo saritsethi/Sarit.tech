@@ -11,7 +11,7 @@ type LucideIconName = keyof typeof Icons;
 
 export function Intrapreneur() {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
-  const { pillars, articles, isLoading, settings } = useContent();
+  const { pillars } = useContent();
   useSectionTracking('intrapreneur', inView);
 
   const getIcon = (name: string) => {
@@ -63,46 +63,6 @@ export function Intrapreneur() {
           ))}
         </div>
 
-        {/* Substack Feed Preview */}
-        <div className="mt-20">
-          <div className="flex items-center justify-between mb-8">
-            <h3 className="text-2xl font-display font-bold">Recent Writing</h3>
-            <a
-              href={settings.substackUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="text-sm text-primary hover:underline flex items-center gap-1"
-            >
-              View Substack <Icons.ArrowRight className="w-4 h-4" />
-            </a>
-          </div>
-          
-          <div className="grid md:grid-cols-3 gap-6">
-            {isLoading ? (
-              // Skeletons
-              Array.from({length: 3}).map((_, i) => (
-                <div key={i} className="h-[200px] rounded-2xl bg-white/5 animate-pulse" />
-              ))
-            ) : (
-              articles.map((article, i) => (
-                <motion.a
-                  href={article.link}
-                  target="_blank"
-                  rel="noreferrer"
-                  key={article.id}
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={inView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 0.4, delay: 0.3 + (i * 0.1) }}
-                  className="block p-6 rounded-2xl bg-secondary/50 border border-white/5 hover:border-primary/30 hover:bg-secondary transition-all group"
-                >
-                  <span className="text-xs text-primary font-medium mb-3 block">{article.date}</span>
-                  <h4 className="text-lg font-bold mb-3 group-hover:text-primary transition-colors line-clamp-2">{article.title}</h4>
-                  <p className="text-sm text-muted-foreground line-clamp-3">{article.excerpt}</p>
-                </motion.a>
-              ))
-            )}
-          </div>
-        </div>
       </div>
     </section>
   );
