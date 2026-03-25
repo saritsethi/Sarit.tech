@@ -20,6 +20,20 @@ pnpm workspace monorepo using TypeScript. This project is sarit.tech — a premi
 - **Analytics**: PostHog (placeholder key — swap VITE_POSTHOG_KEY env var)
 - **CMS**: Sanity.io (placeholder — swap VITE_SANITY_PROJECT_ID, VITE_SANITY_DATASET, VITE_SANITY_API_TOKEN env vars)
 
+## Routes (Multi-Page)
+
+| Path | Page | Content |
+|------|------|---------|
+| `/` | Home / Landing | Hero + "What I Do" preview cards |
+| `/about` | My Story | Personal journey (Delhi → Toronto → Chicago) + career timeline |
+| `/aidad` | The AI Dad | Leadership brand, 4 strategy pillars, key metrics, philosophy |
+| `/projects` | The Builder | Cricket Coach AI, Sarth(A)i, Enterprise RAG + stealth teaser |
+
+- **Global Layout**: `Layout.tsx` wraps every page with Navbar + Contact section
+- **Global ChatWidget**: Floating Brain icon (bottom-right) opens full-screen overlay on all routes
+- **Stealth Mode**: `StealthOverlay` shows "Under Construction" by default; bypass via `?preview=true`
+- **Navbar active states**: Teal highlight on current route using wouter `useLocation`
+
 ## Structure
 
 ```text

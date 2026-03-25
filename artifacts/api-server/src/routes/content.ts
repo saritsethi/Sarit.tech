@@ -68,4 +68,17 @@ router.get("/content/projects", async (_req, res) => {
   res.json({ data, ready: sanityReady });
 });
 
+router.get("/content/leadership", async (_req, res) => {
+  const data = await querySanity<Record<string, unknown> | null>(
+    `*[_type == "leadership"][0]{
+      missionStatement,
+      leadershipPhilosophy,
+      keyMetrics,
+      quote
+    }`,
+    null,
+  );
+  res.json({ data, ready: sanityReady });
+});
+
 export default router;

@@ -54,8 +54,8 @@ const FALLBACK_SETTINGS: SiteSettings = {
     'Bridging the gap between construction tech execution and enterprise AI strategy. I build systems that solve real problems, not just cool tech demos.',
   heroBadgeText: 'AI Product Leader',
   aboutNarrativeParagraphs: [
-    'My journey spans from navigating the complexities of construction tech in Toronto to driving Enterprise AI strategy in Chicago. I\'m passionate about building systems that make people\'s lives easier and businesses more efficient.',
-    'As a product leader, I sit at the intersection of deeply technical architecture and high-level executive strategy. I don\'t just advocate for AI—I architect realistic, scalable, and ethical pathways for its adoption in legacy industries.',
+    'From the construction sites of Toronto to the AI boardrooms of Chicago — my journey is one of relentless translation. I\'ve always sat at the uncomfortable intersection of the deeply technical and the strategically human.',
+    'As a product leader, I architect realistic, scalable, and ethical pathways for AI adoption in industries that others write off as "too legacy." I don\'t just advocate for AI — I make it work.',
   ],
   profileImageUrl: '',
   calendarBookingUrl: 'https://calendar.app.google/PTXjuRKDb97Qyp3B6',
@@ -79,16 +79,23 @@ const FALLBACK_TIMELINE: TimelineItem[] = [
   {
     year: '2020 - 2023',
     title: 'Head of Product',
-    company: 'Construction Tech Innovators',
+    company: 'Construction Tech Innovators · Chicago',
     description:
-      'Led the digital transformation of legacy construction workflows. Bridged the gap between field execution and boardroom strategy in Chicago.',
+      'Led the digital transformation of legacy construction workflows. Bridged the gap between field execution and boardroom strategy.',
   },
   {
     year: '2016 - 2020',
     title: 'Senior Product Manager',
-    company: 'BuildCorp Toronto',
+    company: 'BuildCorp · Toronto',
     description:
       'Managed a portfolio of predictive analytics tools for project lifecycle management, resulting in a 25% increase in resource efficiency.',
+  },
+  {
+    year: '2012 - 2016',
+    title: 'Product Analyst',
+    company: 'Tech Ventures · Delhi',
+    description:
+      'Started as an analyst at a product consultancy in Delhi, learning the foundations of user research, agile delivery, and technology strategy.',
   },
 ];
 
@@ -97,7 +104,7 @@ const FALLBACK_PILLARS: StrategyPillar[] = [
     id: 'p1',
     icon: 'Target',
     title: 'ROI-First Discovery',
-    description: 'Aligning AI capabilities with quantifiable business outcomes. No tech for tech\'s sake.',
+    description: "Aligning AI capabilities with quantifiable business outcomes. No tech for tech's sake.",
   },
   {
     id: 'p2',
@@ -125,54 +132,27 @@ const FALLBACK_PILLARS: StrategyPillar[] = [
 const FALLBACK_PROJECTS: Project[] = [
   {
     id: 'proj1',
-    title: 'AI Twin Architecture',
+    title: 'Cricket Coach AI',
     description:
-      'A framework for generating highly contextualized digital twins for subject matter experts, utilizing advanced RAG and LLM orchestration.',
-    tech: ['Python', 'LangChain', 'Vector DB', 'React'],
+      'An AI-powered coaching assistant that analyzes batting/bowling technique via video, generates personalized training plans, and tracks performance metrics over time.',
+    tech: ['Python', 'Computer Vision', 'Gemini Pro', 'React Native'],
     link: '#',
   },
   {
     id: 'proj2',
-    title: 'Enterprise RAG System',
+    title: 'Sarth(A)i',
     description:
-      'Secure, scalable retrieval-augmented generation pipeline deployed across a 10,000+ employee organization to unify internal knowledge.',
-    tech: ['Gemini Pro', 'Pinecone', 'FastAPI', 'Docker'],
+      'A next-generation AI assistant platform designed to serve as a personal digital twin for knowledge workers — remembering context, drafting decisions, and surfacing insights.',
+    tech: ['LangChain', 'Vector DB', 'FastAPI', 'React'],
     link: '#',
   },
   {
     id: 'proj3',
-    title: 'Construction Predictive Analytics',
+    title: 'Enterprise RAG System',
     description:
-      'Machine learning model predicting material supply chain delays with 87% accuracy, saving millions in operational downtime.',
-    tech: ['TensorFlow', 'PostgreSQL', 'AWS', 'Next.js'],
+      'Secure, scalable retrieval-augmented generation pipeline deployed across a 10,000+ employee organization to unify internal knowledge and cut answer time by 60%.',
+    tech: ['Gemini Pro', 'Pinecone', 'FastAPI', 'Docker'],
     link: '#',
-  },
-];
-
-const FALLBACK_ARTICLES: Article[] = [
-  {
-    id: 'art1',
-    title: 'Why Most Enterprise AI Initiatives Fail (And How to Fix Them)',
-    date: 'Oct 12, 2023',
-    excerpt:
-      'The disconnect between pilot excitement and production reality is killing AI ROI. Here\'s the framework to bridge the gap.',
-    link: 'https://saritsethi.substack.com',
-  },
-  {
-    id: 'art2',
-    title: 'From Hardhats to LLMs: Lessons in Change Management',
-    date: 'Sep 28, 2023',
-    excerpt:
-      'What leading digital transformation in legacy construction taught me about deploying AI in the modern enterprise.',
-    link: 'https://saritsethi.substack.com',
-  },
-  {
-    id: 'art3',
-    title: 'The Rise of the Digital Twin in Executive Leadership',
-    date: 'Sep 15, 2023',
-    excerpt:
-      'Scaling your decision-making and knowledge sharing through specialized, context-aware AI agents.',
-    link: 'https://saritsethi.substack.com',
   },
 ];
 
@@ -266,38 +246,6 @@ async function fetchProjects(): Promise<Project[]> {
     return data;
   } catch {
     return FALLBACK_PROJECTS;
-  }
-}
-
-interface RssFeedItem {
-  guid?: string;
-  title: string;
-  pubDate?: string;
-  description: string;
-  link: string;
-}
-
-async function fetchSubstackArticles(): Promise<Article[]> {
-  try {
-    const res = await fetch(`${baseUrl()}/api/rss/substack`);
-    if (!res.ok) return FALLBACK_ARTICLES;
-    const data = (await res.json()) as { items?: RssFeedItem[] };
-    if (!data.items || data.items.length === 0) return FALLBACK_ARTICLES;
-    return data.items.map((item, i) => ({
-      id: item.guid || String(i),
-      title: item.title,
-      date: item.pubDate
-        ? new Date(item.pubDate).toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric',
-          })
-        : '',
-      excerpt: item.description,
-      link: item.link,
-    }));
-  } catch {
-    return FALLBACK_ARTICLES;
   }
 }
 

@@ -1,32 +1,41 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Terminal } from 'lucide-react';
+import { Link, useLocation } from 'wouter';
+import { Menu, X, Brain } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
 import { useAnalytics } from '@/hooks/use-analytics';
 
 const NAV_LINKS = [
-  { name: 'About', href: '#about' },
-  { name: 'Strategy', href: '#intrapreneur' },
-  { name: 'Projects', href: '#builder' },
+  { name: 'Home', href: '/' },
+  { name: 'About', href: '/about' },
+  { name: 'AI Dad', href: '/aidad' },
+  { name: 'Projects', href: '/projects' },
 ];
+
+function isActive(location: string, href: string) {
+  if (href === '/') return location === '/';
+  return location.startsWith(href);
+}
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [location] = useLocation();
   const { trackEvent } = useAnalytics();
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [location]);
+
   const handleNavClick = (name: string) => {
     trackEvent('nav_clicked', { link: name });
-    setIsMobileMenuOpen(false);
   };
 
   return (
@@ -41,30 +50,41 @@ export function Navbar() {
         transition={{ duration: 0.6, ease: "easeOut" }}
       >
         <div className="max-w-7xl mx-auto px-6 md:px-8 flex items-center justify-between">
-          <a 
-            href="#hero" 
+          <Link
+            href="/"
             className="flex items-center gap-2 group"
             onClick={() => handleNavClick('Home')}
           >
             <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center border border-primary/20 group-hover:border-primary/50 transition-colors">
-              <Terminal className="w-4 h-4 text-primary" />
+              <Brain className="w-4 h-4 text-primary" />
             </div>
-            <span className="font-display font-bold text-lg tracking-tight">sarit<span className="text-primary">.tech</span></span>
-          </a>
+            <span className="font-display font-bold text-lg tracking-tight">
+              sarit<span className="text-primary">.tech</span>
+            </span>
+          </Link>
 
           {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-8">
+          <nav className="hidden md:flex items-center gap-1">
             {NAV_LINKS.map((link) => (
-              <a
+              <Link
                 key={link.name}
                 href={link.href}
                 onClick={() => handleNavClick(link.name)}
-                className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
+                className={cn(
+                  "px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200",
+                  isActive(location, link.href)
+                    ? "text-primary bg-primary/10 border border-primary/20"
+                    : "text-muted-foreground hover:text-foreground hover:bg-white/5"
+                )}
               >
                 {link.name}
-              </a>
+              </Link>
             ))}
-            <a href="#contact" onClick={() => handleNavClick('Contact CTA')}>
+            <a
+              href="#contact"
+              onClick={() => handleNavClick('Contact CTA')}
+              className="ml-4"
+            >
               <Button size="sm" variant="outline" className="border-white/10 hover:border-primary/50">
                 Let's Connect
               </Button>
@@ -72,7 +92,7 @@ export function Navbar() {
           </nav>
 
           {/* Mobile Toggle */}
-          <button 
+          <button
             className="md:hidden p-2 text-muted-foreground hover:text-foreground"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label="Toggle Menu"
@@ -82,7 +102,7 @@ export function Navbar() {
         </div>
       </motion.header>
 
-      {/* Mobile Menu Overlay */}
+      {/* Mobile Menu */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
@@ -91,18 +111,21 @@ export function Navbar() {
             exit={{ opacity: 0, y: -20 }}
             className="fixed inset-0 z-30 pt-24 px-6 pb-6 bg-background/95 backdrop-blur-xl md:hidden flex flex-col gap-6"
           >
-            <div className="flex flex-col gap-4 text-center mt-8">
+            <div className="flex flex-col gap-2 text-center mt-8">
               {NAV_LINKS.map((link) => (
-                <a
+                <Link
                   key={link.name}
                   href={link.href}
                   onClick={() => handleNavClick(link.name)}
-                  className="text-2xl font-display font-medium text-foreground py-2 border-b border-white/5"
+                  className={cn(
+                    "text-2xl font-display font-medium py-3 border-b border-white/5 transition-colors",
+                    isActive(location, link.href) ? "text-primary" : "text-foreground"
+                  )}
                 >
                   {link.name}
-                </a>
+                </Link>
               ))}
-              <a href="#contact" onClick={() => handleNavClick('Contact CTA')} className="mt-4">
+              <a href="#contact" onClick={() => handleNavClick('Contact CTA')} className="mt-6">
                 <Button size="lg" className="w-full">Let's Connect</Button>
               </a>
             </div>
