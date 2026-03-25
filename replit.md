@@ -123,3 +123,7 @@ The Gemini system prompt (in `artifacts/api-server/src/routes/gemini/index.ts`) 
 1. Create a PostHog project at posthog.com
 2. Set `VITE_POSTHOG_KEY` to your project API key in environment variables
 3. Events tracked: `page_view`, `chatbot_opened`, `chatbot_closed`, `cta_clicked`
+
+## User Preferences
+
+- **GitHub pushes**: Always ask the user for confirmation before pushing to GitHub. Never push automatically.
