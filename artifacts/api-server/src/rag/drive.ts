@@ -25,20 +25,35 @@ function getConnectors(): ReplitConnectors {
   return new ReplitConnectors();
 }
 
-/** List all files in the RAG folder */
-export async function listRagFiles(): Promise<
-  Array<{ id: string; name: string; mimeType: string }>
-> {
+type DriveFileMeta = { id: string; name: string; mimeType: string };
+
+/** List all files in a folder, recursing into subfolders */
+async function listFilesInFolder(folderId: string): Promise<DriveFileMeta[]> {
   const connectors = getConnectors();
   const response = await connectors.proxy(
     "google-drive",
-    `/drive/v3/files?q=%27${RAG_FOLDER_ID}%27+in+parents+and+trashed%3Dfalse&fields=files(id,name,mimeType)&pageSize=50`,
+    `/drive/v3/files?q=%27${folderId}%27+in+parents+and+trashed%3Dfalse&fields=files(id,name,mimeType)&pageSize=100`,
     { method: "GET" },
   );
-  const data = (await response.json()) as {
-    files: Array<{ id: string; name: string; mimeType: string }>;
-  };
-  return data.files ?? [];
+  const data = (await response.json()) as { files: DriveFileMeta[] };
+  const items = data.files ?? [];
+
+  const results: DriveFileMeta[] = [];
+  for (const item of items) {
+    if (item.mimeType === "application/vnd.google-apps.folder") {
+      console.log(`[RAG] Recursing into subfolder: ${item.name}`);
+      const children = await listFilesInFolder(item.id);
+      results.push(...children);
+    } else {
+      results.push(item);
+    }
+  }
+  return results;
+}
+
+/** List all files in the RAG folder (including subfolders) */
+export async function listRagFiles(): Promise<DriveFileMeta[]> {
+  return listFilesInFolder(RAG_FOLDER_ID);
 }
 
 /** Export a Google Doc as plain text */
