@@ -9,6 +9,7 @@ import { eq, desc } from "drizzle-orm";
 import { ai } from "@workspace/integrations-gemini-ai";
 import { createClient } from "@sanity/client";
 import { PostHog } from "posthog-node";
+import { retrieveContext, formatContextBlock } from "../rag/retrieve";
 
 const router: IRouter = Router();
 
@@ -358,16 +359,22 @@ router.post("/chat", async (req, res) => {
     content: message,
   });
 
-  const [allMessages, sanityContext] = await Promise.all([
+  const [allMessages, sanityContext, ragChunks] = await Promise.all([
     db
       .select()
       .from(messagesTable)
       .where(eq(messagesTable.conversationId, conversationId!))
       .orderBy(messagesTable.createdAt),
     fetchSanityContext(),
+    retrieveContext(message).catch((err) => {
+      console.warn("[RAG] Retrieval failed (continuing without):", err);
+      return [];
+    }),
   ]);
 
-  const systemPrompt = buildSystemPrompt(sanityContext);
+  const ragContextBlock = formatContextBlock(ragChunks);
+  const systemPrompt = buildSystemPrompt(sanityContext) +
+    (ragContextBlock ? `\n\n${ragContextBlock}` : "");
 
   res.setHeader("Content-Type", "text/event-stream");
   res.setHeader("Cache-Control", "no-cache");

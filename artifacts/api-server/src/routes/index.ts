@@ -4,6 +4,7 @@ import geminiRouter from "./gemini/index";
 import rssRouter from "./rss";
 import chatRouter from "./chat";
 import contentRouter from "./content";
+import ragRouter from "./rag";
 
 const router: IRouter = Router();
 
@@ -12,5 +13,6 @@ router.use("/gemini", geminiRouter);
 router.use(rssRouter);
 router.use(chatRouter);
 router.use(contentRouter);
+router.use(ragRouter);
 
 export default router;
