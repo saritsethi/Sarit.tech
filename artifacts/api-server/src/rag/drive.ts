@@ -5,8 +5,8 @@
 
 import { ReplitConnectors } from "@replit/connectors-sdk";
 
-// pdf-parse is CJS-only — use globalThis.require (set up by the esbuild banner)
-// to avoid ESM default-export resolution errors at runtime.
+// pdf-parse@1.x is CJS-only — use globalThis.require (set up by the esbuild banner)
+// so esbuild doesn't try to ESM-resolve it at bundle time.
 type PdfParseResult = { text: string };
 type PdfParseFn = (buffer: Buffer) => Promise<PdfParseResult>;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
