@@ -23,15 +23,27 @@ export async function ingestRagDocuments(): Promise<IngestResult> {
   console.log("[RAG] Starting ingestion from Google Drive...");
 
   const documents = await fetchRagDocuments();
-  console.log(`[RAG] Fetched ${documents.length} documents`);
+  console.log(`[RAG] Fetched ${documents.length} documents from Drive`);
 
+  // ── Step 1: Remove chunks for files that no longer exist in Drive ─────────
+  const driveIds = new Set(documents.map((d) => d.id));
+  const { rows: storedRows } = await pool.query<{ source_id: string }>(
+    "SELECT DISTINCT source_id FROM rag_chunks",
+  );
+  const removedIds = storedRows.map((r) => r.source_id).filter((id) => !driveIds.has(id));
+
+  if (removedIds.length > 0) {
+    await pool.query("DELETE FROM rag_chunks WHERE source_id = ANY($1::text[])", [removedIds]);
+    console.log(`[RAG] Removed chunks for ${removedIds.length} deleted file(s)`);
+  }
+
+  // ── Step 2: Upsert chunks for current Drive files ─────────────────────────
   for (const doc of documents) {
     try {
-      // Remove existing chunks for this source so we stay current
+      // Delete old chunks for this file so edits are reflected
       await pool.query("DELETE FROM rag_chunks WHERE source_id = $1", [doc.id]);
 
       const chunks = chunkText(doc.text);
-      console.log(`[RAG] ${doc.name}: ${chunks.length} chunks`);
 
       for (const chunk of chunks) {
         await pool.query(
@@ -42,7 +54,7 @@ export async function ingestRagDocuments(): Promise<IngestResult> {
         chunksStored++;
       }
 
-      console.log(`[RAG] ✓ Stored ${chunks.length} chunks for: ${doc.name}`);
+      console.log(`[RAG] ✓ ${doc.name}: ${chunks.length} chunks`);
     } catch (err) {
       const msg = `Failed to process ${doc.name}: ${
         err instanceof Error ? err.message : String(err)
