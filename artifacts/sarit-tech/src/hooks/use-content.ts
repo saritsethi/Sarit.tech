@@ -137,7 +137,7 @@ const FALLBACK_SETTINGS: SiteSettings = {
     linkedin: 'https://linkedin.com/in/saritsethi',
     twitter: 'https://twitter.com/saritsethi',
     github: 'https://github.com/saritsethi',
-    email: 'mailto:hello@sarit.tech',
+    email: 'mailto:saritsethi@gmail.com',
   },
   substackUrl: 'https://substack.com/@saritsethi',
 };
