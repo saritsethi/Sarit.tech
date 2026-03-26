@@ -9,10 +9,11 @@ import { ingestRagDocuments } from "./rag/ingest";
 async function patchSanityEmail(): Promise<void> {
   const projectId = process.env["SANITY_PROJECT_ID"];
   const dataset = process.env["SANITY_DATASET"] ?? "production";
-  const token = process.env["SANITY_API_TOKEN"];
+  // Prefer SANITY_TOKEN (write token); fall back to SANITY_API_TOKEN
+  const token = process.env["SANITY_TOKEN"] ?? process.env["SANITY_API_TOKEN"];
 
   if (!projectId || !token) {
-    logger.warn("[Sanity] SANITY_PROJECT_ID or SANITY_API_TOKEN not set — skipping email patch");
+    logger.warn("[Sanity] SANITY_PROJECT_ID or SANITY_TOKEN not set — skipping email patch");
     return;
   }
 
@@ -62,30 +63,24 @@ if (Number.isNaN(port) || port <= 0) {
 
 const INGEST_INTERVAL_MS = 24 * 60 * 60 * 1000;
 
+async function runIngest(): Promise<void> {
+  try {
+    logger.info("[RAG] Starting scheduled ingest...");
+    const result = await ingestRagDocuments();
+    logger.info(
+      { docs: result.documentsProcessed, chunks: result.chunksStored, errors: result.errors.length },
+      "[RAG] Scheduled ingest complete",
+    );
+  } catch (err) {
+    logger.error({ err }, "[RAG] Scheduled ingest failed");
+  }
+}
+
 function scheduleRagIngest() {
-  setTimeout(async () => {
-    try {
-      logger.info("[RAG] Starting scheduled ingest...");
-      const result = await ingestRagDocuments();
-      logger.info(
-        { docs: result.documentsProcessed, chunks: result.chunksStored, errors: result.errors.length },
-        "[RAG] Scheduled ingest complete"
-      );
-    } catch (err) {
-      logger.error({ err }, "[RAG] Scheduled ingest failed");
-    }
-    setInterval(async () => {
-      try {
-        logger.info("[RAG] Starting scheduled ingest...");
-        const result = await ingestRagDocuments();
-        logger.info(
-          { docs: result.documentsProcessed, chunks: result.chunksStored, errors: result.errors.length },
-          "[RAG] Scheduled ingest complete"
-        );
-      } catch (err) {
-        logger.error({ err }, "[RAG] Scheduled ingest failed");
-      }
-    }, INGEST_INTERVAL_MS);
+  // Initial run 60s after startup, then repeat every 24h
+  setTimeout(() => {
+    void runIngest();
+    setInterval(() => void runIngest(), INGEST_INTERVAL_MS);
   }, 60_000);
 }
 
