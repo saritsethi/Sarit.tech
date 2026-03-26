@@ -18,30 +18,50 @@ async function patchSanityEmail(): Promise<void> {
   }
 
   const CORRECT_EMAIL = "saritsethi@gmail.com";
-  const DOC_ID = "singleton-siteSettings";
+  const base = `https://${projectId}.api.sanity.io/v2023-08-01/data`;
+  const authHeaders = { "Authorization": `Bearer ${token}`, "Content-Type": "application/json" };
 
   try {
-    const res = await fetch(
-      `https://${projectId}.api.sanity.io/v2023-08-01/data/mutate/${dataset}`,
-      {
-        method: "POST",
-        headers: {
-          "Authorization": `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          mutations: [{ patch: { id: DOC_ID, set: { emailAddress: CORRECT_EMAIL } } }],
-        }),
-      },
+    // Step 1: Query for the actual document ID by type (avoids hardcoded ID assumption)
+    const queryRes = await fetch(
+      `${base}/query/${dataset}?query=${encodeURIComponent("*[_type==\"siteSettings\"][0]{_id,emailAddress}")}`,
+      { headers: { "Authorization": `Bearer ${token}` } },
     );
 
-    if (!res.ok) {
-      const body = await res.text();
-      logger.warn({ status: res.status, body }, "[Sanity] Email patch returned non-OK response");
+    if (!queryRes.ok) {
+      const body = await queryRes.text();
+      logger.warn({ status: queryRes.status, body }, "[Sanity] siteSettings query failed — skipping email patch");
       return;
     }
 
-    logger.info({ docId: DOC_ID, email: CORRECT_EMAIL }, "[Sanity] emailAddress patched successfully");
+    const { result } = (await queryRes.json()) as { result?: { _id?: string; emailAddress?: string } };
+
+    if (!result?._id) {
+      logger.warn("[Sanity] No siteSettings document found — skipping email patch");
+      return;
+    }
+
+    if (result.emailAddress === CORRECT_EMAIL) {
+      logger.info({ docId: result._id }, "[Sanity] emailAddress already correct — no patch needed");
+      return;
+    }
+
+    // Step 2: Patch the document using its actual _id
+    const mutateRes = await fetch(`${base}/mutate/${dataset}`, {
+      method: "POST",
+      headers: authHeaders,
+      body: JSON.stringify({
+        mutations: [{ patch: { id: result._id, set: { emailAddress: CORRECT_EMAIL } } }],
+      }),
+    });
+
+    if (!mutateRes.ok) {
+      const body = await mutateRes.text();
+      logger.warn({ status: mutateRes.status, body }, "[Sanity] Email patch mutation returned non-OK response");
+      return;
+    }
+
+    logger.info({ docId: result._id, email: CORRECT_EMAIL }, "[Sanity] emailAddress patched successfully");
   } catch (err) {
     logger.error({ err }, "[Sanity] Email patch failed — continuing startup");
   }
