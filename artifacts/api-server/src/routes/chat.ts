@@ -3,10 +3,12 @@ import { db } from "@workspace/db";
 import {
   conversations as conversationsTable,
   messages as messagesTable,
+  outOfScopeQueries,
 } from "@workspace/db";
-import { eq } from "drizzle-orm";
+import { eq, desc } from "drizzle-orm";
 import { ai } from "@workspace/integrations-gemini-ai";
 import { createClient } from "@sanity/client";
+import { PostHog } from "posthog-node";
 
 const router: IRouter = Router();
 
@@ -28,6 +30,19 @@ const sanityClient = sanityReady
       token: TOKEN,
     })
   : null;
+
+// ---------------------------------------------------------------------------
+// PostHog — server-side event tracking for out-of-scope query logging
+// ---------------------------------------------------------------------------
+
+const POSTHOG_KEY = process.env.VITE_POSTHOG_KEY || "";
+const POSTHOG_HOST = "https://us.i.posthog.com";
+
+const posthog = POSTHOG_KEY
+  ? new PostHog(POSTHOG_KEY, { host: POSTHOG_HOST, flushAt: 1, flushInterval: 0 })
+  : null;
+
+const REFUSAL_PHRASE = "I don't have that specific data in my current knowledge base";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -389,8 +404,61 @@ router.post("/chat", async (req, res) => {
     content: fullResponse,
   });
 
+  // -------------------------------------------------------------------------
+  // Out-of-scope detection — log to PostHog + DB if refusal phrase triggered
+  // -------------------------------------------------------------------------
+  if (fullResponse.includes(REFUSAL_PHRASE)) {
+    const convIdStr = conversationId?.toString() ?? null;
+
+    // Fire-and-forget: DB insert
+    db.insert(outOfScopeQueries)
+      .values({ query: message, conversationId: convIdStr })
+      .catch((err: unknown) => console.error("[out-of-scope] DB insert failed:", err));
+
+    // Fire-and-forget: PostHog event
+    if (posthog) {
+      posthog.capture({
+        distinctId: `conversation-${convIdStr ?? "unknown"}`,
+        event: "chatbot_out_of_scope",
+        properties: {
+          query: message,
+          conversationId: convIdStr,
+          responsePreview: fullResponse.slice(0, 200),
+        },
+      });
+    }
+  }
+
   res.write(`data: ${JSON.stringify({ done: true, conversationId })}\n\n`);
   res.end();
+});
+
+// ---------------------------------------------------------------------------
+// Report endpoint — GET /api/chat/out-of-scope
+// Returns all logged out-of-scope queries, newest first
+// ---------------------------------------------------------------------------
+
+router.get("/chat/out-of-scope", async (_req, res) => {
+  const rows = await db
+    .select()
+    .from(outOfScopeQueries)
+    .orderBy(desc(outOfScopeQueries.createdAt));
+
+  const total = rows.length;
+  const last7Days = rows.filter((r) => {
+    const age = Date.now() - new Date(r.createdAt).getTime();
+    return age < 7 * 24 * 60 * 60 * 1000;
+  }).length;
+
+  res.json({
+    summary: { total, last7Days },
+    queries: rows.map((r) => ({
+      id: r.id,
+      query: r.query,
+      conversationId: r.conversationId,
+      timestamp: r.createdAt,
+    })),
+  });
 });
 
 export default router;
