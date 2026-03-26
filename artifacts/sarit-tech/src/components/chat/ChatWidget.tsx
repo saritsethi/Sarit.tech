@@ -83,7 +83,7 @@ export function ChatWidget() {
               exit={{ opacity: 0, y: 20, scale: 0.97 }}
               transition={{ type: 'spring', damping: 28, stiffness: 300 }}
               className="relative w-full max-w-2xl mx-4 flex flex-col rounded-3xl border border-white/10 bg-background/80 shadow-2xl overflow-hidden"
-              style={{ height: 'min(650px, calc(100vh - 80px))' }}
+              style={{ height: 'min(650px, calc(100dvh - 80px))' }}
             >
               {/* Header */}
               <div className="p-5 border-b border-white/10 bg-secondary/50 flex items-center gap-4 flex-shrink-0">

@@ -132,7 +132,7 @@ export default function AiDad() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {pillars.map((pillar, i) => (
               <motion.div
-                key={pillar.id}
+                key={pillar.id ?? pillar.title ?? i}
                 initial={{ opacity: 0, y: 30 }}
                 animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
