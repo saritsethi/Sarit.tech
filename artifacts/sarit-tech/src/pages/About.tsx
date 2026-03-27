@@ -22,11 +22,6 @@ export default function About() {
     ? aboutContent.narrative
     : settings.aboutNarrativeParagraphs;
 
-  const portraitSrc =
-    aboutContent.portraitUrl ||
-    settings.profileImageUrl ||
-    `${import.meta.env.BASE_URL}images/sarit-portrait.png`;
-
   return (
     <Layout>
       {/* Page Hero */}
@@ -88,15 +83,6 @@ export default function About() {
                 ))}
               </div>
 
-              {/* Portrait */}
-              <div className="relative mt-10 rounded-2xl overflow-hidden border border-white/10 shadow-2xl glass-card inline-block">
-                <img
-                  src={portraitSrc}
-                  alt="Sarit Sethi"
-                  className="w-full max-w-[400px] h-auto object-cover opacity-90 mix-blend-luminosity hover:opacity-100 transition-opacity duration-500"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent pointer-events-none" />
-              </div>
             </div>
 
             {/* Career Timeline */}
