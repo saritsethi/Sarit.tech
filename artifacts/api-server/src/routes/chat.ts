@@ -102,10 +102,24 @@ function blocksToText(blocks?: SanityBlock[]): string[] {
 }
 
 // ---------------------------------------------------------------------------
-// Fetch live context from Sanity (cached per request — ~100ms overhead)
+// In-memory cache for Sanity context — refreshed every 60 s
+// ---------------------------------------------------------------------------
+
+interface SanityContextCache {
+  data: SanityContent;
+  expiresAt: number;
+}
+let _sanityCache: SanityContextCache | null = null;
+const SANITY_CACHE_TTL_MS = 60_000;
+
+// ---------------------------------------------------------------------------
+// Fetch live context from Sanity (served from cache after first load)
 // ---------------------------------------------------------------------------
 
 async function fetchSanityContext(): Promise<SanityContent> {
+  if (_sanityCache && Date.now() < _sanityCache.expiresAt) {
+    return _sanityCache.data;
+  }
   const fallback: SanityContent = {
     narrative: [
       "A global citizen who has lived and worked in Delhi, Toronto, and Chicago, drawing a broad worldview from these diverse cultural and professional hubs.",
@@ -180,7 +194,7 @@ async function fetchSanityContext(): Promise<SanityContent> {
       about?.narrative as SanityBlock[] | undefined,
     );
 
-    return {
+    const result: SanityContent = {
       narrative: narrative.length ? narrative : fallback.narrative,
       cricketStats:
         (about?.cricketStats as SanityContent["cricketStats"]) ??
@@ -209,6 +223,8 @@ async function fetchSanityContext(): Promise<SanityContent> {
       linkedinUrl:
         (settings?.linkedinUrl as string) ?? fallback.linkedinUrl,
     };
+    _sanityCache = { data: result, expiresAt: Date.now() + SANITY_CACHE_TTL_MS };
+    return result;
   } catch {
     return fallback;
   }
@@ -448,7 +464,7 @@ router.post("/chat", async (req, res) => {
       parts: [{ text: m.content }],
     })),
     config: {
-      maxOutputTokens: 8192,
+      maxOutputTokens: 600,
       systemInstruction: systemPrompt,
     },
   });

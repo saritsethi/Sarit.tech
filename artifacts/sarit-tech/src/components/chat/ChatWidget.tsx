@@ -5,6 +5,46 @@ import { useGeminiChat } from '@/hooks/use-gemini-chat';
 import { useAnalytics } from '@/hooks/use-analytics';
 import { cn } from '@/lib/utils';
 
+// Renders assistant message content:
+//  - [Source: ...] tags → violet pill
+//  - **bold** → <strong>
+//  - Preserves newlines
+function MessageContent({ text }: { text: string }) {
+  // Split on [Source: ...] or **bold** tokens
+  const TOKEN_RE = /(\[Source:[^\]]+\]|\*\*[^*]+\*\*)/g;
+  const parts = text.split(TOKEN_RE);
+
+  return (
+    <>
+      {parts.map((part, i) => {
+        if (/^\[Source:[^\]]+\]$/.test(part)) {
+          return (
+            <span
+              key={i}
+              className="inline-block text-[10px] font-medium text-violet-400/90 bg-violet-500/10 border border-violet-500/20 rounded px-1.5 py-0.5 mx-0.5 align-middle leading-none"
+            >
+              {part.slice(1, -1)}
+            </span>
+          );
+        }
+        if (/^\*\*[^*]+\*\*$/.test(part)) {
+          return <strong key={i}>{part.slice(2, -2)}</strong>;
+        }
+        return (
+          <React.Fragment key={i}>
+            {part.split('\n').map((line, j, arr) => (
+              <React.Fragment key={j}>
+                {line}
+                {j < arr.length - 1 && <br />}
+              </React.Fragment>
+            ))}
+          </React.Fragment>
+        );
+      })}
+    </>
+  );
+}
+
 function useStarterPrompts(enabled: boolean) {
   const [prompts, setPrompts] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
@@ -171,7 +211,13 @@ export function ChatWidget() {
                           : 'bg-secondary border border-white/5 rounded-tl-sm text-foreground',
                       )}
                     >
-                      {msg.content || (
+                      {msg.content ? (
+                        msg.role === 'assistant' ? (
+                          <MessageContent text={msg.content} />
+                        ) : (
+                          msg.content
+                        )
+                      ) : (
                         msg.role === 'assistant' && (
                           <Loader2 className="w-4 h-4 animate-spin opacity-50" />
                         )
