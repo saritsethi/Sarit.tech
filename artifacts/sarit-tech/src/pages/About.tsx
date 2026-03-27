@@ -4,7 +4,8 @@ import { useInView } from 'react-intersection-observer';
 import { Layout } from '@/components/layout/Layout';
 import { useContent, useAboutContent } from '@/hooks/use-content';
 import { useSectionTracking } from '@/hooks/use-analytics';
-import { MapPin } from 'lucide-react';
+import { MapPin, ExternalLink } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
 
 const JOURNEY_STOPS = [
   { city: 'Delhi, India', color: 'bg-orange-400' },
@@ -66,62 +67,150 @@ export default function About() {
         </div>
       </section>
 
-      {/* Narrative + Portrait */}
-      <section className="py-16 bg-secondary/20 border-y border-white/5">
-        <div className="max-w-7xl mx-auto px-6 md:px-8">
+      {/* 3-Chapter Story Sections */}
+      <section className="border-t border-white/5">
+        <div className="max-w-6xl mx-auto px-6 md:px-8">
+
+          {/* Chapter 1: The Explorer */}
           <motion.div
-            ref={ref}
-            initial={{ opacity: 0, y: 40 }}
-            animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
-            transition={{ duration: 0.8 }}
-            className="grid lg:grid-cols-2 gap-16 items-start"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+            className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center py-20 border-b border-white/5"
           >
-            <div className="space-y-6">
-              <div className="prose prose-invert prose-lg text-muted-foreground font-light leading-relaxed">
-                {narrativeParagraphs.map((paragraph, i) => (
-                  <p key={i}>{paragraph}</p>
-                ))}
-              </div>
-
+            <div>
+              <p className="text-xs uppercase tracking-widest text-blue-400 font-semibold mb-3">
+                Chapter 1
+              </p>
+              <h2 className="text-3xl font-display font-bold mb-6 text-white">The Explorer</h2>
+              {narrativeParagraphs.slice(0, 2).map((p, i) => (
+                <p key={i} className="text-muted-foreground leading-relaxed mb-4 font-light">{p}</p>
+              ))}
             </div>
-
-            {/* Career Timeline */}
-            <div className="relative">
-              <h3 className="text-2xl font-display font-bold mb-10 text-white">
-                Career Progression
-              </h3>
-
-              <div className="absolute left-[15px] top-[80px] bottom-0 w-[2px] bg-white/10" />
-
-              <div className="space-y-12 relative z-10">
-                {timeline.map((item, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
-                    transition={{ duration: 0.6, delay: 0.2 + i * 0.1 }}
-                    className="flex gap-8 relative"
-                  >
-                    <div className="w-8 h-8 rounded-full bg-background border-2 border-primary flex items-center justify-center flex-shrink-0 z-10 shadow-[0_0_15px_rgba(45,212,191,0.4)]">
-                      <div className="w-2 h-2 rounded-full bg-primary" />
-                    </div>
-                    <div className="pt-1">
-                      <span className="text-sm font-semibold text-primary tracking-wider uppercase">
-                        {item.year}
-                      </span>
-                      <h4 className="text-xl font-bold text-white mt-1">{item.title}</h4>
-                      <span className="text-sm text-white/60 font-medium block mb-3">
-                        {item.company}
-                      </span>
-                      <p className="text-muted-foreground text-sm leading-relaxed">
-                        {item.description}
-                      </p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
+            {/* Placeholder — image coming */}
+            <div className="h-64 lg:h-72 rounded-2xl border border-white/5 bg-white/[0.02] flex items-center justify-center">
+              <span className="text-white/10 text-xs uppercase tracking-widest">Image coming</span>
             </div>
           </motion.div>
+
+          {/* Chapter 2: The Dad */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+            className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center py-20 border-b border-white/5"
+          >
+            {/* Placeholder — image coming (swapped side) */}
+            <div className="h-64 lg:h-72 rounded-2xl border border-white/5 bg-white/[0.02] flex items-center justify-center order-last lg:order-first">
+              <span className="text-white/10 text-xs uppercase tracking-widest">Image coming</span>
+            </div>
+            <div>
+              <p className="text-xs uppercase tracking-widest text-primary font-semibold mb-3">
+                Chapter 2
+              </p>
+              <h2 className="text-3xl font-display font-bold mb-6 text-white">The Dad</h2>
+              {narrativeParagraphs.slice(2, 3).map((p, i) => (
+                <p key={i} className="text-muted-foreground leading-relaxed font-light">{p}</p>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Chapter 3: The Author */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+            className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center py-20"
+          >
+            <div>
+              <p className="text-xs uppercase tracking-widest text-violet-400 font-semibold mb-3">
+                Chapter 3
+              </p>
+              <h2 className="text-3xl font-display font-bold mb-6 text-white">The Author</h2>
+              {narrativeParagraphs.slice(3).map((p, i) => (
+                <p key={i} className="text-muted-foreground leading-relaxed mb-6 font-light">{p}</p>
+              ))}
+              <a
+                href="https://a.co/d/06PF9LC6"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Button variant="outline" className="border-white/10 hover:border-violet-400/50 hover:bg-violet-500/5 group">
+                  <ExternalLink className="w-4 h-4 mr-2 group-hover:text-violet-400" />
+                  Buy on Amazon
+                </Button>
+              </a>
+            </div>
+            <div className="flex justify-center">
+              <motion.a
+                href="https://a.co/d/06PF9LC6"
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ scale: 1.03 }}
+                transition={{ duration: 0.3 }}
+                className="block"
+              >
+                <img
+                  src={`${import.meta.env.BASE_URL}images/from-our-verandah.png`}
+                  alt="From Our Verandah — Poems by Neetika Wahi & Sarit Sethi"
+                  className="w-56 md:w-64 rounded-xl shadow-2xl shadow-black/60 border border-white/10 hover:shadow-violet-500/10 transition-shadow duration-500"
+                />
+              </motion.a>
+            </div>
+          </motion.div>
+
+        </div>
+      </section>
+
+      {/* Career Progression */}
+      <section className="py-20 bg-secondary/20 border-t border-white/5">
+        <div className="max-w-5xl mx-auto px-6 md:px-8">
+          <motion.div
+            ref={ref}
+            initial={{ opacity: 0, y: 20 }}
+            animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            transition={{ duration: 0.6 }}
+            className="mb-12"
+          >
+            <p className="text-xs uppercase tracking-widest text-primary font-semibold mb-3">
+              The Track Record
+            </p>
+            <h2 className="text-3xl md:text-4xl font-display font-bold">Career Progression</h2>
+          </motion.div>
+
+          <div className="relative">
+            <div className="absolute left-[15px] top-0 bottom-0 w-[2px] bg-white/10" />
+            <div className="space-y-12 relative z-10">
+              {timeline.map((item, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
+                  transition={{ duration: 0.6, delay: 0.1 + i * 0.1 }}
+                  className="flex gap-8 relative"
+                >
+                  <div className="w-8 h-8 rounded-full bg-background border-2 border-primary flex items-center justify-center flex-shrink-0 z-10 shadow-[0_0_15px_rgba(45,212,191,0.4)]">
+                    <div className="w-2 h-2 rounded-full bg-primary" />
+                  </div>
+                  <div className="pt-1">
+                    <span className="text-sm font-semibold text-primary tracking-wider uppercase">
+                      {item.year}
+                    </span>
+                    <h4 className="text-xl font-bold text-white mt-1">{item.title}</h4>
+                    <span className="text-sm text-white/60 font-medium block mb-3">
+                      {item.company}
+                    </span>
+                    <p className="text-muted-foreground text-sm leading-relaxed">
+                      {item.description}
+                    </p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
