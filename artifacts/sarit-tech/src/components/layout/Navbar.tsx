@@ -10,7 +10,7 @@ const NAV_LINKS = [
   { name: 'Home', href: '/' },
   { name: 'About', href: '/about' },
   { name: 'AI Dad', href: '/aidad' },
-  { name: 'Projects', href: '/projects' },
+  { name: 'Builder', href: '/builder' },
 ];
 
 function isActive(location: string, href: string) {

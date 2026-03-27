@@ -2,36 +2,39 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'wouter';
 import { Layout } from '@/components/layout/Layout';
-import { Hero } from '@/components/sections/Hero';
-import { ArrowRight, Calendar, Mail, Github } from 'lucide-react';
+import { ArrowRight, Bot, Calendar, BookOpen, Brain, Hammer } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
 import { useAnalytics } from '@/hooks/use-analytics';
 import { useContent } from '@/hooks/use-content';
 
 const NAV_TILES = [
   {
     href: '/about',
-    label: 'About',
-    title: 'The Journey',
-    description: 'The Delhi to Chicago Narrative — from construction tech roots to enterprise AI strategy.',
+    label: 'My Story',
+    description: 'Delhi to Chicago — the narrative behind the builder.',
+    icon: BookOpen,
     accent: 'from-blue-500/10 to-transparent',
     border: 'hover:border-blue-400/40',
+    iconColor: 'text-blue-400',
   },
   {
     href: '/aidad',
-    label: 'AI Dad',
-    title: 'The Manifesto',
-    description: 'ROI-First AI Strategy — product leadership that treats AI as a business enabler, not a science experiment.',
+    label: 'The AI Dad',
+    description: 'ROI-First AI strategy. Enterprise execution. Zero theater.',
+    icon: Brain,
     accent: 'from-primary/10 to-transparent',
     border: 'hover:border-primary/40',
+    iconColor: 'text-primary',
     featured: true,
   },
   {
-    href: '/projects',
-    label: 'Projects',
-    title: 'The Proof',
-    description: 'SARTH(A)i & AI Prototypes — real systems solving real problems across enterprise and beyond.',
+    href: '/builder',
+    label: 'The Builder',
+    description: 'Real systems solving real problems — the proof of work.',
+    icon: Hammer,
     accent: 'from-violet-500/10 to-transparent',
     border: 'hover:border-violet-400/40',
+    iconColor: 'text-violet-400',
   },
 ];
 
@@ -41,118 +44,101 @@ export default function Home() {
 
   const calendarUrl = settings.calendarBookingUrl || 'https://calendar.app.google/Xh2ruF2wWSN8Y2JP9';
 
+  const handleChatOpen = () => {
+    trackEvent('cta_clicked', { button: 'meet_digital_twin_hero' });
+    const chatBtn = document.querySelector('[data-testid="button-chat-toggle"]') as HTMLButtonElement | null;
+    chatBtn?.click();
+  };
+
   return (
     <Layout>
-      <Hero />
-
-      {/* Navigation Tiles */}
-      <section className="py-24 relative bg-secondary/20 border-t border-white/5">
-        <div className="max-w-7xl mx-auto px-6 md:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-14"
-          >
-            <p className="text-xs uppercase tracking-widest text-primary font-semibold mb-3">
-              Navigate
-            </p>
-            <h2 className="text-3xl md:text-4xl font-display font-bold">
-              Explore
-            </h2>
-          </motion.div>
-
-          <div className="grid md:grid-cols-3 gap-6">
-            {NAV_TILES.map((tile, i) => (
-              <motion.div
-                key={tile.href}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-              >
-                <Link
-                  href={tile.href}
-                  onClick={() => trackEvent('tile_clicked', { tile: tile.title })}
-                  className={`group block p-8 rounded-2xl border border-white/10 bg-card relative overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-black/20 ${tile.border} ${tile.featured ? 'ring-1 ring-primary/20' : ''}`}
-                >
-                  <div className={`absolute inset-0 bg-gradient-to-br ${tile.accent} pointer-events-none`} />
-                  <div className="relative z-10">
-                    <div className="flex items-center justify-between mb-6">
-                      <span className={`text-xs font-semibold uppercase tracking-widest px-2.5 py-1 rounded-full border ${tile.featured ? 'text-primary border-primary/30 bg-primary/10' : 'text-muted-foreground border-white/10'}`}>
-                        {tile.label}
-                      </span>
-                      <ArrowRight className={`w-4 h-4 transition-transform group-hover:translate-x-1 ${tile.featured ? 'text-primary' : 'text-muted-foreground'}`} />
-                    </div>
-                    <h3 className="text-2xl font-display font-bold mb-3">{tile.title}</h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      {tile.description}
-                    </p>
-                  </div>
-                </Link>
-              </motion.div>
-            ))}
-          </div>
+      <section className="h-[100dvh] flex flex-col overflow-hidden relative">
+        {/* Background */}
+        <div className="absolute inset-0 z-0 pointer-events-none">
+          <img
+            src={`${import.meta.env.BASE_URL}images/hero-grid.png`}
+            alt=""
+            className="w-full h-full object-cover opacity-20 mix-blend-screen"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/50 via-background/80 to-background" />
+          <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-primary/8 rounded-full blur-[140px]" />
         </div>
-      </section>
 
-      {/* Quick Contact */}
-      <section className="py-20 border-t border-white/5">
-        <div className="max-w-4xl mx-auto px-6 md:px-8 text-center">
+        {/* Hero — fills remaining space above tiles */}
+        <div className="relative z-10 flex-1 flex flex-col items-center justify-center text-center px-6 pt-20 pb-2 min-h-0">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="mb-12"
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: 'easeOut' }}
+            className="space-y-5 w-full max-w-4xl"
           >
-            <p className="text-xs uppercase tracking-widest text-primary font-semibold mb-3">
-              Direct Access
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-primary/30 bg-primary/10 text-primary text-sm font-medium">
+              <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+              {settings.heroBadgeText}
+            </div>
+
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-display font-extrabold tracking-tight leading-[1.1]">
+              <span className="text-gradient-primary">{settings.heroHeadline}</span>
+            </h1>
+
+            <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto font-light leading-relaxed">
+              {settings.heroSubheadline}
             </p>
-            <h2 className="text-3xl md:text-4xl font-display font-bold">
-              Let's Connect
-            </h2>
+
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-1">
+              <a href={calendarUrl} target="_blank" rel="noopener noreferrer" onClick={() => trackEvent('cta_clicked', { button: 'lets_connect_hero' })}>
+                <Button size="lg" className="w-full sm:w-auto group">
+                  <Calendar className="mr-2 w-4 h-4" />
+                  Let's Connect
+                  <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </a>
+              <Button
+                size="lg"
+                variant="outline"
+                className="w-full sm:w-auto group border-white/10 bg-white/5"
+                onClick={handleChatOpen}
+              >
+                <Bot className="mr-2 w-4 h-4 text-primary group-hover:animate-bounce" />
+                Meet My Digital Twin
+              </Button>
+            </div>
           </motion.div>
+        </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.15 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-4"
-          >
-            <a
-              href={calendarUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => trackEvent('cta_clicked', { button: 'book_strategic_session' })}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition-colors"
-            >
-              <Calendar className="w-4 h-4" />
-              Book Strategic Session
-            </a>
-
-            <a
-              href="mailto:saritsethi@gmail.com"
-              onClick={() => trackEvent('cta_clicked', { button: 'direct_inquiry' })}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl border border-white/10 bg-white/5 text-foreground font-semibold hover:border-primary/40 hover:bg-primary/5 transition-colors"
-            >
-              <Mail className="w-4 h-4" />
-              Direct Inquiry
-            </a>
-
-            <a
-              href="https://github.com/saritsethi"
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => trackEvent('cta_clicked', { button: 'source_code' })}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl border border-white/10 bg-white/5 text-foreground font-semibold hover:border-white/30 hover:bg-white/10 transition-colors"
-            >
-              <Github className="w-4 h-4" />
-              Source Code
-            </a>
-          </motion.div>
+        {/* Navigation Tiles */}
+        <div className="relative z-10 px-4 md:px-8 pb-6 md:pb-8">
+          <div className="max-w-5xl mx-auto grid grid-cols-3 gap-3 md:gap-5">
+            {NAV_TILES.map((tile, i) => {
+              const Icon = tile.icon;
+              return (
+                <motion.div
+                  key={tile.href}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.3 + i * 0.1 }}
+                >
+                  <Link
+                    href={tile.href}
+                    onClick={() => trackEvent('tile_clicked', { tile: tile.label })}
+                    className={`group block p-5 md:p-6 rounded-2xl border border-white/10 bg-card/60 backdrop-blur-sm relative overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-black/20 ${tile.border} ${tile.featured ? 'ring-1 ring-primary/20' : ''}`}
+                  >
+                    <div className={`absolute inset-0 bg-gradient-to-br ${tile.accent} pointer-events-none`} />
+                    <div className="relative z-10">
+                      <div className="flex items-center justify-between mb-3">
+                        <Icon className={`w-5 h-5 ${tile.iconColor}`} />
+                        <ArrowRight className={`w-4 h-4 transition-transform group-hover:translate-x-1 ${tile.featured ? 'text-primary' : 'text-muted-foreground'}`} />
+                      </div>
+                      <h3 className="text-base md:text-lg font-display font-bold mb-1.5">{tile.label}</h3>
+                      <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">
+                        {tile.description}
+                      </p>
+                    </div>
+                  </Link>
+                </motion.div>
+              );
+            })}
+          </div>
         </div>
       </section>
     </Layout>

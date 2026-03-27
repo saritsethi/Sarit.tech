@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/Button';
 export default function Projects() {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
   const { projects } = useContent();
-  useSectionTracking('projects_page', inView);
+  useSectionTracking('builder_page', inView);
 
   return (
     <Layout>
