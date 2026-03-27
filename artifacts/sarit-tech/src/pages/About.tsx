@@ -88,9 +88,13 @@ export default function About() {
                 <p key={i} className="text-muted-foreground leading-relaxed mb-4 font-light">{p}</p>
               ))}
             </div>
-            {/* Placeholder — image coming */}
-            <div className="h-64 lg:h-72 rounded-2xl border border-white/5 bg-white/[0.02] flex items-center justify-center">
-              <span className="text-white/10 text-xs uppercase tracking-widest">Image coming</span>
+            <div className="rounded-2xl overflow-hidden border border-white/10 shadow-2xl shadow-black/40">
+              <img
+                src={`${import.meta.env.BASE_URL}images/explorer-marina.jpg`}
+                alt="Marina at sunset — the explorer's view"
+                className="w-full h-full object-cover opacity-90 hover:opacity-100 transition-opacity duration-500"
+                loading="lazy"
+              />
             </div>
           </motion.div>
 
