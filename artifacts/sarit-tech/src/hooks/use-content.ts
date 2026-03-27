@@ -85,6 +85,7 @@ export interface AiDadContent {
   missionStatement: string;
   keyMetrics: KeyMetric[];
   quote: string;
+  leadershipPhilosophy: string[];
 }
 
 export interface TimelineItem {
@@ -253,6 +254,11 @@ const FALLBACK_AIDAD: AiDadContent = {
     { value: '$10M', label: 'ARR Built', description: 'Annual revenue scaled from zero at Archer Technologies' },
   ],
   quote: "Leadership is about providing clarity in chaos. My approach combines the rigorous discipline of an engineer with the adaptive agility of a product leader, ensuring that every technological shift is grounded in human value.",
+  leadershipPhilosophy: [
+    "Outcome First: Products must achieve the specific goals they were designed for. Before a single line of code is written, KPIs and BHAGs must be crystal clear.",
+    "The Build vs. Buy Logic: If the build ROI is negligible, we buy. We only build for high-differentiation where we own the core value proposition.",
+    "The Intuition Test: If you need to teach a product, you have built the wrong thing.",
+  ],
 };
 
 const FALLBACK_PROJECTS: Project[] = [
@@ -396,6 +402,9 @@ export function useAiDadContent() {
       if (!mounted) return;
       if (l.ready && l.data) {
         const d = l.data as Record<string, unknown>;
+        const philosophy = blockContentToText(
+          d.leadershipPhilosophy as Array<{ children?: Array<{ text?: string }> }> | undefined,
+        );
         setLeadership({
           strategyTitle: (d.strategyTitle as string) || FALLBACK_AIDAD.strategyTitle,
           aiPillars: (d.aiPillars as AiPillar[] | null)?.length
@@ -407,6 +416,7 @@ export function useAiDadContent() {
             ? (d.keyMetrics as KeyMetric[])
             : FALLBACK_AIDAD.keyMetrics,
           quote: (d.quote as string) || FALLBACK_AIDAD.quote,
+          leadershipPhilosophy: philosophy.length ? philosophy : FALLBACK_AIDAD.leadershipPhilosophy,
         });
       }
       if (t.ready && t.data?.length) setTimeline(t.data);

@@ -2,11 +2,10 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { Layout } from '@/components/layout/Layout';
-import { useContent } from '@/hooks/use-content';
 import { useAiDadContent } from '@/hooks/use-content';
 import { useSectionTracking, useAnalytics } from '@/hooks/use-analytics';
 import * as Icons from 'lucide-react';
-import { type LucideProps, Brain } from 'lucide-react';
+import { type LucideProps, Brain, CheckCircle2 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 
 type LucideIconName = keyof typeof Icons;
@@ -19,7 +18,6 @@ function getIcon(name: string) {
 
 export default function AiDad() {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
-  const { pillars } = useContent();
   const { leadership } = useAiDadContent();
   const { trackEvent } = useAnalytics();
   useSectionTracking('aidad_page', inView);
@@ -27,6 +25,8 @@ export default function AiDad() {
   const metrics = leadership.keyMetrics;
   const strategyTitle = leadership.strategyTitle || 'Enterprise AI Strategy: The Three Buckets';
   const quote = leadership.quote;
+  const pillars = leadership.aiPillars;
+  const philosophy = leadership.leadershipPhilosophy;
 
   return (
     <Layout>
@@ -79,7 +79,10 @@ export default function AiDad() {
       {/* Key Metrics */}
       <section className="py-16 border-y border-white/5 bg-secondary/10">
         <div className="max-w-7xl mx-auto px-6 md:px-8">
-          <div className={`grid sm:grid-cols-${metrics.length} gap-6`} style={{ gridTemplateColumns: `repeat(${metrics.length}, minmax(0, 1fr))` }}>
+          <div
+            className="grid gap-6"
+            style={{ gridTemplateColumns: `repeat(${metrics.length}, minmax(0, 1fr))` }}
+          >
             {metrics.map((metric, i) => (
               <motion.div
                 key={metric.label}
@@ -100,7 +103,7 @@ export default function AiDad() {
         </div>
       </section>
 
-      {/* Strategy Pillars */}
+      {/* Strategy Pillars — The Three Buckets */}
       <section className="py-24 relative">
         <div className="max-w-7xl mx-auto px-6 md:px-8">
           <motion.div
@@ -124,7 +127,7 @@ export default function AiDad() {
           <div className="grid sm:grid-cols-3 gap-6">
             {pillars.map((pillar, i) => (
               <motion.div
-                key={pillar.id ?? pillar.title ?? i}
+                key={pillar.title ?? i}
                 initial={{ opacity: 0, y: 30 }}
                 animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
@@ -147,7 +150,45 @@ export default function AiDad() {
       </section>
 
       {/* Leadership Philosophy */}
-      <section className="py-20 bg-secondary/20 border-t border-white/5">
+      {philosophy.length > 0 && (
+        <section className="py-20 bg-secondary/20 border-t border-white/5">
+          <div className="max-w-4xl mx-auto px-6 md:px-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="text-center mb-12"
+            >
+              <p className="text-xs uppercase tracking-widest text-primary font-semibold mb-3">
+                Principles
+              </p>
+              <h2 className="text-3xl md:text-4xl font-display font-bold">
+                Leadership Philosophy
+              </h2>
+            </motion.div>
+
+            <div className="space-y-4">
+              {philosophy.map((principle, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: i * 0.1 }}
+                  className="flex gap-4 p-6 rounded-2xl border border-white/10 bg-card hover:border-primary/30 transition-colors"
+                >
+                  <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+                  <p className="text-muted-foreground leading-relaxed">{principle}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Quote */}
+      <section className="py-20 border-t border-white/5">
         <div className="max-w-4xl mx-auto px-6 md:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}

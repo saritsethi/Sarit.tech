@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { Layout } from '@/components/layout/Layout';
-import { useContent } from '@/hooks/use-content';
+import { useContent, useAboutContent } from '@/hooks/use-content';
 import { useSectionTracking } from '@/hooks/use-analytics';
 import { MapPin } from 'lucide-react';
 
@@ -15,9 +15,15 @@ const JOURNEY_STOPS = [
 export default function About() {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
   const { timeline, settings } = useContent();
+  const { content: aboutContent } = useAboutContent();
   useSectionTracking('about_page', inView);
 
+  const narrativeParagraphs = aboutContent.narrative.length
+    ? aboutContent.narrative
+    : settings.aboutNarrativeParagraphs;
+
   const portraitSrc =
+    aboutContent.portraitUrl ||
     settings.profileImageUrl ||
     `${import.meta.env.BASE_URL}images/sarit-portrait.png`;
 
@@ -77,7 +83,7 @@ export default function About() {
           >
             <div className="space-y-6">
               <div className="prose prose-invert prose-lg text-muted-foreground font-light leading-relaxed">
-                {settings.aboutNarrativeParagraphs.map((paragraph, i) => (
+                {narrativeParagraphs.map((paragraph, i) => (
                   <p key={i}>{paragraph}</p>
                 ))}
               </div>
@@ -132,6 +138,44 @@ export default function About() {
           </motion.div>
         </div>
       </section>
+
+      {/* Cricket Stats */}
+      {aboutContent.cricketStats.length > 0 && (
+        <section className="py-16 border-t border-white/5">
+          <div className="max-w-5xl mx-auto px-6 md:px-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="mb-10"
+            >
+              <p className="text-xs uppercase tracking-widest text-primary font-semibold mb-3">
+                Beyond the Boardroom
+              </p>
+              <h2 className="text-3xl font-display font-bold">Cricket, Family & More</h2>
+            </motion.div>
+
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {aboutContent.cricketStats.map((stat, i) => (
+                <motion.div
+                  key={stat.aspect}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: i * 0.08 }}
+                  className="p-5 rounded-2xl border border-white/10 bg-card hover:border-primary/30 transition-colors"
+                >
+                  <p className="text-xs uppercase tracking-widest text-primary/70 font-semibold mb-2">
+                    {stat.aspect}
+                  </p>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{stat.value}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
     </Layout>
   );
 }
