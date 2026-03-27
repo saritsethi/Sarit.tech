@@ -210,7 +210,7 @@ function ProjectTile({
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => trackEvent('project_link_clicked', { project: project.title })}
-            className="absolute top-3 right-3 p-1.5 rounded-lg bg-black/40 backdrop-blur-sm border border-white/10 text-white/70 hover:text-white hover:bg-black/60 transition-all"
+            className="absolute top-3 right-3 p-1.5 rounded-lg bg-primary/80 backdrop-blur-sm border border-primary/60 text-primary-foreground hover:bg-primary transition-all shadow-sm shadow-primary/30"
           >
             <ExternalLink className="w-3.5 h-3.5" />
           </a>
@@ -227,7 +227,7 @@ function ProjectTile({
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => trackEvent('project_link_clicked', { project: project.title })}
-              className="flex-shrink-0 p-1.5 rounded-lg bg-white/5 hover:bg-primary/20 hover:text-primary border border-white/8 text-white/50 transition-all"
+              className="flex-shrink-0 p-1.5 rounded-lg bg-primary/15 hover:bg-primary/30 border border-primary/30 text-primary transition-all"
             >
               <ArrowUpRight className="w-4 h-4" />
             </a>
@@ -248,6 +248,19 @@ function ProjectTile({
             </span>
           ))}
         </div>
+
+        {hasLink && (
+          <a
+            href={project.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => trackEvent('project_link_clicked', { project: project.title })}
+            className="flex items-center gap-1 text-[11px] text-primary hover:text-primary/80 font-medium transition-colors mt-1"
+          >
+            <ExternalLink className="w-3 h-3 flex-shrink-0" />
+            {project.link.replace(/^https?:\/\//, '').replace(/\/$/, '')}
+          </a>
+        )}
       </div>
     </motion.div>
   );
