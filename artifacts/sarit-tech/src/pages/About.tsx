@@ -125,14 +125,22 @@ export default function About() {
       <section className="border-t border-white/5">
         <div className="max-w-6xl mx-auto px-6 md:px-8">
 
-          {/* Chapter 1: The Explorer — text LEFT, portrait image RIGHT */}
+          {/* Chapter 1: The Explorer — image LEFT, text RIGHT */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
-            className="grid lg:grid-cols-[1fr_280px] gap-10 lg:gap-16 items-center py-16 border-b border-white/5"
+            className="grid lg:grid-cols-[280px_1fr] gap-10 lg:gap-16 items-center py-16 border-b border-white/5"
           >
+            <div className="rounded-2xl overflow-hidden border border-white/10 shadow-2xl shadow-black/40 flex-shrink-0">
+              <img
+                src={`${import.meta.env.BASE_URL}images/explorer-marina.jpg`}
+                alt="Marina at sunset — the explorer's view"
+                className="w-full h-72 lg:h-80 object-cover opacity-90 hover:opacity-100 transition-opacity duration-500"
+                loading="lazy"
+              />
+            </div>
             <div>
               <p className="text-xs uppercase tracking-widest text-blue-400 font-semibold mb-2">
                 Chapter 1
@@ -141,14 +149,6 @@ export default function About() {
               {narrativeParagraphs.slice(0, 2).map((p, i) => (
                 <p key={i} className="text-muted-foreground leading-relaxed mb-3 font-light text-sm">{p}</p>
               ))}
-            </div>
-            <div className="rounded-2xl overflow-hidden border border-white/10 shadow-2xl shadow-black/40 flex-shrink-0">
-              <img
-                src={`${import.meta.env.BASE_URL}images/explorer-marina.jpg`}
-                alt="Marina at sunset — the explorer's view"
-                className="w-full h-72 lg:h-80 object-cover opacity-90 hover:opacity-100 transition-opacity duration-500"
-                loading="lazy"
-              />
             </div>
           </motion.div>
 
@@ -160,7 +160,7 @@ export default function About() {
             transition={{ duration: 0.7 }}
             className="grid lg:grid-cols-[320px_1fr] gap-10 lg:gap-16 items-center py-16 border-b border-white/5"
           >
-            <div className="rounded-2xl overflow-hidden border border-white/10 shadow-2xl shadow-black/40 flex-shrink-0 order-last lg:order-first">
+            <div className="rounded-2xl overflow-hidden border border-white/10 shadow-2xl shadow-black/40 flex-shrink-0">
               <img
                 src={`${import.meta.env.BASE_URL}images/family-biking.jpg`}
                 alt="Family biking adventure"
@@ -179,25 +179,15 @@ export default function About() {
             </div>
           </motion.div>
 
-          {/* Chapter 3: The Author — text LEFT, book cover + Amazon link RIGHT */}
+          {/* Chapter 3: The Author — book cover + Amazon link LEFT, text RIGHT */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
-            className="grid lg:grid-cols-[1fr_220px] gap-10 lg:gap-16 items-center py-16"
+            className="grid lg:grid-cols-[220px_1fr] gap-10 lg:gap-16 items-center py-16"
           >
-            <div>
-              <p className="text-xs uppercase tracking-widest text-violet-400 font-semibold mb-2">
-                Chapter 3
-              </p>
-              <h2 className="text-2xl font-display font-bold mb-4 text-white">The Author</h2>
-              {narrativeParagraphs.slice(3).map((p, i) => (
-                <p key={i} className="text-muted-foreground leading-relaxed font-light text-sm mb-3">{p}</p>
-              ))}
-            </div>
-
-            {/* Book cover + Amazon link in the same column */}
+            {/* Book cover + Amazon link — LEFT column */}
             <div className="flex flex-col items-center gap-4 flex-shrink-0">
               <motion.a
                 href="https://a.co/d/06PF9LC6"
@@ -217,12 +207,24 @@ export default function About() {
                 href="https://a.co/d/06PF9LC6"
                 target="_blank"
                 rel="noopener noreferrer"
+                className="w-full"
               >
                 <Button variant="outline" size="sm" className="border-white/10 hover:border-violet-400/50 hover:bg-violet-500/5 group w-full">
                   <ExternalLink className="w-3.5 h-3.5 mr-2 group-hover:text-violet-400" />
                   Buy on Amazon
                 </Button>
               </a>
+            </div>
+
+            {/* Text — RIGHT column */}
+            <div>
+              <p className="text-xs uppercase tracking-widest text-violet-400 font-semibold mb-2">
+                Chapter 3
+              </p>
+              <h2 className="text-2xl font-display font-bold mb-4 text-white">The Author</h2>
+              {narrativeParagraphs.slice(3).map((p, i) => (
+                <p key={i} className="text-muted-foreground leading-relaxed font-light text-sm mb-3">{p}</p>
+              ))}
             </div>
           </motion.div>
 
