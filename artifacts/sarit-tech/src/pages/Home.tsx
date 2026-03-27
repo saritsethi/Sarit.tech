@@ -72,6 +72,22 @@ export default function Home() {
             transition={{ duration: 0.7, ease: 'easeOut' }}
             className="space-y-5 w-full max-w-4xl"
           >
+            {/* Subtle portrait — face to the voice */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="flex justify-center"
+            >
+              <div className="relative w-16 h-16 rounded-full overflow-hidden border border-white/10 ring-1 ring-primary/20 shadow-lg shadow-primary/10">
+                <img
+                  src={`${import.meta.env.BASE_URL}images/sarit-portrait.png`}
+                  alt="Sarit Sethi"
+                  className="w-full h-full object-cover object-top opacity-85 mix-blend-luminosity hover:opacity-100 hover:mix-blend-normal transition-all duration-500"
+                />
+              </div>
+            </motion.div>
+
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-primary/30 bg-primary/10 text-primary text-sm font-medium">
               <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
               {settings.heroBadgeText}
