@@ -286,7 +286,7 @@ const FALLBACK_PROJECTS: Project[] = [
       'Access to expert-level cricket intelligence through multi-modal RAG systems grounded in real match data and vision analysis. Built and deployed on Replit.',
     tech: ['Gemini Pro', 'RAG', 'Computer Vision', 'Replit'],
     status: 'active',
-    link: 'https://cricketiq.replit.app',
+    link: 'https://cricket-coach-ai.replit.app',
   },
   {
     id: 'proj3',
@@ -299,7 +299,7 @@ const FALLBACK_PROJECTS: Project[] = [
       "Smarter Rent vs. Buy decisions using live market data from FRED and neighborhood analysis. Built and deployed on Streamlit.",
     tech: ['Python', 'Streamlit', 'FRED API', 'Data Analysis'],
     status: 'active',
-    link: 'https://homedecider.streamlit.app',
+    link: 'https://home-decider-saritsethi.replit.app',
   },
   {
     id: 'proj4',
