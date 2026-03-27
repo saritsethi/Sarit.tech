@@ -1,9 +1,38 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Brain, X, Send, Bot, User, Loader2 } from 'lucide-react';
+import { Brain, X, Send, Bot, User, Loader2, Sparkles } from 'lucide-react';
 import { useGeminiChat } from '@/hooks/use-gemini-chat';
 import { useAnalytics } from '@/hooks/use-analytics';
 import { cn } from '@/lib/utils';
+
+function useStarterPrompts(enabled: boolean) {
+  const [prompts, setPrompts] = useState<string[]>([]);
+  const [loading, setLoading] = useState(false);
+  const fetchedRef = useRef(false);
+
+  const fetch_ = useCallback(async () => {
+    if (fetchedRef.current) return;
+    fetchedRef.current = true;
+    setLoading(true);
+    try {
+      const baseUrl = import.meta.env.BASE_URL?.replace(/\/$/, '') || '';
+      const res = await fetch(`${baseUrl}/api/chat/starter-prompts`);
+      if (!res.ok) throw new Error('Failed');
+      const data = (await res.json()) as { prompts: string[] };
+      setPrompts(data.prompts ?? []);
+    } catch {
+      setPrompts([]);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (enabled) fetch_();
+  }, [enabled, fetch_]);
+
+  return { prompts, loading };
+}
 
 export function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
@@ -12,6 +41,9 @@ export function ChatWidget() {
   const { trackEvent } = useAnalytics();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const hasUserMessage = messages.some((m) => m.role === 'user');
+  const { prompts, loading: promptsLoading } = useStarterPrompts(isOpen);
 
   const toggleChat = () => {
     const newState = !isOpen;
@@ -42,6 +74,11 @@ export function ChatWidget() {
     if (!input.trim() || isTyping) return;
     sendMessage(input);
     setInput('');
+  };
+
+  const handleStarterClick = (prompt: string) => {
+    trackEvent('starter_prompt_clicked', { prompt });
+    sendMessage(prompt);
   };
 
   return (
@@ -169,6 +206,54 @@ export function ChatWidget() {
                 )}
                 <div ref={messagesEndRef} />
               </div>
+
+              {/* Starter prompts — shown only before any user message */}
+              <AnimatePresence>
+                {!hasUserMessage && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 4 }}
+                    transition={{ duration: 0.25 }}
+                    className="px-4 pb-3 flex-shrink-0"
+                  >
+                    <div className="flex items-center gap-1.5 mb-2 px-1">
+                      <Sparkles className="w-3 h-3 text-primary/70" />
+                      <span className="text-[10px] text-muted-foreground uppercase tracking-widest font-medium">
+                        Suggested questions
+                      </span>
+                    </div>
+
+                    {promptsLoading ? (
+                      <div className="flex gap-2 flex-wrap">
+                        {[1, 2, 3].map((i) => (
+                          <div
+                            key={i}
+                            className="h-8 rounded-xl bg-white/5 border border-white/8 animate-pulse"
+                            style={{ width: `${120 + i * 30}px` }}
+                          />
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="flex gap-2 flex-wrap">
+                        {prompts.map((prompt, i) => (
+                          <motion.button
+                            key={i}
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: i * 0.07 }}
+                            onClick={() => handleStarterClick(prompt)}
+                            disabled={isTyping}
+                            className="text-xs px-3.5 py-2 rounded-xl bg-white/5 border border-white/10 text-muted-foreground hover:text-foreground hover:bg-primary/10 hover:border-primary/30 transition-all duration-200 text-left disabled:opacity-40 cursor-pointer"
+                          >
+                            {prompt}
+                          </motion.button>
+                        ))}
+                      </div>
+                    )}
+                  </motion.div>
+                )}
+              </AnimatePresence>
 
               {/* Input */}
               <div className="p-4 border-t border-white/10 bg-secondary/50 flex-shrink-0">

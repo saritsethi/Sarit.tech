@@ -310,6 +310,58 @@ ${projectsText}
 }
 
 // ---------------------------------------------------------------------------
+// Starter prompts — GET /api/chat/starter-prompts
+// Dynamically generated from Sanity context via Gemini
+// ---------------------------------------------------------------------------
+
+router.get("/chat/starter-prompts", async (_req, res) => {
+  try {
+    const ctx = await fetchSanityContext();
+
+    const topicsSnapshot = [
+      ctx.strategyTitle,
+      ...ctx.aiPillars.map((p) => p.title).filter(Boolean),
+      ...ctx.keyMetrics.map((m) => `${m.value} ${m.label}`).filter(Boolean),
+      ...ctx.timeline.slice(0, 3).map((t) => `${t.title} at ${t.company}`),
+      ...ctx.projects.slice(0, 3).map((p) => p.title).filter(Boolean),
+    ]
+      .filter(Boolean)
+      .join(", ");
+
+    const promptGenInstruction = `You are generating conversation starter suggestions for a visitor to Sarit Sethi's personal portfolio. Sarit is an AI Product Director based in Chicago with deep expertise in enterprise AI strategy, construction technology, product leadership, and is also known as "The AI Dad" — a father who thinks carefully about technology's role in his child's life.
+
+Key topics in Sarit's knowledge base: ${topicsSnapshot}
+
+Generate exactly 3 short, specific, compelling starter questions that a recruiter, collaborator, or curious visitor would genuinely want to ask Sarit's AI digital twin. Each prompt must:
+- Be answerable from the knowledge base (career, AI strategy, projects, personal story)
+- Be concise (under 12 words each)
+- Feel natural to click — phrased as a genuine human question
+- Vary in topic (professional framework, personal story, specific project)
+- NOT start with "What is" — use more engaging openers
+
+Return ONLY a JSON array of 3 strings, nothing else. Example format:
+["prompt one", "prompt two", "prompt three"]`;
+
+    const result = await ai.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: [{ role: "user", parts: [{ text: promptGenInstruction }] }],
+    });
+    const raw = (result.text ?? "").trim();
+
+    const jsonMatch = raw.match(/\[[\s\S]*\]/);
+    if (!jsonMatch) throw new Error("No JSON array in response");
+
+    const prompts = JSON.parse(jsonMatch[0]) as string[];
+    if (!Array.isArray(prompts) || prompts.length < 3) throw new Error("Invalid prompts array");
+
+    res.json({ prompts: prompts.slice(0, 3) });
+  } catch (err) {
+    console.error("[starter-prompts] Failed to generate:", err);
+    res.status(500).json({ error: "Failed to generate starter prompts" });
+  }
+});
+
+// ---------------------------------------------------------------------------
 // Chat route — POST /api/chat
 // ---------------------------------------------------------------------------
 
