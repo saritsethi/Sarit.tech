@@ -43,6 +43,7 @@ export interface HomeContent {
   heroSubtext: string;
   heroImageUrl: string | null;
   heroImageHotspot: { x: number; y: number } | null;
+  heroBackgroundImageUrl: string | null;
   primaryCTA: string;
 }
 
@@ -58,6 +59,9 @@ export interface CricketStat {
 export interface AboutContent {
   portraitUrl: string | null;
   portraitHotspot: { x: number; y: number } | null;
+  explorerImageUrl: string | null;
+  bikingImageUrl: string | null;
+  bookCoverImageUrl: string | null;
   narrative: string[];
   cricketStats: CricketStat[];
 }
@@ -82,6 +86,8 @@ export interface AiDadContent {
   strategyTitle: string;
   aiPillars: AiPillar[];
   frameworkPDFUrl: string | null;
+  frameworkImageUrl: string | null;
+  philosophyImageUrl: string | null;
   missionStatement: string;
   keyMetrics: KeyMetric[];
   quote: string;
@@ -149,12 +155,16 @@ const FALLBACK_HOME: HomeContent = {
     'From built environments to digital frontiers, Sarit Sethi delivers measurable business impact through strategic AI roadmaps. Beyond the boardroom, he is a published author, cricket enthusiast, and a global citizen.',
   heroImageUrl: null,
   heroImageHotspot: null,
+  heroBackgroundImageUrl: null,
   primaryCTA: 'Book Strategic Session',
 };
 
 const FALLBACK_ABOUT: AboutContent = {
   portraitUrl: null,
   portraitHotspot: null,
+  explorerImageUrl: null,
+  bikingImageUrl: null,
+  bookCoverImageUrl: null,
   narrative: [
     "A global citizen who has lived and worked in Delhi, Toronto, and Chicago, drawing a broad worldview from these diverse cultural and professional hubs.",
     "I balance the excitement of AI's potential with a grounded concern for its pervasiveness. I focus on building a rich personality through physical experiences while preparing for a world shaped by technology.",
@@ -246,6 +256,8 @@ const FALLBACK_AIDAD: AiDadContent = {
     icon: p.icon,
   })),
   frameworkPDFUrl: null,
+  frameworkImageUrl: null,
+  philosophyImageUrl: null,
   missionStatement:
     "Bridging the visibility gap between executive intent and engineering execution to prevent Strategic Failure in AI implementations.",
   keyMetrics: [
@@ -351,6 +363,7 @@ export function useHomeContent() {
           heroSubtext: data.heroSubtext || FALLBACK_HOME.heroSubtext,
           heroImageUrl: data.heroImageUrl ?? null,
           heroImageHotspot: data.heroImageHotspot ?? null,
+          heroBackgroundImageUrl: data.heroBackgroundImageUrl ?? null,
           primaryCTA: data.primaryCTA || FALLBACK_HOME.primaryCTA,
         });
       }
@@ -374,6 +387,9 @@ export function useAboutContent() {
         setContent({
           portraitUrl: data.portraitUrl ?? null,
           portraitHotspot: data.portraitHotspot ?? null,
+          explorerImageUrl: data.explorerImageUrl ?? null,
+          bikingImageUrl: data.bikingImageUrl ?? null,
+          bookCoverImageUrl: data.bookCoverImageUrl ?? null,
           narrative: data.narrative?.length ? data.narrative : FALLBACK_ABOUT.narrative,
           cricketStats: data.cricketStats ?? [],
         });
@@ -411,6 +427,8 @@ export function useAiDadContent() {
             ? (d.aiPillars as AiPillar[])
             : FALLBACK_AIDAD.aiPillars,
           frameworkPDFUrl: (d.frameworkPDFUrl as string | null) ?? null,
+          frameworkImageUrl: (d.frameworkImageUrl as string | null) ?? null,
+          philosophyImageUrl: (d.philosophyImageUrl as string | null) ?? null,
           missionStatement: (d.missionStatement as string) || FALLBACK_AIDAD.missionStatement,
           keyMetrics: (d.keyMetrics as KeyMetric[] | null)?.length
             ? (d.keyMetrics as KeyMetric[])

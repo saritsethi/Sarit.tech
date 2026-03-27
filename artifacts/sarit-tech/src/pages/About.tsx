@@ -135,7 +135,7 @@ export default function About() {
           >
             <div className="rounded-2xl overflow-hidden border border-white/10 shadow-2xl shadow-black/40 flex-shrink-0">
               <img
-                src={`${import.meta.env.BASE_URL}images/explorer-marina.jpg`}
+                src={aboutContent.explorerImageUrl || `${import.meta.env.BASE_URL}images/explorer-marina.jpg`}
                 alt="Marina at sunset — the explorer's view"
                 className="w-full h-72 lg:h-80 object-cover opacity-90 hover:opacity-100 transition-opacity duration-500"
                 loading="lazy"
@@ -162,7 +162,7 @@ export default function About() {
           >
             <div className="rounded-2xl overflow-hidden border border-white/10 shadow-2xl shadow-black/40 flex-shrink-0">
               <img
-                src={`${import.meta.env.BASE_URL}images/family-biking.jpg`}
+                src={aboutContent.bikingImageUrl || `${import.meta.env.BASE_URL}images/family-biking.jpg`}
                 alt="Family biking adventure"
                 className="w-full h-64 lg:h-72 object-cover opacity-90 hover:opacity-100 transition-opacity duration-500"
                 loading="lazy"
@@ -198,7 +198,7 @@ export default function About() {
                 className="block"
               >
                 <img
-                  src={`${import.meta.env.BASE_URL}images/from-our-verandah.png`}
+                  src={aboutContent.bookCoverImageUrl || `${import.meta.env.BASE_URL}images/from-our-verandah.png`}
                   alt="From Our Verandah — Poems by Neetika Wahi & Sarit Sethi"
                   className="w-44 md:w-52 rounded-xl shadow-2xl shadow-black/60 border border-white/10 hover:shadow-violet-500/10 transition-shadow duration-500"
                 />

@@ -5,7 +5,9 @@ import { Layout } from '@/components/layout/Layout';
 import { ArrowRight, Bot, Calendar, BookOpen, Brain, Hammer } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { useAnalytics } from '@/hooks/use-analytics';
-import { useContent } from '@/hooks/use-content';
+import { useContent, useHomeContent } from '@/hooks/use-content';
+
+const BASE = import.meta.env.BASE_URL?.replace(/\/$/, '') || '';
 
 const NAV_TILES = [
   {
@@ -41,6 +43,7 @@ const NAV_TILES = [
 export default function Home() {
   const { trackEvent } = useAnalytics();
   const { settings } = useContent();
+  const { content: homeContent } = useHomeContent();
 
   const calendarUrl = settings.calendarBookingUrl || 'https://calendar.app.google/Xh2ruF2wWSN8Y2JP9';
 
@@ -56,7 +59,7 @@ export default function Home() {
         {/* Background */}
         <div className="absolute inset-0 z-0 pointer-events-none">
           <img
-            src={`${import.meta.env.BASE_URL}images/hero-grid.png`}
+            src={homeContent.heroBackgroundImageUrl || `${BASE}/images/hero-grid.png`}
             alt=""
             className="w-full h-full object-cover opacity-20 mix-blend-screen"
           />
@@ -81,7 +84,7 @@ export default function Home() {
             >
               <div className="relative w-12 h-12 rounded-full overflow-hidden border border-white/10 ring-1 ring-primary/20 shadow-lg shadow-primary/10">
                 <img
-                  src={`${import.meta.env.BASE_URL}images/sarit-portrait.png`}
+                  src={homeContent.heroImageUrl || `${BASE}/images/sarit-portrait.png`}
                   alt="Sarit Sethi"
                   className="w-full h-full object-cover object-top opacity-85 mix-blend-luminosity hover:opacity-100 hover:mix-blend-normal transition-all duration-500"
                 />

@@ -156,7 +156,7 @@ export default function AiDad() {
             className="mt-16"
           >
             <img
-              src={`${import.meta.env.BASE_URL}images/enterprise-ai-framework.png`}
+              src={leadership.frameworkImageUrl || `${import.meta.env.BASE_URL}images/enterprise-ai-framework.png`}
               alt="Enterprise AI Strategy: Use Case Framework — Architectural Deployment"
               className="w-full rounded-2xl border border-white/10 opacity-90 hover:opacity-100 transition-opacity duration-500 shadow-2xl shadow-black/40"
             />
@@ -208,7 +208,7 @@ export default function AiDad() {
               className="mt-12"
             >
               <img
-                src={`${import.meta.env.BASE_URL}images/product-philosophy.png`}
+                src={leadership.philosophyImageUrl || `${import.meta.env.BASE_URL}images/product-philosophy.png`}
                 alt="Product Philosophy: Outcome-Driven Development"
                 className="w-full rounded-2xl border border-white/10 opacity-90 hover:opacity-100 transition-opacity duration-500 shadow-2xl shadow-black/40"
               />

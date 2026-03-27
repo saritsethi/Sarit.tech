@@ -66,8 +66,9 @@ router.get("/content/home", async (_req, res) => {
       heroHeadline,
       heroSubtext,
       primaryCTA,
-      "heroImageUrl": heroImage.asset._ref,
-      "heroImageHotspot": heroImage.hotspot
+      "heroImageRef": heroImage.asset._ref,
+      "heroImageHotspot": heroImage.hotspot,
+      "heroBackgroundImageRef": heroBackgroundImage.asset._ref
     }`,
     null,
   );
@@ -77,9 +78,12 @@ router.get("/content/home", async (_req, res) => {
   }
 
   const data = {
-    ...raw,
-    heroImageUrl: sanityImageUrl(raw.heroImageUrl as string | undefined),
+    heroHeadline: raw.heroHeadline,
+    heroSubtext: raw.heroSubtext,
+    primaryCTA: raw.primaryCTA,
+    heroImageUrl: sanityImageUrl(raw.heroImageRef as string | undefined),
     heroImageHotspot: raw.heroImageHotspot ?? null,
+    heroBackgroundImageUrl: sanityImageUrl(raw.heroBackgroundImageRef as string | undefined),
   };
 
   res.json({ data, ready: sanityReady });
@@ -88,8 +92,11 @@ router.get("/content/home", async (_req, res) => {
 router.get("/content/about", async (_req, res) => {
   const raw = await querySanity<Record<string, unknown> | null>(
     `*[_type == "about"][0]{
-      "portraitUrl": portrait.asset._ref,
+      "portraitRef": portrait.asset._ref,
       "portraitHotspot": portrait.hotspot,
+      "explorerImageRef": explorerImage.asset._ref,
+      "bikingImageRef": bikingImage.asset._ref,
+      "bookCoverImageRef": bookCoverImage.asset._ref,
       narrative,
       cricketStats
     }`,
@@ -105,8 +112,11 @@ router.get("/content/about", async (_req, res) => {
   );
 
   const data = {
-    portraitUrl: sanityImageUrl(raw.portraitUrl as string | undefined),
+    portraitUrl: sanityImageUrl(raw.portraitRef as string | undefined),
     portraitHotspot: raw.portraitHotspot ?? null,
+    explorerImageUrl: sanityImageUrl(raw.explorerImageRef as string | undefined),
+    bikingImageUrl: sanityImageUrl(raw.bikingImageRef as string | undefined),
+    bookCoverImageUrl: sanityImageUrl(raw.bookCoverImageRef as string | undefined),
     narrative,
     cricketStats: raw.cricketStats ?? [],
   };
@@ -152,6 +162,7 @@ router.get("/content/projects", async (_req, res) => {
       "thumbnailRef": thumbnail.asset._ref,
       "thumbnailHotspot": thumbnail.hotspot,
       videoUrl,
+      "videoAssetRef": video.asset._ref,
       description,
       technologies,
       tech,
@@ -166,22 +177,26 @@ router.get("/content/projects", async (_req, res) => {
     return res.json({ data: null, ready: sanityReady });
   }
 
-  const data = raw.map((p) => ({
-    id: p._id as string,
-    title: p.title as string,
-    slug: p.slug as string | null,
-    thumbnailUrl: sanityImageUrl(p.thumbnailRef as string | undefined),
-    thumbnailHotspot: p.thumbnailHotspot ?? null,
-    videoUrl: (p.videoUrl as string | null) ?? null,
-    description: blockContentToText(
-      p.description as Array<{ children?: Array<{ text?: string }> }> | undefined,
-    ).join("\n\n") || (p.descriptionText as string | null) || "",
-    tech: (p.technologies as string[] | null) ??
-          (p.tech as string[] | null) ?? [],
-    status: (p.status as string | null) ?? "active",
-    link: (p.link as string | null) ?? "#",
-    order: p.order as number | null,
-  }));
+  const data = raw.map((p) => {
+    const videoAssetUrl = sanityFileUrl(p.videoAssetRef as string | undefined);
+    const videoUrl = videoAssetUrl ?? (p.videoUrl as string | null) ?? null;
+    return {
+      id: p._id as string,
+      title: p.title as string,
+      slug: p.slug as string | null,
+      thumbnailUrl: sanityImageUrl(p.thumbnailRef as string | undefined),
+      thumbnailHotspot: p.thumbnailHotspot ?? null,
+      videoUrl,
+      description: blockContentToText(
+        p.description as Array<{ children?: Array<{ text?: string }> }> | undefined,
+      ).join("\n\n") || (p.descriptionText as string | null) || "",
+      tech: (p.technologies as string[] | null) ??
+            (p.tech as string[] | null) ?? [],
+      status: (p.status as string | null) ?? "active",
+      link: (p.link as string | null) ?? "#",
+      order: p.order as number | null,
+    };
+  });
 
   res.json({ data, ready: sanityReady });
 });
@@ -192,6 +207,8 @@ router.get("/content/leadership", async (_req, res) => {
       strategyTitle,
       aiPillars,
       "frameworkPDFUrl": frameworkPDF.asset._ref,
+      "frameworkImageRef": frameworkImage.asset._ref,
+      "philosophyImageRef": philosophyImage.asset._ref,
       missionStatement,
       leadershipPhilosophy,
       keyMetrics,
@@ -207,6 +224,8 @@ router.get("/content/leadership", async (_req, res) => {
   const data = {
     ...raw,
     frameworkPDFUrl: sanityFileUrl(raw.frameworkPDFUrl as string | undefined),
+    frameworkImageUrl: sanityImageUrl(raw.frameworkImageRef as string | undefined),
+    philosophyImageUrl: sanityImageUrl(raw.philosophyImageRef as string | undefined),
   };
 
   res.json({ data, ready: sanityReady });
