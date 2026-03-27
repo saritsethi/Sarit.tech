@@ -7,7 +7,6 @@ import About from "@/pages/About";
 import AiDad from "@/pages/AiDad";
 import Projects from "@/pages/Projects";
 import NotFound from "@/pages/not-found";
-import { StealthOverlay } from "@/components/StealthOverlay";
 import { ChatWidget } from "@/components/chat/ChatWidget";
 
 const queryClient = new QueryClient({
@@ -33,17 +32,15 @@ function Router() {
 
 function App() {
   return (
-    <StealthOverlay>
-      <QueryClientProvider client={queryClient}>
-        <TooltipProvider>
-          <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
-            <Router />
-            <ChatWidget />
-          </WouterRouter>
-          <Toaster />
-        </TooltipProvider>
-      </QueryClientProvider>
-    </StealthOverlay>
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
+          <Router />
+          <ChatWidget />
+        </WouterRouter>
+        <Toaster />
+      </TooltipProvider>
+    </QueryClientProvider>
   );
 }
 
