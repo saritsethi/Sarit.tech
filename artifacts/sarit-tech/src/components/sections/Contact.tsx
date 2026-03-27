@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { useAnalytics, useSectionTracking } from '@/hooks/use-analytics';
 import { useContent } from '@/hooks/use-content';
-import { Calendar, Linkedin, Twitter, Github, Mail } from 'lucide-react';
+import { Calendar, Linkedin, Github, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 
 export function Contact() {
@@ -48,7 +48,6 @@ export function Contact() {
           <div className="mt-16 pt-12 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex gap-4">
               <SocialLink href={settings.social.linkedin} icon={<Linkedin />} label="LinkedIn" trackEvent={trackEvent} />
-              <SocialLink href={settings.social.twitter} icon={<Twitter />} label="Twitter" trackEvent={trackEvent} />
               <SocialLink href={settings.social.github} icon={<Github />} label="GitHub" trackEvent={trackEvent} />
               <SocialLink href={settings.social.email} icon={<Mail />} label="Email" trackEvent={trackEvent} />
             </div>

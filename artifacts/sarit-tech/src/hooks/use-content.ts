@@ -135,7 +135,7 @@ const FALLBACK_SETTINGS: SiteSettings = {
   profileImageUrl: '',
   calendarBookingUrl: 'https://calendar.app.google/Xh2ruF2wWSN8Y2JP9',
   social: {
-    linkedin: 'https://linkedin.com/in/saritsethi',
+    linkedin: 'https://www.linkedin.com/in/sarit-sethi/',
     twitter: 'https://twitter.com/saritsethi',
     github: 'https://github.com/saritsethi',
     email: 'mailto:saritsethi@gmail.com',
