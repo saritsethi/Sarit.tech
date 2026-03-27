@@ -55,7 +55,7 @@ export default function AiDad() {
               Tech Leadership
             </div>
             <h1 className="text-5xl md:text-7xl font-display font-extrabold tracking-tight mb-6">
-              The <span className="text-gradient-primary">AI Dad</span>
+              The <span className="text-gradient-primary">Professional</span>
             </h1>
             <p className="text-xl text-muted-foreground max-w-2xl font-light leading-relaxed mb-8">
               Product leadership that treats AI as a business enabler — not a science experiment.
@@ -234,7 +234,7 @@ export default function AiDad() {
               "{quote}"
             </blockquote>
             <p className="text-muted-foreground">
-              — Sarit Sethi, AI Dad &amp; Product Leader
+              — Sarit Sethi, Professional &amp; Product Leader
             </p>
           </motion.div>
         </div>

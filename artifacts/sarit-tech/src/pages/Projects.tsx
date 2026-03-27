@@ -293,7 +293,7 @@ export default function Projects() {
                 The Proof
               </p>
               <h1 className="text-4xl md:text-6xl font-display font-extrabold tracking-tight mb-4">
-                The Builder
+                Projects
               </h1>
               <p className="text-lg text-muted-foreground max-w-2xl font-light leading-relaxed">
                 The best product leaders stay hands-on. Here are selected systems and

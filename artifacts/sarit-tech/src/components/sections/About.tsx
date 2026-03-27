@@ -24,7 +24,7 @@ export function About() {
           {/* Narrative / Portrait side */}
           <div className="space-y-8">
             <div>
-              <h2 className="text-4xl md:text-5xl font-display font-bold mb-4">The AI Dad</h2>
+              <h2 className="text-4xl md:text-5xl font-display font-bold mb-4">The Professional</h2>
               <div className="w-20 h-1 bg-primary rounded-full mb-8" />
             </div>
 

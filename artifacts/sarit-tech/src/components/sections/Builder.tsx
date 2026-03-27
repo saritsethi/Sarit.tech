@@ -22,7 +22,7 @@ export function Builder() {
             animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
             className="max-w-2xl"
           >
-            <h2 className="text-4xl md:text-5xl font-display font-bold mb-6">The Builder</h2>
+            <h2 className="text-4xl md:text-5xl font-display font-bold mb-6">Projects</h2>
             <p className="text-lg text-muted-foreground">
               Prototyping the future. The best product leaders stay hands-on. Here are selected
               systems and architectures I've built.

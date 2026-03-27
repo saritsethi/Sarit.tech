@@ -21,7 +21,7 @@ const NAV_TILES = [
   },
   {
     href: '/aidad',
-    label: 'The AI Dad',
+    label: 'Professional',
     description: 'ROI-First AI strategy. Enterprise execution. Zero theater.',
     icon: Brain,
     accent: 'from-primary/10 to-transparent',
@@ -31,7 +31,7 @@ const NAV_TILES = [
   },
   {
     href: '/builder',
-    label: 'The Builder',
+    label: 'Projects',
     description: 'Real systems solving real problems — the proof of work.',
     icon: Hammer,
     accent: 'from-violet-500/10 to-transparent',

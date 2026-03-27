@@ -9,8 +9,8 @@ import { useAnalytics } from '@/hooks/use-analytics';
 const NAV_LINKS = [
   { name: 'Home', href: '/' },
   { name: 'About', href: '/about' },
-  { name: 'AI Dad', href: '/aidad' },
-  { name: 'Builder', href: '/builder' },
+  { name: 'Professional', href: '/aidad' },
+  { name: 'Projects', href: '/builder' },
 ];
 
 function isActive(location: string, href: string) {
