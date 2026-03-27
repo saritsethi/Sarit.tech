@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { useAnalytics, useSectionTracking } from '@/hooks/use-analytics';
 import { useContent } from '@/hooks/use-content';
-import { Calendar, Linkedin, Github, Mail } from 'lucide-react';
+import { Calendar, Linkedin, Github, Mail, FileDown } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 
 export function Contact() {
@@ -50,6 +50,15 @@ export function Contact() {
               <SocialLink href={settings.social.linkedin} icon={<Linkedin />} label="LinkedIn" trackEvent={trackEvent} />
               <SocialLink href={settings.social.github} icon={<Github />} label="GitHub" trackEvent={trackEvent} />
               <SocialLink href={settings.social.email} icon={<Mail />} label="Email" trackEvent={trackEvent} />
+              <a
+                href={`${import.meta.env.BASE_URL}Sarit_Sethi_Resume.pdf`}
+                download="Sarit_Sethi_Resume.pdf"
+                aria-label="Download Resume"
+                onClick={() => trackEvent('resume_downloaded', {})}
+                className="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all hover:scale-110"
+              >
+                <FileDown className="w-5 h-5" />
+              </a>
             </div>
             <p className="text-sm text-muted-foreground">
               © {new Date().getFullYear()} Sarit Sethi. All rights reserved.
