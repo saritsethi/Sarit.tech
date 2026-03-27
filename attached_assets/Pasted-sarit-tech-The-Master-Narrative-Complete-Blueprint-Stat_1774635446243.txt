@@ -1,0 +1,136 @@
+sarit.tech | The Master Narrative (Complete Blueprint)
+
+Status: Finalized for Sanity Population & Gemini RAG Grounding
+Tone: Industrial Minimalist / ROI-Focused / High-Agency
+
+Page 1: The Landing Page (The Hook)
+
+1.1 Hero Statement
+
+"Architecting Intelligent Solutions for a World in Motion. From built environments to digital frontiers, Sarit Sethi delivers measurable business impact through strategic AI roadmaps. Beyond the boardroom, he is a published author, cricket enthusiast, and a global citizen."
+
+1.2 The Navigation CTAs (The Router)
+
+To be rendered as high-impact tiles or a clean grid below the Hero.
+
+Primary CTA: "The Journey" (Navigates to /about) — The Delhi to Chicago Narrative.
+
+Secondary CTA: "The Manifesto" (Navigates to /aidad) — ROI-First AI Strategy.
+
+Tertiary CTA: "The Proof" (Navigates to /projects) — SARTH(A)i & AI Prototypes.
+
+1.3 Quick Contact (The Reach Out)
+
+Direct action buttons for immediate conversion.
+
+Action 1: "Book Strategic Session" (Triggers Google Calendar)
+
+Action 2: "Direct Inquiry" (Triggers Email to saritsethi@gmail.com)
+
+Action 3: "Source Code" (Navigates to GitHub)
+
+1.4 Career Timeline
+
+2024–2026 — AECOM (Product Management Director): Spearheaded global enterprise AI roadmaps. Delivered production-grade automation reaching 200,000+ monthly interactions and enabling safe, enterprise-data-grounded artifact creation.
+
+2022–2024 — AECOM (Senior Product Manager): Led a portfolio of seven products and a 30-person team, influencing $1B in revenue generation and significantly improving pursuit win rates through AI empowerment.
+
+2016–2021 — Archer Technologies (Cofounder & CPO/COO): Scaled multiple construction SaaS solutions from zero to $10M in annual revenue with a 60-member team.
+
+2014–2016 — LetzSLAB (Co-Founder): Launched a peer-to-peer equipment sharing platform for the construction industry with 11,000+ listings.
+
+2010–2014 — M+W Group (Project & Design Manager): Directed the design and construction of massive industrial facilities for global clients like Michelin and Dana.
+
+2007–2009 — IAAD (Architect Team Leader): Pioneered the conceptual design for GIFT City and large-scale automatic infrastructure projects in India.
+
+1.5 Leadership Philosophy
+
+"Leadership is about providing clarity in chaos. My approach combines the rigorous discipline of an engineer with the adaptive agility of a product leader, ensuring that every technological shift is grounded in human value."
+
+Page 2: About Me (The Builder & The AI Dad)
+
+2.1 The Global Journey
+
+Global Perspective: A global citizen who has lived and worked in Delhi, Toronto, and Chicago, drawing a broad worldview from these diverse cultural and professional hubs.
+
+Adaptability & Agility: I balance the excitement of AI’s potential with a grounded concern for its pervasiveness. I focus on building a rich personality through physical experiences while preparing for a world shaped by technology.
+
+Core Philosophy: Capitalizing on the exponential AI opportunity while fiercely preserving the human connection and authenticity that technology cannot replicate.
+
+2.2 Family & Passions: The AI Dad
+
+Fatherhood: As a father to a two-year-old, I am grappling with the architecture of the world my son will inherit. I find myself questioning the foundations of the education that will remain relevant for him. Will technology continue to be the great enabler, or will it become a pervasive intrusion?
+
+The Tactile Tension: I often wonder, as a philosophical reflection, if the answer lies in self-sustaining community living where AI isn't ubiquitous. In a world of digital saturation, my goal is to ensure my son comes home with dirt on his pants rather than keys impressed on his fingertips.
+
+Cricket: Deeply obsessed with the game of cricket—a sport that mirrors my belief in strategy, precision, and endurance. The "22 yards" is my second office.
+
+2.3 Authorship: "From Our Veranda"
+
+The Work: Co-authored a poetry collection with my wife, Neetika Wahi, exploring emotions, relationships, and introspection.
+
+The Moat of Authenticity: This book was written in the AI era without AI. It serves as a testament to human authenticity—a quality I believe will become the ultimate "moat" for individuals and enterprises as AI becomes ubiquitous.
+
+Page 3: Professional Insights (Tech Leadership — /aidad)
+
+3.1 Product Philosophy: Outcome-Driven Development
+
+Outcome First: Products must achieve the specific goals they were designed for.
+
+Clarity of Purpose: Before a single line of code is written, KPIs and "Big Hairy Audacious Goals" (BHAGs) must be crystal clear.
+
+Continuous Monitoring: The product must actively monitor its own performance against these outcomes.
+
+Agile Validation: Quick prototyping and testing are mandatory to validate ideas before committing to large-scale outputs.
+
+The Build vs. Buy Logic: If the build ROI is negligible, we buy. If someone has already built a solution that meets the requirement, we buy. We only build for high-differentiation where we own the core value proposition.
+
+The Intuition Test: If you need to teach a product, you have built the wrong thing.
+
+3.2 Enterprise AI Strategy: The Three Buckets
+
+Measurable Agentic Automation: Prioritizing "Hero Workflows" with obvious automation potential and measurable ROI. We focus on agentic systems performing complex tasks autonomously within guarded parameters.
+
+AI Literacy & Bridging: Providing the workforce with tools to build familiarity and serve as a bridge to a more mature AI future.
+
+Responsible AI & Risk Mitigation: Grounding outcomes in high-quality enterprise data and including Human-in-the-Loop where necessary to ensure safety and contextual accuracy.
+
+3.3 The Use Case Framework: Inward vs. Outward
+
+Inward Looking: Support function use cases designed for internal efficiency.
+
+Outward Facing: * Delivery Facilitating: Directly enhancing value delivery.
+
+Client Experience Enhancing: Personalizing the customer journey.
+
+Discovery: Leveraging data to uncover new market opportunities.
+
+Page 4: Projects & Prototypes (The Proof)
+
+4.1 SARTH(A)i: Enterprise AI Alignment
+
+Status: Active Governance Architecture
+The Mission: Bridging the visibility gap between executive intent and engineering execution to prevent "Strategic Failure" in AI implementations.
+
+4.2 CricketIQ: Expert AI Coaching
+
+Status: Built & Deployed (Replit)
+The Mission: Access to expert-level cricket intelligence through multi-modal RAG systems grounded in real match data and vision analysis.
+
+4.3 HomeDecider: Data-Driven Real Estate
+
+Status: Built & Deployed (Streamlit)
+The Mission: Smarter "Rent vs. Buy" decisions using live market data from FRED and neighborhood analysis.
+
+4.4 sarit.tech Digital Twin
+
+Status: Live Production
+The Mission: A high-conversion storefront and "always-on" concierge speaking in a direct, industrial minimalist tone.
+
+Page 5: Contact (Direct Access)
+
+Connect: saritsethi@gmail.com
+
+Schedule: https://calendar.app.google/Xh2ruF2wWSN8Y2JP9
+
+Code: saritsethi (GitHub)
