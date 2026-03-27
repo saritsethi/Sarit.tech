@@ -102,9 +102,13 @@ export default function About() {
             transition={{ duration: 0.7 }}
             className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center py-20 border-b border-white/5"
           >
-            {/* Placeholder — image coming (swapped side) */}
-            <div className="h-64 lg:h-72 rounded-2xl border border-white/5 bg-white/[0.02] flex items-center justify-center order-last lg:order-first">
-              <span className="text-white/10 text-xs uppercase tracking-widest">Image coming</span>
+            <div className="rounded-2xl overflow-hidden border border-white/10 shadow-2xl shadow-black/40 order-last lg:order-first">
+              <img
+                src={`${import.meta.env.BASE_URL}images/family-biking.jpg`}
+                alt="Family biking adventure"
+                className="w-full h-full object-cover opacity-90 hover:opacity-100 transition-opacity duration-500"
+                loading="lazy"
+              />
             </div>
             <div>
               <p className="text-xs uppercase tracking-widest text-primary font-semibold mb-3">
