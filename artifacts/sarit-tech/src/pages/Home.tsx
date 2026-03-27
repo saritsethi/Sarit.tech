@@ -65,12 +65,12 @@ export default function Home() {
         </div>
 
         {/* Hero — occupies the 1fr grid row */}
-        <div className="relative z-10 flex flex-col items-center justify-center text-center px-6 pt-20 pb-16 min-h-0 overflow-hidden">
+        <div className="relative z-10 flex flex-col items-center justify-center text-center px-6 pt-20 pb-8 min-h-0 overflow-hidden">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: 'easeOut' }}
-            className="space-y-5 w-full max-w-4xl"
+            className="space-y-3 w-full max-w-4xl"
           >
             {/* Subtle portrait — face to the voice */}
             <motion.div
@@ -79,7 +79,7 @@ export default function Home() {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="flex justify-center"
             >
-              <div className="relative w-16 h-16 rounded-full overflow-hidden border border-white/10 ring-1 ring-primary/20 shadow-lg shadow-primary/10">
+              <div className="relative w-12 h-12 rounded-full overflow-hidden border border-white/10 ring-1 ring-primary/20 shadow-lg shadow-primary/10">
                 <img
                   src={`${import.meta.env.BASE_URL}images/sarit-portrait.png`}
                   alt="Sarit Sethi"
@@ -88,31 +88,31 @@ export default function Home() {
               </div>
             </motion.div>
 
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-primary/30 bg-primary/10 text-primary text-sm font-medium">
-              <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/30 bg-primary/10 text-primary text-xs font-medium">
+              <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
               {settings.heroBadgeText}
             </div>
 
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-display font-extrabold tracking-tight leading-[1.1]">
+            <h1 className="text-3xl md:text-5xl lg:text-6xl font-display font-extrabold tracking-tight leading-[1.1]">
               <span className="text-gradient-primary">{settings.heroHeadline}</span>
             </h1>
 
-            <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto font-light leading-relaxed">
+            <p className="text-sm md:text-base text-muted-foreground max-w-2xl mx-auto font-light leading-relaxed">
               {settings.heroSubheadline}
             </p>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-1">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
               <a href={calendarUrl} target="_blank" rel="noopener noreferrer" onClick={() => trackEvent('cta_clicked', { button: 'lets_connect_hero' })}>
-                <Button size="lg" className="w-full sm:w-auto group">
+                <Button size="sm" className="w-full sm:w-auto group px-5 py-2.5">
                   <Calendar className="mr-2 w-4 h-4" />
                   Let's Connect
                   <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </a>
               <Button
-                size="lg"
+                size="sm"
                 variant="outline"
-                className="w-full sm:w-auto group border-white/10 bg-white/5"
+                className="w-full sm:w-auto group border-white/10 bg-white/5 px-5 py-2.5"
                 onClick={handleChatOpen}
               >
                 <Bot className="mr-2 w-4 h-4 text-primary group-hover:animate-bounce" />
@@ -123,8 +123,8 @@ export default function Home() {
         </div>
 
         {/* Navigation Tiles */}
-        <div className="relative z-10 px-4 md:px-8 pb-6 md:pb-8">
-          <div className="max-w-5xl mx-auto grid grid-cols-3 gap-3 md:gap-5">
+        <div className="relative z-10 px-4 md:px-8 pb-4 md:pb-6">
+          <div className="max-w-5xl mx-auto grid grid-cols-3 gap-3 md:gap-4">
             {NAV_TILES.map((tile, i) => {
               const Icon = tile.icon;
               return (
@@ -137,16 +137,16 @@ export default function Home() {
                   <Link
                     href={tile.href}
                     onClick={() => trackEvent('tile_clicked', { tile: tile.label })}
-                    className={`group block p-5 md:p-6 rounded-2xl border border-white/10 bg-card/60 backdrop-blur-sm relative overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-black/20 ${tile.border} ${tile.featured ? 'ring-1 ring-primary/20' : ''}`}
+                    className={`group block p-4 md:p-5 rounded-2xl border border-white/10 bg-card/60 backdrop-blur-sm relative overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-black/20 ${tile.border} ${tile.featured ? 'ring-1 ring-primary/20' : ''}`}
                   >
                     <div className={`absolute inset-0 bg-gradient-to-br ${tile.accent} pointer-events-none`} />
                     <div className="relative z-10">
-                      <div className="flex items-center justify-between mb-3">
-                        <Icon className={`w-5 h-5 ${tile.iconColor}`} />
-                        <ArrowRight className={`w-4 h-4 transition-transform group-hover:translate-x-1 ${tile.featured ? 'text-primary' : 'text-muted-foreground'}`} />
+                      <div className="flex items-center justify-between mb-2">
+                        <Icon className={`w-4 h-4 ${tile.iconColor}`} />
+                        <ArrowRight className={`w-3.5 h-3.5 transition-transform group-hover:translate-x-1 ${tile.featured ? 'text-primary' : 'text-muted-foreground'}`} />
                       </div>
-                      <h3 className="text-base md:text-lg font-display font-bold mb-1.5">{tile.label}</h3>
-                      <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">
+                      <h3 className="text-sm md:text-base font-display font-bold mb-1">{tile.label}</h3>
+                      <p className="text-xs text-muted-foreground leading-relaxed">
                         {tile.description}
                       </p>
                     </div>
