@@ -268,7 +268,7 @@ const FALLBACK_PROJECTS: Project[] = [
     slug: 'sarthai',
     thumbnailUrl: null,
     thumbnailHotspot: null,
-    videoUrl: null,
+    videoUrl: '/videos/sarthai-demo.mp4',
     description:
       'Bridging the visibility gap between executive intent and engineering execution to prevent Strategic Failure in AI implementations. An active governance architecture for enterprise AI programs.',
     tech: ['AI Governance', 'Enterprise Architecture', 'Product Strategy', 'RAG'],
@@ -286,7 +286,7 @@ const FALLBACK_PROJECTS: Project[] = [
       'Access to expert-level cricket intelligence through multi-modal RAG systems grounded in real match data and vision analysis. Built and deployed on Replit.',
     tech: ['Gemini Pro', 'RAG', 'Computer Vision', 'Replit'],
     status: 'active',
-    link: '#',
+    link: 'https://cricketiq.replit.app',
   },
   {
     id: 'proj3',
@@ -299,7 +299,7 @@ const FALLBACK_PROJECTS: Project[] = [
       "Smarter Rent vs. Buy decisions using live market data from FRED and neighborhood analysis. Built and deployed on Streamlit.",
     tech: ['Python', 'Streamlit', 'FRED API', 'Data Analysis'],
     status: 'active',
-    link: '#',
+    link: 'https://homedecider.streamlit.app',
   },
   {
     id: 'proj4',
