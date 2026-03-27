@@ -92,6 +92,7 @@ function ProjectTile({
   project: {
     id: string;
     title: string;
+    slug: string | null;
     description: string;
     tech: string[];
     status: string;
@@ -186,6 +187,21 @@ function ProjectTile({
             {project.status === 'coming-soon' ? 'Coming Soon' : 'Live'}
           </span>
         </div>
+
+        {/* Stealth ribbon — SARTH(A)i only */}
+        {project.slug === 'sarthai' && (
+          <div
+            className="absolute top-5 right-[-30px] rotate-45 w-32 py-[5px] text-center text-[9px] font-bold tracking-[0.2em] uppercase pointer-events-none select-none"
+            style={{
+              background: 'linear-gradient(135deg, #7C3AED, #4F46E5)',
+              boxShadow: '0 2px 12px rgba(124,58,237,0.5)',
+              color: '#fff',
+              letterSpacing: '0.18em',
+            }}
+          >
+            Stealth
+          </div>
+        )}
 
         {/* External link — top right */}
         {hasLink && (
