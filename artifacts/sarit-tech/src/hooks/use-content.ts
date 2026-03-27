@@ -123,16 +123,16 @@ export interface Project {
 // ---------------------------------------------------------------------------
 
 const FALLBACK_SETTINGS: SiteSettings = {
-  heroHeadline: 'Building ROI-First AI Solutions',
+  heroHeadline: 'Architecting Intelligent Solutions for a World in Motion.',
   heroSubheadline:
-    'Bridging the gap between construction tech execution and enterprise AI strategy. I build systems that solve real problems, not just cool tech demos.',
+    'From built environments to digital frontiers, Sarit Sethi delivers measurable business impact through strategic AI roadmaps. Beyond the boardroom, he is a published author, cricket enthusiast, and a global citizen.',
   heroBadgeText: 'AI Product Leader',
   aboutNarrativeParagraphs: [
-    "From the construction sites of Toronto to the AI boardrooms of Chicago — my journey is one of relentless translation. I've always sat at the uncomfortable intersection of the deeply technical and the strategically human.",
-    "As a product leader, I architect realistic, scalable, and ethical pathways for AI adoption in industries that others write off as \"too legacy.\" I don't just advocate for AI — I make it work.",
+    "A global citizen who has lived and worked in Delhi, Toronto, and Chicago, drawing a broad worldview from these diverse cultural and professional hubs.",
+    "I balance the excitement of AI's potential with a grounded concern for its pervasiveness. I focus on building a rich personality through physical experiences while preparing for a world shaped by technology.",
   ],
   profileImageUrl: '',
-  calendarBookingUrl: 'https://calendar.app.google/PTXjuRKDb97Qyp3B6',
+  calendarBookingUrl: 'https://calendar.app.google/Xh2ruF2wWSN8Y2JP9',
   social: {
     linkedin: 'https://linkedin.com/in/saritsethi',
     twitter: 'https://twitter.com/saritsethi',
@@ -143,52 +143,73 @@ const FALLBACK_SETTINGS: SiteSettings = {
 };
 
 const FALLBACK_HOME: HomeContent = {
-  heroHeadline: 'Building ROI-First AI Solutions',
+  heroHeadline: 'Architecting Intelligent Solutions for a World in Motion.',
   heroSubtext:
-    'Bridging the gap between construction tech execution and enterprise AI strategy. I build systems that solve real problems, not just cool tech demos.',
+    'From built environments to digital frontiers, Sarit Sethi delivers measurable business impact through strategic AI roadmaps. Beyond the boardroom, he is a published author, cricket enthusiast, and a global citizen.',
   heroImageUrl: null,
   heroImageHotspot: null,
-  primaryCTA: 'Book a Strategy Call',
+  primaryCTA: 'Book Strategic Session',
 };
 
 const FALLBACK_ABOUT: AboutContent = {
   portraitUrl: null,
   portraitHotspot: null,
   narrative: [
-    "From the construction sites of Toronto to the AI boardrooms of Chicago — my journey is one of relentless translation. I've always sat at the uncomfortable intersection of the deeply technical and the strategically human.",
-    "As a product leader, I architect realistic, scalable, and ethical pathways for AI adoption in industries that others write off as \"too legacy.\" I don't just advocate for AI — I make it work.",
+    "A global citizen who has lived and worked in Delhi, Toronto, and Chicago, drawing a broad worldview from these diverse cultural and professional hubs.",
+    "I balance the excitement of AI's potential with a grounded concern for its pervasiveness. I focus on building a rich personality through physical experiences while preparing for a world shaped by technology.",
+    "As a father to a two-year-old, I am grappling with the architecture of the world my son will inherit. In a world of digital saturation, my goal is to ensure my son comes home with dirt on his pants rather than keys impressed on his fingertips.",
+    "Co-authored a poetry collection with my wife, Neetika Wahi, exploring emotions, relationships, and introspection. Written in the AI era without AI — a testament to human authenticity.",
   ],
-  cricketStats: [],
+  cricketStats: [
+    { aspect: 'Obsession Level', value: 'Professional' },
+    { aspect: 'Second Office', value: 'The 22 yards' },
+    { aspect: 'Style', value: 'Strategy, precision, and endurance' },
+    { aspect: 'Book', value: 'From Our Veranda — co-authored with Neetika Wahi' },
+  ],
 };
 
 const FALLBACK_TIMELINE: TimelineItem[] = [
   {
-    year: '2023 - Present',
-    title: 'AI Product Leader',
-    company: 'Enterprise AI Solutions',
+    year: '2024–2026',
+    title: 'Product Management Director',
+    company: 'AECOM',
     description:
-      'Spearheading ROI-driven AI deployments for Fortune 500 companies. Architecting Digital Twins and RAG-based systems that reduce operational bottlenecks by 40%.',
+      'Spearheaded global enterprise AI roadmaps. Delivered production-grade automation reaching 200,000+ monthly interactions and enabling safe, enterprise-data-grounded artifact creation.',
   },
   {
-    year: '2020 - 2023',
-    title: 'Head of Product',
-    company: 'Construction Tech Innovators · Chicago',
-    description:
-      'Led the digital transformation of legacy construction workflows. Bridged the gap between field execution and boardroom strategy.',
-  },
-  {
-    year: '2016 - 2020',
+    year: '2022–2024',
     title: 'Senior Product Manager',
-    company: 'BuildCorp · Toronto',
+    company: 'AECOM',
     description:
-      'Managed a portfolio of predictive analytics tools for project lifecycle management, resulting in a 25% increase in resource efficiency.',
+      'Led a portfolio of seven products and a 30-person team, influencing $1B in revenue generation and significantly improving pursuit win rates through AI empowerment.',
   },
   {
-    year: '2012 - 2016',
-    title: 'Product Analyst',
-    company: 'Tech Ventures · Delhi',
+    year: '2016–2021',
+    title: 'Co-Founder & CPO/COO',
+    company: 'Archer Technologies',
     description:
-      'Started as an analyst at a product consultancy in Delhi, learning the foundations of user research, agile delivery, and technology strategy.',
+      'Scaled multiple construction SaaS solutions from zero to $10M in annual revenue with a 60-member team.',
+  },
+  {
+    year: '2014–2016',
+    title: 'Co-Founder',
+    company: 'LetzSLAB',
+    description:
+      'Launched a peer-to-peer equipment sharing platform for the construction industry with 11,000+ listings.',
+  },
+  {
+    year: '2010–2014',
+    title: 'Project & Design Manager',
+    company: 'M+W Group',
+    description:
+      'Directed the design and construction of massive industrial facilities for global clients like Michelin and Dana.',
+  },
+  {
+    year: '2007–2009',
+    title: 'Architect Team Leader',
+    company: 'IAAD',
+    description:
+      'Pioneered the conceptual design for GIFT City and large-scale automatic infrastructure projects in India.',
   },
 ];
 
@@ -196,34 +217,28 @@ const FALLBACK_PILLARS: StrategyPillar[] = [
   {
     id: 'p1',
     icon: 'Target',
-    title: 'ROI-First Discovery',
-    description: "Aligning AI capabilities with quantifiable business outcomes. No tech for tech's sake.",
+    title: 'Measurable Agentic Automation',
+    description:
+      "Prioritizing Hero Workflows with obvious automation potential and measurable ROI. Agentic systems performing complex tasks autonomously within guarded parameters.",
   },
   {
     id: 'p2',
     icon: 'Users',
-    title: 'Cross-Functional Alignment',
+    title: 'AI Literacy & Bridging',
     description:
-      'Bridging engineering, design, and executive stakeholders to ensure adoption and real-world impact.',
+      'Providing the workforce with tools to build familiarity and serve as a bridge to a more mature AI future.',
   },
   {
     id: 'p3',
-    icon: 'Layers',
-    title: 'Scalable Architecture',
-    description:
-      'Designing systems that grow with the enterprise, prioritizing security, modularity, and maintainability.',
-  },
-  {
-    id: 'p4',
     icon: 'ShieldCheck',
-    title: 'Ethical AI Deployment',
+    title: 'Responsible AI & Risk Mitigation',
     description:
-      'Ensuring models are transparent, unbiased, and compliant with evolving global regulations.',
+      'Grounding outcomes in high-quality enterprise data and including Human-in-the-Loop where necessary to ensure safety and contextual accuracy.',
   },
 ];
 
 const FALLBACK_AIDAD: AiDadContent = {
-  strategyTitle: 'My AI Leadership Framework',
+  strategyTitle: 'Enterprise AI Strategy: The Three Buckets',
   aiPillars: FALLBACK_PILLARS.map((p) => ({
     title: p.title,
     description: p.description,
@@ -231,54 +246,67 @@ const FALLBACK_AIDAD: AiDadContent = {
   })),
   frameworkPDFUrl: null,
   missionStatement:
-    "I don't just build AI products — I teach them to think like humans, and teach humans to think like engineers.",
+    "Bridging the visibility gap between executive intent and engineering execution to prevent Strategic Failure in AI implementations.",
   keyMetrics: [
-    { value: '40%', label: 'Cost Reduction', description: 'Average operational cost reduction across deployments' },
-    { value: '10K+', label: 'Users Impacted', description: 'Professionals using AI tools I shipped' },
-    { value: '87%', label: 'Adoption Rate', description: 'Enterprise AI adoption rate vs 34% industry avg' },
+    { value: '200K+', label: 'Monthly Interactions', description: 'Production-grade AI automation interactions delivered at AECOM' },
+    { value: '$1B', label: 'Revenue Influenced', description: 'Revenue generation influenced through AI-empowered pursuit strategies' },
+    { value: '$10M', label: 'ARR Built', description: 'Annual revenue scaled from zero at Archer Technologies' },
   ],
-  quote: "The best AI strategy isn't the most complex one — it's the one your team actually uses.",
+  quote: "Leadership is about providing clarity in chaos. My approach combines the rigorous discipline of an engineer with the adaptive agility of a product leader, ensuring that every technological shift is grounded in human value.",
 };
 
 const FALLBACK_PROJECTS: Project[] = [
   {
     id: 'proj1',
-    title: 'Cricket Coach AI',
-    slug: 'cricket-coach-ai',
-    thumbnailUrl: null,
-    thumbnailHotspot: null,
-    videoUrl: null,
-    description:
-      'An AI-powered coaching assistant that analyzes batting/bowling technique via video, generates personalized training plans, and tracks performance metrics over time.',
-    tech: ['Python', 'Computer Vision', 'Gemini Pro', 'React Native'],
-    status: 'active',
-    link: '#',
-  },
-  {
-    id: 'proj2',
-    title: 'Sarth(A)i',
+    title: 'SARTH(A)i: Enterprise AI Alignment',
     slug: 'sarthai',
     thumbnailUrl: null,
     thumbnailHotspot: null,
     videoUrl: null,
     description:
-      'A next-generation AI assistant platform designed to serve as a personal digital twin for knowledge workers — remembering context, drafting decisions, and surfacing insights.',
-    tech: ['LangChain', 'Vector DB', 'FastAPI', 'React'],
+      'Bridging the visibility gap between executive intent and engineering execution to prevent Strategic Failure in AI implementations. An active governance architecture for enterprise AI programs.',
+    tech: ['AI Governance', 'Enterprise Architecture', 'Product Strategy', 'RAG'],
+    status: 'active',
+    link: '#',
+  },
+  {
+    id: 'proj2',
+    title: 'CricketIQ: Expert AI Coaching',
+    slug: 'cricketiq',
+    thumbnailUrl: null,
+    thumbnailHotspot: null,
+    videoUrl: null,
+    description:
+      'Access to expert-level cricket intelligence through multi-modal RAG systems grounded in real match data and vision analysis. Built and deployed on Replit.',
+    tech: ['Gemini Pro', 'RAG', 'Computer Vision', 'Replit'],
     status: 'active',
     link: '#',
   },
   {
     id: 'proj3',
-    title: 'Enterprise RAG System',
-    slug: 'enterprise-rag',
+    title: 'HomeDecider: Data-Driven Real Estate',
+    slug: 'homedecider',
     thumbnailUrl: null,
     thumbnailHotspot: null,
     videoUrl: null,
     description:
-      'Secure, scalable retrieval-augmented generation pipeline deployed across a 10,000+ employee organization to unify internal knowledge and cut answer time by 60%.',
-    tech: ['Gemini Pro', 'Pinecone', 'FastAPI', 'Docker'],
+      "Smarter Rent vs. Buy decisions using live market data from FRED and neighborhood analysis. Built and deployed on Streamlit.",
+    tech: ['Python', 'Streamlit', 'FRED API', 'Data Analysis'],
     status: 'active',
     link: '#',
+  },
+  {
+    id: 'proj4',
+    title: 'sarit.tech Digital Twin',
+    slug: 'sarit-tech-digital-twin',
+    thumbnailUrl: null,
+    thumbnailHotspot: null,
+    videoUrl: null,
+    description:
+      "A high-conversion storefront and always-on concierge speaking in a direct, industrial minimalist tone. Live production AI digital twin powered by Gemini and RAG.",
+    tech: ['Gemini AI', 'RAG', 'React', 'PostgreSQL', 'Sanity CMS'],
+    status: 'active',
+    link: 'https://sarit.tech',
   },
 ];
 
