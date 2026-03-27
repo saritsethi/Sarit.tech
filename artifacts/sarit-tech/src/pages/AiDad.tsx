@@ -3,19 +3,13 @@ import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { Layout } from '@/components/layout/Layout';
 import { useContent } from '@/hooks/use-content';
+import { useAiDadContent } from '@/hooks/use-content';
 import { useSectionTracking, useAnalytics } from '@/hooks/use-analytics';
 import * as Icons from 'lucide-react';
-import { type LucideProps, Brain, TrendingUp, Users2, Zap } from 'lucide-react';
+import { type LucideProps, Brain } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 
 type LucideIconName = keyof typeof Icons;
-
-const KEY_METRICS = [
-  { value: '40%', label: 'Ops Efficiency', icon: TrendingUp, description: 'Reduction in operational bottlenecks through AI deployments' },
-  { value: '10K+', label: 'Employees Reached', icon: Users2, description: 'Enterprise RAG system deployed across a single organization' },
-  { value: '87%', label: 'Prediction Accuracy', icon: Zap, description: 'ML model accuracy for construction supply chain forecasting' },
-  { value: '3+', label: 'Industries', icon: Brain, description: 'Construction, fintech, and enterprise software AI transformation' },
-];
 
 function getIcon(name: string) {
   const key = name as LucideIconName;
@@ -26,8 +20,13 @@ function getIcon(name: string) {
 export default function AiDad() {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.1 });
   const { pillars } = useContent();
+  const { leadership } = useAiDadContent();
   const { trackEvent } = useAnalytics();
   useSectionTracking('aidad_page', inView);
+
+  const metrics = leadership.keyMetrics;
+  const strategyTitle = leadership.strategyTitle || 'Enterprise AI Strategy: The Three Buckets';
+  const quote = leadership.quote;
 
   return (
     <Layout>
@@ -36,7 +35,6 @@ export default function AiDad() {
         <div className="absolute inset-0 z-0 pointer-events-none">
           <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[150px]" />
           <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-primary/3 rounded-full blur-[100px]" />
-          {/* Grid overlay */}
           <div
             className="absolute inset-0 opacity-[0.03]"
             style={{
@@ -81,29 +79,23 @@ export default function AiDad() {
       {/* Key Metrics */}
       <section className="py-16 border-y border-white/5 bg-secondary/10">
         <div className="max-w-7xl mx-auto px-6 md:px-8">
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {KEY_METRICS.map((metric, i) => {
-              const Icon = metric.icon;
-              return (
-                <motion.div
-                  key={metric.label}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: i * 0.1 }}
-                  className="p-6 rounded-2xl border border-white/10 bg-card text-center group hover:border-primary/30 transition-colors"
-                >
-                  <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-4 group-hover:bg-primary/20 transition-colors">
-                    <Icon className="w-5 h-5 text-primary" />
-                  </div>
-                  <div className="text-3xl font-display font-extrabold text-gradient-primary mb-1">
-                    {metric.value}
-                  </div>
-                  <div className="text-sm font-semibold text-white mb-2">{metric.label}</div>
-                  <div className="text-xs text-muted-foreground leading-relaxed">{metric.description}</div>
-                </motion.div>
-              );
-            })}
+          <div className={`grid sm:grid-cols-${metrics.length} gap-6`} style={{ gridTemplateColumns: `repeat(${metrics.length}, minmax(0, 1fr))` }}>
+            {metrics.map((metric, i) => (
+              <motion.div
+                key={metric.label}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: i * 0.1 }}
+                className="p-6 rounded-2xl border border-white/10 bg-card text-center group hover:border-primary/30 transition-colors"
+              >
+                <div className="text-3xl font-display font-extrabold text-gradient-primary mb-1">
+                  {metric.value}
+                </div>
+                <div className="text-sm font-semibold text-white mb-2">{metric.label}</div>
+                <div className="text-xs text-muted-foreground leading-relaxed">{metric.description}</div>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
@@ -121,7 +113,7 @@ export default function AiDad() {
               Framework
             </p>
             <h2 className="text-4xl md:text-5xl font-display font-bold mb-6">
-              The Four Pillars
+              {strategyTitle}
             </h2>
             <p className="text-lg text-muted-foreground">
               Enterprise AI strategy built on a foundation that ties every technical decision
@@ -129,7 +121,7 @@ export default function AiDad() {
             </p>
           </motion.div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid sm:grid-cols-3 gap-6">
             {pillars.map((pillar, i) => (
               <motion.div
                 key={pillar.id ?? pillar.title ?? i}
@@ -142,7 +134,7 @@ export default function AiDad() {
                   {getIcon(pillar.icon)}
                 </div>
                 <div className="text-xs font-bold text-primary/70 uppercase tracking-widest mb-2">
-                  Pillar {i + 1}
+                  Bucket {i + 1}
                 </div>
                 <h3 className="text-xl font-bold mb-3">{pillar.title}</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">
@@ -168,8 +160,7 @@ export default function AiDad() {
               <Brain className="w-8 h-8 text-primary" />
             </div>
             <blockquote className="text-2xl md:text-3xl font-display font-medium leading-relaxed text-foreground mb-6">
-              "The best AI product leaders don't just understand the models —
-              they understand the humans those models are supposed to serve."
+              "{quote}"
             </blockquote>
             <p className="text-muted-foreground">
               — Sarit Sethi, AI Dad &amp; Product Leader

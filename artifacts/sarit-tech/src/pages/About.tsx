@@ -7,9 +7,9 @@ import { useSectionTracking } from '@/hooks/use-analytics';
 import { MapPin } from 'lucide-react';
 
 const JOURNEY_STOPS = [
-  { city: 'Delhi, India', role: 'The Beginning', color: 'bg-orange-400' },
-  { city: 'Toronto, Canada', role: 'Construction Tech', color: 'bg-blue-400' },
-  { city: 'Chicago, USA', role: 'Enterprise AI', color: 'bg-primary' },
+  { city: 'Delhi, India', color: 'bg-orange-400' },
+  { city: 'Toronto, Canada', color: 'bg-blue-400' },
+  { city: 'Chicago, USA', color: 'bg-primary' },
 ];
 
 export default function About() {
@@ -37,14 +37,14 @@ export default function About() {
             transition={{ duration: 0.7 }}
           >
             <p className="text-xs uppercase tracking-widest text-primary font-semibold mb-4">
-              Personal Journey
+              The Journey
             </p>
             <h1 className="text-5xl md:text-7xl font-display font-extrabold tracking-tight mb-6">
               My Story
             </h1>
             <p className="text-xl text-muted-foreground max-w-2xl font-light leading-relaxed">
-              From the construction sites of Toronto to the AI boardrooms of Chicago —
-              a builder at every stage.
+              A global citizen who has lived and worked across Delhi, Toronto, and Chicago —
+              drawing a broad worldview from diverse cultural and professional hubs.
             </p>
 
             {/* Journey stops */}

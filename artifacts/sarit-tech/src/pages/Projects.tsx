@@ -4,7 +4,7 @@ import { useInView } from 'react-intersection-observer';
 import { Layout } from '@/components/layout/Layout';
 import { useContent } from '@/hooks/use-content';
 import { useSectionTracking } from '@/hooks/use-analytics';
-import { ArrowUpRight, Github, Lightbulb } from 'lucide-react';
+import { ArrowUpRight, Github } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 
 export default function Projects() {
@@ -29,7 +29,7 @@ export default function Projects() {
           >
             <div>
               <p className="text-xs uppercase tracking-widest text-primary font-semibold mb-4">
-                Portfolio
+                The Proof
               </p>
               <h1 className="text-5xl md:text-7xl font-display font-extrabold tracking-tight mb-6">
                 The Builder
@@ -75,14 +75,20 @@ export default function Projects() {
                         {i + 1}
                       </span>
                     </div>
-                    <a
-                      href={project.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="p-2 rounded-full bg-white/5 hover:bg-primary hover:text-primary-foreground transition-colors"
-                    >
-                      <ArrowUpRight className="w-5 h-5" />
-                    </a>
+                    {project.link && project.link !== '#' ? (
+                      <a
+                        href={project.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-2 rounded-full bg-white/5 hover:bg-primary hover:text-primary-foreground transition-colors"
+                      >
+                        <ArrowUpRight className="w-5 h-5" />
+                      </a>
+                    ) : (
+                      <span className="px-3 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary border border-primary/20">
+                        {project.status === 'coming-soon' ? 'Coming Soon' : 'Active'}
+                      </span>
+                    )}
                   </div>
                   <h3 className="text-2xl font-bold mb-4">{project.title}</h3>
                   <p className="text-muted-foreground leading-relaxed">{project.description}</p>
@@ -101,30 +107,6 @@ export default function Projects() {
               </motion.div>
             ))}
           </div>
-
-          {/* Stealth project teaser */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.4 }}
-            className="mt-10 p-6 rounded-2xl border border-dashed border-white/10 flex items-center gap-4"
-          >
-            <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
-              <Lightbulb className="w-5 h-5 text-primary" />
-            </div>
-            <div>
-              <p className="text-sm font-semibold text-white">
-                Sarth(A)i — In Stealth
-              </p>
-              <p className="text-xs text-muted-foreground mt-0.5">
-                A next-generation AI assistant platform. Roadmap coming soon.
-              </p>
-            </div>
-            <span className="ml-auto px-3 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary border border-primary/20 flex-shrink-0">
-              Coming Soon
-            </span>
-          </motion.div>
         </div>
       </section>
     </Layout>
