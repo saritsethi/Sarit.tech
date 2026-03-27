@@ -52,7 +52,7 @@ export default function Home() {
 
   return (
     <Layout>
-      <section className="h-[100dvh] flex flex-col overflow-hidden relative">
+      <section className="h-[100dvh] grid grid-rows-[1fr_auto] overflow-hidden relative">
         {/* Background */}
         <div className="absolute inset-0 z-0 pointer-events-none">
           <img
@@ -64,8 +64,8 @@ export default function Home() {
           <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-primary/8 rounded-full blur-[140px]" />
         </div>
 
-        {/* Hero — fills remaining space above tiles */}
-        <div className="relative z-10 flex-1 flex flex-col items-center justify-center text-center px-6 pt-20 pb-2 min-h-0">
+        {/* Hero — occupies the 1fr grid row */}
+        <div className="relative z-10 flex flex-col items-center justify-center text-center px-6 pt-20 pb-16 min-h-0 overflow-hidden">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
