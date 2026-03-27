@@ -146,6 +146,21 @@ export default function AiDad() {
               </motion.div>
             ))}
           </div>
+
+          {/* Enterprise AI Framework visual */}
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: 0.2 }}
+            className="mt-16"
+          >
+            <img
+              src={`${import.meta.env.BASE_URL}images/enterprise-ai-framework.png`}
+              alt="Enterprise AI Strategy: Use Case Framework — Architectural Deployment"
+              className="w-full rounded-2xl border border-white/10 opacity-90 hover:opacity-100 transition-opacity duration-500 shadow-2xl shadow-black/40"
+            />
+          </motion.div>
         </div>
       </section>
 
@@ -183,6 +198,21 @@ export default function AiDad() {
                 </motion.div>
               ))}
             </div>
+
+            {/* Product Philosophy visual */}
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, delay: 0.2 }}
+              className="mt-12"
+            >
+              <img
+                src={`${import.meta.env.BASE_URL}images/product-philosophy.png`}
+                alt="Product Philosophy: Outcome-Driven Development"
+                className="w-full rounded-2xl border border-white/10 opacity-90 hover:opacity-100 transition-opacity duration-500 shadow-2xl shadow-black/40"
+              />
+            </motion.div>
           </div>
         </section>
       )}
