@@ -183,14 +183,14 @@ const FALLBACK_TIMELINE: TimelineItem[] = [
   {
     year: '2024–2026',
     title: 'Product Management Director',
-    company: 'AECOM',
+    company: 'Fortune 200 Enterprise',
     description:
       'Spearheaded global enterprise AI roadmaps. Delivered production-grade automation reaching 200,000+ monthly interactions and enabling safe, enterprise-data-grounded artifact creation.',
   },
   {
     year: '2022–2024',
     title: 'Senior Product Manager',
-    company: 'AECOM',
+    company: 'Fortune 200 Enterprise',
     description:
       'Led a portfolio of seven products and a 30-person team, influencing $1B in revenue generation and significantly improving pursuit win rates through AI empowerment.',
   },
@@ -261,7 +261,7 @@ const FALLBACK_AIDAD: AiDadContent = {
   missionStatement:
     "Bridging the visibility gap between executive intent and engineering execution to prevent Strategic Failure in AI implementations.",
   keyMetrics: [
-    { value: '200K+', label: 'Monthly Interactions', description: 'Production-grade AI automation interactions delivered at AECOM' },
+    { value: '200K+', label: 'Monthly Interactions', description: 'Production-grade AI automation interactions delivered at a Fortune 200 Enterprise' },
     { value: '$1B', label: 'Revenue Influenced', description: 'Revenue generation influenced through AI-empowered pursuit strategies' },
     { value: '$10M', label: 'ARR Built', description: 'Annual revenue scaled from zero at Archer Technologies' },
   ],

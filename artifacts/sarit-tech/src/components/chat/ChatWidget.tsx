@@ -5,18 +5,38 @@ import { useGeminiChat } from '@/hooks/use-gemini-chat';
 import { useAnalytics } from '@/hooks/use-analytics';
 import { cn } from '@/lib/utils';
 
-// Renders assistant message content:
-//  - [Source: ...] tags → violet pill
-//  - **bold** → <strong>
+// Renders assistant message content with rich formatting:
+//  - [text](url)          → clickable link (primary color)
+//  - [Source: ...]        → violet pill badge
+//  - **bold**             → <strong>
+//  - https://... URLs     → clickable link
+//  - email@domain.com     → mailto link
 //  - Preserves newlines
 function MessageContent({ text }: { text: string }) {
-  // Split on [Source: ...] or **bold** tokens
-  const TOKEN_RE = /(\[Source:[^\]]+\]|\*\*[^*]+\*\*)/g;
+  const TOKEN_RE = /(\[[^\]]+\]\([^)]+\)|\[Source:[^\]]+\]|\*\*[^*]+\*\*|https?:\/\/[^\s)>\]]+|[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,})/g;
   const parts = text.split(TOKEN_RE);
 
   return (
     <>
       {parts.map((part, i) => {
+        // Markdown link: [Display Text](url)
+        const mdLink = part.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
+        if (mdLink) {
+          const [, label, href] = mdLink;
+          const isMailto = href.startsWith('mailto:');
+          return (
+            <a
+              key={i}
+              href={href}
+              target={isMailto ? undefined : '_blank'}
+              rel={isMailto ? undefined : 'noopener noreferrer'}
+              className="text-primary underline underline-offset-2 hover:text-primary/80 transition-colors"
+            >
+              {label}
+            </a>
+          );
+        }
+        // Source badge: [Source: ...]
         if (/^\[Source:[^\]]+\]$/.test(part)) {
           return (
             <span
@@ -27,9 +47,37 @@ function MessageContent({ text }: { text: string }) {
             </span>
           );
         }
+        // Bold: **text**
         if (/^\*\*[^*]+\*\*$/.test(part)) {
           return <strong key={i}>{part.slice(2, -2)}</strong>;
         }
+        // Bare URL
+        if (/^https?:\/\//.test(part)) {
+          return (
+            <a
+              key={i}
+              href={part}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary underline underline-offset-2 hover:text-primary/80 transition-colors break-all"
+            >
+              {part.replace(/^https?:\/\//, '')}
+            </a>
+          );
+        }
+        // Bare email
+        if (/^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/.test(part)) {
+          return (
+            <a
+              key={i}
+              href={`mailto:${part}`}
+              className="text-primary underline underline-offset-2 hover:text-primary/80 transition-colors"
+            >
+              {part}
+            </a>
+          );
+        }
+        // Plain text — preserve newlines
         return (
           <React.Fragment key={i}>
             {part.split('\n').map((line, j, arr) => (

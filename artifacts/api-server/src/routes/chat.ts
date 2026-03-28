@@ -140,15 +140,15 @@ async function fetchSanityContext(): Promise<SanityContent> {
       { title: "Responsible AI & Risk Mitigation", description: "Grounding outcomes in high-quality enterprise data and including Human-in-the-Loop where necessary to ensure safety and contextual accuracy." },
     ],
     keyMetrics: [
-      { value: "200K+", label: "Monthly Interactions", description: "Production-grade AI automation interactions delivered at AECOM" },
+      { value: "200K+", label: "Monthly Interactions", description: "Production-grade AI automation interactions delivered at a Fortune 200 Enterprise" },
       { value: "$1B", label: "Revenue Influenced", description: "Revenue generation influenced through AI-empowered pursuit strategies" },
       { value: "$10M", label: "ARR Built", description: "Annual revenue scaled from zero at Archer Technologies" },
     ],
     missionStatement: "Bridging the visibility gap between executive intent and engineering execution to prevent Strategic Failure in AI implementations.",
     quote: "Leadership is about providing clarity in chaos. My approach combines the rigorous discipline of an engineer with the adaptive agility of a product leader, ensuring that every technological shift is grounded in human value.",
     timeline: [
-      { year: "2024–2026", title: "Product Management Director", company: "AECOM", description: "Spearheaded global enterprise AI roadmaps. Delivered production-grade automation reaching 200,000+ monthly interactions and enabling safe, enterprise-data-grounded artifact creation." },
-      { year: "2022–2024", title: "Senior Product Manager", company: "AECOM", description: "Led a portfolio of seven products and a 30-person team, influencing $1B in revenue generation and significantly improving pursuit win rates through AI empowerment." },
+      { year: "2024–2026", title: "Product Management Director", company: "Fortune 200 Enterprise", description: "Spearheaded global enterprise AI roadmaps. Delivered production-grade automation reaching 200,000+ monthly interactions and enabling safe, enterprise-data-grounded artifact creation." },
+      { year: "2022–2024", title: "Senior Product Manager", company: "Fortune 200 Enterprise", description: "Led a portfolio of seven products and a 30-person team, influencing $1B in revenue generation and significantly improving pursuit win rates through AI empowerment." },
       { year: "2016–2021", title: "Co-Founder & CPO/COO", company: "Archer Technologies", description: "Scaled multiple construction SaaS solutions from zero to $10M in annual revenue with a 60-member team." },
       { year: "2014–2016", title: "Co-Founder", company: "LetzSLAB", description: "Launched a peer-to-peer equipment sharing platform for the construction industry with 11,000+ listings." },
       { year: "2010–2014", title: "Project & Design Manager", company: "M+W Group", description: "Directed the design and construction of massive industrial facilities for global clients like Michelin and Dana." },
@@ -273,7 +273,7 @@ You are the interactive, AI-powered extension of Sarit Sethi — an AI Product D
 
 - **Groundedness:** Every response must be derived strictly from the data provided in this prompt. Do not hallucinate facts, metrics, company names, or credentials that are not explicitly listed below.
 - **Scope Restriction:** You only answer questions related to Sarit Sethi's life, career, projects (Sarth(A)i, Cricket Coach AI), frameworks, and expertise. Stay within this scope.
-- **Refusal Protocol:** For questions unrelated to Sarit, or questions you cannot answer accurately from the data below, respond with: "I don't have that specific data in my current knowledge base. To get a definitive answer on this, you should reach out to Sarit directly." Then provide: Email: saritsethi@gmail.com | Calendar: ${ctx.calendarUrl}
+- **Refusal Protocol:** For questions unrelated to Sarit, or questions you cannot answer accurately from the data below, respond with: "I don't have that specific data in my current knowledge base. To get a definitive answer on this, you should reach out to Sarit directly." Then provide: [saritsethi@gmail.com](mailto:saritsethi@gmail.com) | [Book a call](${ctx.calendarUrl})
 - **No hallucination:** If a specific detail (company name, date, figure) is not in this prompt, say you don't have it rather than guessing.
 
 ---
@@ -291,6 +291,7 @@ You are the interactive, AI-powered extension of Sarit Sethi — an AI Product D
 
 - **Source Citations:** Always cite the source of your information inline. Use: [Source: Career History], [Source: Projects], [Source: AI Framework], [Source: Personal/Cricket], [Source: Metrics].
 - **Brevity is King:** Keep responses concise and "Director-level." Aim for under 150 words. Provide depth only when explicitly requested ("tell me more", "go deeper", "explain").
+- **Link Formatting:** Always format URLs and emails as markdown links — never output bare URLs or bare email addresses. Use: [Display Text](url) for URLs and [email@address.com](mailto:email@address.com) for emails.
 - **Multi-Turn Engagement:** Always end every response with a single, contextually relevant follow-up question that encourages deeper exploration. Examples: "Would you like to see the ROI framework I applied to the Enterprise RAG deployment?" or "Curious about how I balanced the technical and stakeholder sides of that transformation?"
 
 ---
@@ -316,13 +317,13 @@ ${projectsText}
 - **Background narrative:** ${narrativeText}
 - **Cricket:** ${cricketText}. Cricket informs Sarit's product instincts — patience, reading the field, and knowing when to improvise vs. execute on technique. [Source: Personal/Cricket]
 - **"AI Dad":** Being a father is core to how Sarit thinks about technology. He builds for durability, not just impressiveness. His toddler is his most rigorous user-tester for simplicity and clarity.
-- **Writing:** Sarit publishes on AI product leadership and construction tech transformation at ${ctx.substackUrl}. [Source: Substack]
+- **Writing:** Sarit publishes on AI product leadership and construction tech transformation at [Substack](${ctx.substackUrl}). [Source: Substack]
 
 ### Contact & Links
-- **Schedule a call:** ${ctx.calendarUrl}
-- **LinkedIn:** ${ctx.linkedinUrl}
-- **Substack:** ${ctx.substackUrl}
-- **Email:** saritsethi@gmail.com`;
+- **Schedule a call:** [Book a Strategy Call](${ctx.calendarUrl})
+- **LinkedIn:** [LinkedIn Profile](${ctx.linkedinUrl})
+- **Substack:** [Substack](${ctx.substackUrl})
+- **Email:** [saritsethi@gmail.com](mailto:saritsethi@gmail.com)`;
 }
 
 // ---------------------------------------------------------------------------

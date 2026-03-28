@@ -79,10 +79,7 @@ export default function AiDad() {
       {/* Key Metrics */}
       <section className="py-16 border-y border-white/5 bg-secondary/10">
         <div className="max-w-7xl mx-auto px-6 md:px-8">
-          <div
-            className="grid gap-6"
-            style={{ gridTemplateColumns: `repeat(${metrics.length}, minmax(0, 1fr))` }}
-          >
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {metrics.map((metric, i) => (
               <motion.div
                 key={metric.label}
@@ -92,7 +89,7 @@ export default function AiDad() {
                 transition={{ duration: 0.5, delay: i * 0.1 }}
                 className="p-6 rounded-2xl border border-white/10 bg-card text-center group hover:border-primary/30 transition-colors"
               >
-                <div className="text-3xl font-display font-extrabold text-gradient-primary mb-1">
+                <div className="text-3xl md:text-4xl font-display font-extrabold text-gradient-primary mb-1 break-words">
                   {metric.value}
                 </div>
                 <div className="text-sm font-semibold text-white mb-2">{metric.label}</div>
