@@ -49,22 +49,26 @@ export default function AiDad() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
+            className="flex flex-col md:flex-row md:items-end justify-between gap-6"
           >
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-primary/30 bg-primary/10 text-primary text-sm font-medium mb-6">
-              <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-              Tech Leadership
+            <div>
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-primary/30 bg-primary/10 text-primary text-sm font-medium mb-6">
+                <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+                Tech Leadership
+              </div>
+              <h1 className="text-5xl md:text-7xl font-display font-extrabold tracking-tight mb-6">
+                The <span className="text-gradient-primary">Professional</span>
+              </h1>
+              <p className="text-xl text-muted-foreground max-w-2xl font-light leading-relaxed">
+                Product leadership that treats AI as a business enabler — not a science experiment.
+                ROI-first strategy. Enterprise-grade execution. Zero tolerance for tech theater.
+              </p>
             </div>
-            <h1 className="text-5xl md:text-7xl font-display font-extrabold tracking-tight mb-6">
-              The <span className="text-gradient-primary">Professional</span>
-            </h1>
-            <p className="text-xl text-muted-foreground max-w-2xl font-light leading-relaxed mb-8">
-              Product leadership that treats AI as a business enabler — not a science experiment.
-              ROI-first strategy. Enterprise-grade execution. Zero tolerance for tech theater.
-            </p>
             <a
               href={`${import.meta.env.BASE_URL}Sarit_Sethi_Resume.pdf`}
               download="Sarit_Sethi_Resume.pdf"
               onClick={() => trackEvent('resume_downloaded', { source: 'professional_page' })}
+              className="flex-shrink-0"
             >
               <Button variant="outline" size="sm" className="border-white/10 hover:border-primary/50">
                 <FileDown className="w-4 h-4 mr-2" />
