@@ -42,7 +42,7 @@ export default function About() {
               The Journey
             </p>
             <h1 className="text-4xl md:text-6xl font-display font-extrabold tracking-tight mb-4">
-              My Story
+              Story
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl font-light leading-relaxed">
               A global citizen who has lived and worked across Delhi, Toronto, and Chicago —

@@ -12,7 +12,7 @@ const BASE = import.meta.env.BASE_URL?.replace(/\/$/, '') || '';
 const NAV_TILES = [
   {
     href: '/about',
-    label: 'My Story',
+    label: 'Story',
     description: 'Delhi to Chicago — the narrative behind the builder.',
     icon: BookOpen,
     accent: 'from-blue-500/10 to-transparent',

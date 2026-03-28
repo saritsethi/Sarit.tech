@@ -5,7 +5,7 @@ import { Layout } from '@/components/layout/Layout';
 import { useAiDadContent } from '@/hooks/use-content';
 import { useSectionTracking, useAnalytics } from '@/hooks/use-analytics';
 import * as Icons from 'lucide-react';
-import { type LucideProps, Brain, CheckCircle2 } from 'lucide-react';
+import { type LucideProps, Brain, CheckCircle2, FileDown } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 
 type LucideIconName = keyof typeof Icons;
@@ -61,17 +61,16 @@ export default function AiDad() {
               Product leadership that treats AI as a business enabler — not a science experiment.
               ROI-first strategy. Enterprise-grade execution. Zero tolerance for tech theater.
             </p>
-            <Button
-              size="lg"
-              onClick={() => {
-                trackEvent('cta_clicked', { button: 'meet_digital_twin_aidad' });
-                const chatBtn = document.querySelector('[data-testid="button-chat-toggle"]') as HTMLButtonElement | null;
-                chatBtn?.click();
-              }}
+            <a
+              href={`${import.meta.env.BASE_URL}Sarit_Sethi_Resume.pdf`}
+              download="Sarit_Sethi_Resume.pdf"
+              onClick={() => trackEvent('resume_downloaded', { source: 'professional_page' })}
             >
-              <Brain className="w-4 h-4 mr-2" />
-              Ask My Digital Twin
-            </Button>
+              <Button variant="outline" size="sm" className="border-white/10 hover:border-primary/50">
+                <FileDown className="w-4 h-4 mr-2" />
+                Download Resume
+              </Button>
+            </a>
           </motion.div>
         </div>
       </section>
