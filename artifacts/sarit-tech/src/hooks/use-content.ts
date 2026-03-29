@@ -315,16 +315,16 @@ const FALLBACK_PROJECTS: Project[] = [
   },
   {
     id: 'proj4',
-    title: 'sarit.tech Digital Twin',
-    slug: 'sarit-tech-digital-twin',
-    thumbnailUrl: null,
+    title: 'Job Application Agent',
+    slug: 'job-application-agent',
+    thumbnailUrl: `${import.meta.env.BASE_URL}job-agent-workflow.png`,
     thumbnailHotspot: null,
     videoUrl: null,
     description:
-      "A high-conversion storefront and always-on concierge speaking in a direct, industrial minimalist tone. Live production AI digital twin powered by Gemini and RAG.",
-    tech: ['Gemini AI', 'RAG', 'React', 'PostgreSQL', 'Sanity CMS'],
+      'An 8-step autonomous agentic workflow that hunts, scores, and applies to jobs on your behalf — running on a cron every 2 days. Multi-source job search, AI scoring engine, deep URL validation, and curated email digests.',
+    tech: ['Mastra', 'OpenAI', 'Replit', 'PostgreSQL', 'Google Sheets', 'Node.js'],
     status: 'active',
-    link: 'https://sarit.tech',
+    link: null,
   },
 ];
 
