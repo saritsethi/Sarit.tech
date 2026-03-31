@@ -528,7 +528,9 @@ router.post("/chat", async (req, res) => {
   }
 
   // Mark the user message row as synced to PostHog (prevents duplicate backfill)
-  if (userMsgRow?.id) {
+  // Only set when the PostHog client is active so unqueued rows remain eligible
+  // for a future backfill run if the key is later configured.
+  if (posthog && userMsgRow?.id) {
     db.update(messagesTable)
       .set({ posthogSynced: true })
       .where(eq(messagesTable.id, userMsgRow.id))
