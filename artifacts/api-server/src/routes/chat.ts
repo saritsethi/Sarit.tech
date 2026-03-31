@@ -426,11 +426,11 @@ router.post("/chat", async (req, res) => {
     }
   }
 
-  await db.insert(messagesTable).values({
+  const [userMsgRow] = await db.insert(messagesTable).values({
     conversationId,
     role: "user",
     content: message,
-  });
+  }).returning();
 
   const [allMessages, sanityContext, ragChunks] = await Promise.all([
     db
@@ -485,17 +485,17 @@ router.post("/chat", async (req, res) => {
   });
 
   // -------------------------------------------------------------------------
-  // Out-of-scope detection — log to PostHog + DB if refusal phrase triggered
+  // Analytics — fire chatbot_query to PostHog for every user message
   // -------------------------------------------------------------------------
-  if (fullResponse.includes(REFUSAL_PHRASE)) {
-    const convIdStr = conversationId?.toString() ?? null;
+  const convIdStr = conversationId?.toString() ?? null;
+  const isOutOfScope = fullResponse.includes(REFUSAL_PHRASE);
 
-    // Fire-and-forget: DB insert
+  if (isOutOfScope) {
+    // Keep legacy out-of-scope event for backwards-compatible PostHog views
     db.insert(outOfScopeQueries)
       .values({ query: message, conversationId: convIdStr })
       .catch((err: unknown) => console.error("[out-of-scope] DB insert failed:", err));
 
-    // Fire-and-forget: PostHog event
     if (posthog) {
       posthog.capture({
         distinctId: `conversation-${convIdStr ?? "unknown"}`,
@@ -507,6 +507,29 @@ router.post("/chat", async (req, res) => {
         },
       });
     }
+  }
+
+  // Fire comprehensive chatbot_query event for every message
+  if (posthog) {
+    posthog.capture({
+      distinctId: `conversation-${convIdStr ?? "unknown"}`,
+      event: "chatbot_query",
+      properties: {
+        query: message,
+        conversationId: convIdStr,
+        isNewConversation: !existingConvId,
+        isOutOfScope,
+        responseLengthChars: fullResponse.length,
+      },
+    });
+  }
+
+  // Mark the user message row as synced to PostHog (prevents duplicate backfill)
+  if (userMsgRow?.id) {
+    db.update(messagesTable)
+      .set({ posthogSynced: true })
+      .where(eq(messagesTable.id, userMsgRow.id))
+      .catch((err: unknown) => console.error("[analytics] posthog_synced update failed:", err));
   }
 
   res.write(`data: ${JSON.stringify({ done: true, conversationId })}\n\n`);
