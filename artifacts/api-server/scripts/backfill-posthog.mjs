@@ -7,6 +7,12 @@
  *   node artifacts/api-server/scripts/backfill-posthog.mjs
  *
  * Safe to re-run: already-synced rows (posthog_synced = true) are skipped.
+ *
+ * Properties derived per message:
+ * - isNewConversation: true only for the first user message per conversation
+ * - isOutOfScope: derived from the assistant reply immediately following this
+ *   user message (not the latest reply in the conversation)
+ * - responseLengthChars: length of that same immediately-following reply
  */
 
 import { createRequire } from "module";
@@ -47,11 +53,36 @@ async function run() {
   await client.connect();
   console.log("[backfill] Connected to DB");
 
+  // Single query that:
+  // 1. Identifies only unsynced user messages
+  // 2. Computes isNewConversation via window function (first per conversation)
+  // 3. Pairs each user message with the assistant reply immediately following it
   const { rows } = await client.query(`
-    SELECT id, conversation_id, content, created_at
-    FROM messages
-    WHERE role = 'user' AND posthog_synced = false
-    ORDER BY created_at ASC
+    SELECT
+      m.id,
+      m.conversation_id,
+      m.content       AS user_content,
+      m.created_at,
+      (ROW_NUMBER() OVER (
+        PARTITION BY m.conversation_id
+        ORDER BY m.created_at ASC, m.id ASC
+      ) = 1)          AS is_new_conversation,
+      (
+        SELECT a.content
+        FROM messages a
+        WHERE a.conversation_id = m.conversation_id
+          AND a.role = 'assistant'
+          AND (
+            a.created_at > m.created_at
+            OR (a.created_at = m.created_at AND a.id > m.id)
+          )
+        ORDER BY a.created_at ASC, a.id ASC
+        LIMIT 1
+      )               AS assistant_content
+    FROM messages m
+    WHERE m.role = 'user'
+      AND m.posthog_synced = false
+    ORDER BY m.created_at ASC, m.id ASC
   `);
 
   console.log(`[backfill] ${rows.length} unsynced user messages to process`);
@@ -66,14 +97,7 @@ async function run() {
 
   for (const msg of rows) {
     const convIdStr = msg.conversation_id.toString();
-
-    const { rows: assistantRows } = await client.query(
-      `SELECT content FROM messages
-       WHERE conversation_id = $1 AND role = 'assistant'
-       ORDER BY created_at DESC LIMIT 1`,
-      [msg.conversation_id]
-    );
-    const assistantContent = assistantRows[0]?.content ?? "";
+    const assistantContent = msg.assistant_content ?? "";
     const isOutOfScope = assistantContent.includes(REFUSAL_PHRASE);
 
     try {
@@ -82,22 +106,23 @@ async function run() {
         event: "chatbot_query",
         timestamp: new Date(msg.created_at),
         properties: {
-          query: msg.content,
+          query: msg.user_content,
           conversationId: convIdStr,
-          isNewConversation: true,
+          isNewConversation: msg.is_new_conversation,
           isOutOfScope,
           responseLengthChars: assistantContent.length || null,
           backfilled: true,
         },
       });
 
+      // Only mark synced after successful capture call
       await client.query(
         "UPDATE messages SET posthog_synced = true WHERE id = $1",
         [msg.id]
       );
 
       console.log(
-        `[backfill] ✓ msg ${msg.id} | out-of-scope: ${isOutOfScope} | "${msg.content.slice(0, 60)}"`
+        `[backfill] ✓ msg ${msg.id} | new: ${msg.is_new_conversation} | oos: ${isOutOfScope} | "${msg.user_content.slice(0, 55)}"`
       );
       succeeded++;
     } catch (err) {
