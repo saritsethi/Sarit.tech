@@ -404,6 +404,7 @@ router.post("/chat", async (req, res) => {
       : undefined;
 
   let conversationId = existingConvId;
+  let isNewConversation = false;
 
   if (!conversationId) {
     const [conv] = await db
@@ -411,6 +412,7 @@ router.post("/chat", async (req, res) => {
       .values({ title: "Chat Session" })
       .returning();
     conversationId = conv.id;
+    isNewConversation = true;
   } else {
     const existing = await db
       .select()
@@ -423,6 +425,7 @@ router.post("/chat", async (req, res) => {
         .values({ title: "Chat Session" })
         .returning();
       conversationId = conv.id;
+      isNewConversation = true;
     }
   }
 
@@ -517,7 +520,7 @@ router.post("/chat", async (req, res) => {
       properties: {
         query: message,
         conversationId: convIdStr,
-        isNewConversation: !existingConvId,
+        isNewConversation,
         isOutOfScope,
         responseLengthChars: fullResponse.length,
       },
