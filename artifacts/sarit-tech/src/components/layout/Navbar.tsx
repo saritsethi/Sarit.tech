@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useLocation } from 'wouter';
 import { Menu, X, Brain } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/Button';
 import { useAnalytics } from '@/hooks/use-analytics';
 
 const NAV_LINKS = [
@@ -81,15 +80,6 @@ export function Navbar() {
                 {link.name}
               </Link>
             ))}
-            <Link
-              href="/contact"
-              onClick={() => handleNavClick('Contact CTA')}
-              className="ml-4"
-            >
-              <Button size="sm" variant="outline" className="border-white/10 hover:border-primary/50">
-                Let's Connect
-              </Button>
-            </Link>
           </nav>
 
           {/* Mobile Toggle */}
@@ -126,9 +116,6 @@ export function Navbar() {
                   {link.name}
                 </Link>
               ))}
-              <Link href="/contact" onClick={() => handleNavClick('Contact CTA')} className="mt-6">
-                <Button size="lg" className="w-full">Let's Connect</Button>
-              </Link>
             </div>
           </motion.div>
         )}
