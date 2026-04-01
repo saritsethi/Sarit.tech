@@ -6,6 +6,7 @@ import Home from "@/pages/Home";
 import About from "@/pages/About";
 import AiDad from "@/pages/AiDad";
 import Projects from "@/pages/Projects";
+import Contact from "@/pages/Contact";
 import NotFound from "@/pages/not-found";
 import { ChatWidget } from "@/components/chat/ChatWidget";
 
@@ -25,6 +26,7 @@ function Router() {
       <Route path="/about" component={About} />
       <Route path="/aidad" component={AiDad} />
       <Route path="/builder" component={Projects} />
+      <Route path="/contact" component={Contact} />
       <Route component={NotFound} />
     </Switch>
   );

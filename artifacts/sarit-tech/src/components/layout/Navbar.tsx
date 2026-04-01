@@ -11,6 +11,7 @@ const NAV_LINKS = [
   { name: 'Story', href: '/about' },
   { name: 'Professional', href: '/aidad' },
   { name: 'Projects', href: '/builder' },
+  { name: 'Contact', href: '/contact' },
 ];
 
 function isActive(location: string, href: string) {
@@ -80,15 +81,15 @@ export function Navbar() {
                 {link.name}
               </Link>
             ))}
-            <a
-              href="#contact"
+            <Link
+              href="/contact"
               onClick={() => handleNavClick('Contact CTA')}
               className="ml-4"
             >
               <Button size="sm" variant="outline" className="border-white/10 hover:border-primary/50">
                 Let's Connect
               </Button>
-            </a>
+            </Link>
           </nav>
 
           {/* Mobile Toggle */}
@@ -125,9 +126,9 @@ export function Navbar() {
                   {link.name}
                 </Link>
               ))}
-              <a href="#contact" onClick={() => handleNavClick('Contact CTA')} className="mt-6">
+              <Link href="/contact" onClick={() => handleNavClick('Contact CTA')} className="mt-6">
                 <Button size="lg" className="w-full">Let's Connect</Button>
-              </a>
+              </Link>
             </div>
           </motion.div>
         )}
