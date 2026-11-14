@@ -10,7 +10,6 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@replit/connectors-sdk": "^0.3.0",
     "@sanity/client": "^7.20.0",
     "@types/pdf-parse": "^1.1.5",
     "@workspace/api-zod": "workspace:*",
@@ -20,6 +19,7 @@
     "cors": "^2",
     "drizzle-orm": "catalog:",
     "express": "^5",
+    "googleapis": "^140.0.0",
     "pdf-parse": "^1.1.1",
     "pino": "^9",
     "pino-http": "^10",
