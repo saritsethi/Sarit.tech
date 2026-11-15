@@ -53,7 +53,7 @@ export function formatContextBlock(chunks: RetrievedChunk[]): string {
   const entries = chunks
     .map(
       (c, i) =>
-        `[Source: ${c.source_name} — Chunk ${i + 1}]\n${c.chunkText}`,
+        `[Source: ${c.sourceName} — Chunk ${i + 1}]\n${c.chunkText}`,
     )
     .join("\n\n---\n\n");
 

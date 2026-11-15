@@ -360,7 +360,7 @@ Return ONLY a JSON array of 3 strings, nothing else. Example format:
 ["prompt one", "prompt two", "prompt three"]`;
 
     const result = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
+      model: "gemini-3.8-flash",
       contents: [{ role: "user", parts: [{ text: promptGenInstruction }] }],
     });
     const raw = (result.text ?? "").trim();
@@ -462,7 +462,7 @@ router.post("/chat", async (req, res) => {
   let fullResponse = "";
 
   const stream = await ai.models.generateContentStream({
-    model: "gemini-2.5-flash",
+    model: "gemini-3.8-flash",
     contents: allMessages.map((m) => ({
       role: m.role === "assistant" ? ("model" as const) : ("user" as const),
       parts: [{ text: m.content }],
