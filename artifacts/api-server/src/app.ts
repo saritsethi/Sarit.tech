@@ -1,9 +1,3 @@
-// Vercel's serverless-function typecheck resolves the Express types
-// differently than the local install and wrongly reports `app.use` as
-// missing on `Application` (the file passes the local bundler typecheck).
-// This suppresses that false positive for this file only; it changes no
-// runtime behavior and leaves the typecheck in place for other files.
-// @ts-nocheck
 import express, { type Application } from "express";
 import cors from "cors";
 import pinoHttp from "pino-http";
