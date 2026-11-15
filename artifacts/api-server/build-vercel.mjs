@@ -1,4 +1,4 @@
-// Vercel build: bundle api/index.ts (Express app) to plain JS api/index.js, then remove api/index.ts so Vercel only sees a plain-JS serverless function.
+// Vercel build: bundle api/index.ts (Express app) to plain JS api/index.js. Keep api/index.ts in the checkout so Vercel can read it after the build.
 import { createRequire } from "node:module";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -27,7 +27,6 @@ async function buildVercel() {
     sourcemap: false,
   // No pino plugin: it adds worker entry points (incompatible with a single outfile), and the production logger uses no transport.
   });
-  await rm(path.resolve(repoRoot, "api/index.ts"), { force: true });
 }
 
 buildVercel().catch((err) => {
