@@ -89,7 +89,7 @@ function VideoModal({
           <p className="mt-3 text-center text-sm text-white/60">Loading video...</p>
       )}
         {hasError && (
-          <p className="mt-3 text-center text-sm text-red-300">This video could not be loaded. Please check your connection and try again.</p>p>
+          <p className="mt-3 text-center text-sm text-red-300">This video could not be loaded. Please check your connection and try again.</p>
       )}
       </motion.div>
     </motion.div>
