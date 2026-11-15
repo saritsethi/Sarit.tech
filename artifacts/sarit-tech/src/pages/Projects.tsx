@@ -6,6 +6,7 @@ import { useSectionTracking } from '@/hooks/use-analytics';
 import { useAnalytics } from '@/hooks/use-analytics';
 import { ArrowUpRight, Play, X, Github, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
+import ProjectDiagram from '@/components/ProjectDiagram';
 
 const BASE = import.meta.env.BASE_URL?.replace(/\/$/, '') || '';
 
@@ -124,7 +125,9 @@ function ProjectTile({
     >
       {/* Thumbnail / video preview area */}
       <div className="relative aspect-video bg-secondary overflow-hidden flex-shrink-0">
-        {hasVideo ? (
+        ['cricketiq', 'homedecider', 'job-application-agent'].includes(project.slug ?? '') ? (
+            <ProjectDiagram slug={project.slug} />
+          ) : hasVideo ? (
           <>
             <video
               ref={videoRef}
