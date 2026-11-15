@@ -19,11 +19,11 @@ const sanityClient = sanityReady
     })
   : null;
 
-function sanityImageUrl(assetRef: string | undefined): string | null {
+function sanityImageUrl(assetRef: string | undefined, width?: number): string | null {
   if (!assetRef || !PROJECT_ID || !DATASET) return null;
   const [, id, dimensions, format] = assetRef.split("-");
   if (!id || !dimensions || !format) return null;
-  return `https://cdn.sanity.io/images/${PROJECT_ID}/${DATASET}/${id}-${dimensions}.${format}`;
+  return `https://cdn.sanity.io/images/${PROJECT_ID}/${DATASET}/${id}-${dimensions}.${format}?w=${width ?? 1600}&q=80&fm=webp&fit=max`;
 }
 
 function sanityFileUrl(assetRef: string | undefined): string | null {
@@ -81,9 +81,9 @@ router.get("/content/home", async (_req, res) => {
     heroHeadline: raw.heroHeadline,
     heroSubtext: raw.heroSubtext,
     primaryCTA: raw.primaryCTA,
-    heroImageUrl: sanityImageUrl(raw.heroImageRef as string | undefined),
+    heroImageUrl: sanityImageUrl(raw.heroImageRef as string | undefined, 192),
     heroImageHotspot: raw.heroImageHotspot ?? null,
-    heroBackgroundImageUrl: sanityImageUrl(raw.heroBackgroundImageRef as string | undefined),
+    heroBackgroundImageUrl: sanityImageUrl(raw.heroBackgroundImageRef as string | undefined, 1408),
   };
 
   return res.json({ data, ready: sanityReady });
@@ -112,11 +112,11 @@ router.get("/content/about", async (_req, res) => {
   );
 
   const data = {
-    portraitUrl: sanityImageUrl(raw.portraitRef as string | undefined),
+    portraitUrl: sanityImageUrl(raw.portraitRef as string | undefined, 800),
     portraitHotspot: raw.portraitHotspot ?? null,
-    explorerImageUrl: sanityImageUrl(raw.explorerImageRef as string | undefined),
-    bikingImageUrl: sanityImageUrl(raw.bikingImageRef as string | undefined),
-    bookCoverImageUrl: sanityImageUrl(raw.bookCoverImageRef as string | undefined),
+    explorerImageUrl: sanityImageUrl(raw.explorerImageRef as string | undefined, 560),
+    bikingImageUrl: sanityImageUrl(raw.bikingImageRef as string | undefined, 640),
+    bookCoverImageUrl: sanityImageUrl(raw.bookCoverImageRef as string | undefined, 420),
     narrative,
     cricketStats: raw.cricketStats ?? [],
   };
@@ -184,7 +184,7 @@ router.get("/content/projects", async (_req, res) => {
       id: p._id as string,
       title: p.title as string,
       slug: p.slug as string | null,
-      thumbnailUrl: sanityImageUrl(p.thumbnailRef as string | undefined),
+      thumbnailUrl: sanityImageUrl(p.thumbnailRef as string | undefined, 1200),
       thumbnailHotspot: p.thumbnailHotspot ?? null,
       videoUrl,
       description: blockContentToText(
@@ -224,8 +224,8 @@ router.get("/content/leadership", async (_req, res) => {
   const data = {
     ...raw,
     frameworkPDFUrl: sanityFileUrl(raw.frameworkPDFUrl as string | undefined),
-    frameworkImageUrl: sanityImageUrl(raw.frameworkImageRef as string | undefined),
-    philosophyImageUrl: sanityImageUrl(raw.philosophyImageRef as string | undefined),
+    frameworkImageUrl: sanityImageUrl(raw.frameworkImageRef as string | undefined, 1800),
+    philosophyImageUrl: sanityImageUrl(raw.philosophyImageRef as string | undefined, 1660),
   };
 
   return res.json({ data, ready: sanityReady });
