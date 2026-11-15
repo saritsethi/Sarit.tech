@@ -201,6 +201,7 @@ export default function About() {
                   src={aboutContent.bookCoverImageUrl || `${import.meta.env.BASE_URL}images/from-our-verandah.png`}
                   alt="From Our Verandah — Poems by Neetika Wahi & Sarit Sethi"
                   className="w-44 md:w-52 rounded-xl shadow-2xl shadow-black/60 border border-white/10 hover:shadow-violet-500/10 transition-shadow duration-500"
+                  loading="lazy"
                 />
               </motion.a>
               <a
