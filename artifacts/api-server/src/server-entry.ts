@@ -5,6 +5,6 @@
  * guard plus the 24h ingest scheduler are not started here — daily ingest
  * runs via Vercel Cron (see vercel.json) hitting GET /api/rag/ingest.
  */
-import app from "../artifacts/api-server/src/app";
+import app from "./app";
 
 export default app;

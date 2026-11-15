@@ -1,4 +1,4 @@
-// Vercel build: bundle api/index.ts (Express app) to plain JS api/index.js. Keep api/index.ts in the checkout so Vercel can read it after the build.
+// Vercel build: bundle artifacts/api-server/src/server-entry.ts (Express app) to plain JS api/index.js. No .ts file lives in api/, so Vercel never typechecks the entry.
 import { createRequire } from "node:module";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -15,7 +15,7 @@ async function buildVercel() {
   await rm(path.resolve(repoRoot, "api/index.js"), { force: true });
 
   await esbuild({
-    entryPoints: [path.resolve(repoRoot, "api/index.ts")],
+    entryPoints: [path.resolve(repoRoot, "artifacts/api-server/src/server-entry.ts")],
     platform: "node",
     bundle: true,
     format: "cjs",
