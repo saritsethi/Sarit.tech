@@ -23,7 +23,7 @@ function sanityImageUrl(assetRef: string | undefined, width?: number): string | 
   if (!assetRef || !PROJECT_ID || !DATASET) return null;
   const [, id, dimensions, format] = assetRef.split("-");
   if (!id || !dimensions || !format) return null;
-  return `https://cdn.sanity.io/images/${PROJECT_ID}/${DATASET}/${id}-${dimensions}.${format}?w=${width ?? 1600}&q=80&auto=format&fit=max`;
+  return `https://cdn.sanity.io/images/${PROJECT_ID}/${DATASET}/${id}-${dimensions}.${format}?w=${width ?? 1600}&q=80&fm=webp&fit=max`;
 }
 
 function sanityFileUrl(assetRef: string | undefined): string | null {
