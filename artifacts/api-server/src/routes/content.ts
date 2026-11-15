@@ -86,7 +86,7 @@ router.get("/content/home", async (_req, res) => {
     heroBackgroundImageUrl: sanityImageUrl(raw.heroBackgroundImageRef as string | undefined),
   };
 
-  res.json({ data, ready: sanityReady });
+  return res.json({ data, ready: sanityReady });
 });
 
 router.get("/content/about", async (_req, res) => {
@@ -121,7 +121,7 @@ router.get("/content/about", async (_req, res) => {
     cricketStats: raw.cricketStats ?? [],
   };
 
-  res.json({ data, ready: sanityReady });
+  return res.json({ data, ready: sanityReady });
 });
 
 router.get("/content/settings", async (_req, res) => {
@@ -134,7 +134,7 @@ router.get("/content/settings", async (_req, res) => {
     }`,
     null,
   );
-  res.json({ data: raw, ready: sanityReady });
+  return res.json({ data: raw, ready: sanityReady });
 });
 
 router.get("/content/timeline", async (_req, res) => {
@@ -142,7 +142,7 @@ router.get("/content/timeline", async (_req, res) => {
     `*[_type == "timeline"] | order(order asc)`,
     null,
   );
-  res.json({ data, ready: sanityReady });
+  return res.json({ data, ready: sanityReady });
 });
 
 router.get("/content/pillars", async (_req, res) => {
@@ -150,7 +150,7 @@ router.get("/content/pillars", async (_req, res) => {
     `*[_type == "strategyPillar"] | order(order asc)`,
     null,
   );
-  res.json({ data, ready: sanityReady });
+  return res.json({ data, ready: sanityReady });
 });
 
 router.get("/content/projects", async (_req, res) => {
@@ -198,7 +198,7 @@ router.get("/content/projects", async (_req, res) => {
     };
   });
 
-  res.json({ data, ready: sanityReady });
+  return res.json({ data, ready: sanityReady });
 });
 
 router.get("/content/leadership", async (_req, res) => {
@@ -228,7 +228,7 @@ router.get("/content/leadership", async (_req, res) => {
     philosophyImageUrl: sanityImageUrl(raw.philosophyImageRef as string | undefined),
   };
 
-  res.json({ data, ready: sanityReady });
+  return res.json({ data, ready: sanityReady });
 });
 
 export default router;

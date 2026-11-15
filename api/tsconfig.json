@@ -2,8 +2,7 @@
   "extends": "../tsconfig.base.json",
   "compilerOptions": {
     "module": "esnext",
-    "moduleResolution": "bundler",
-    "types": ["node"]
+    "moduleResolution": "bundler"
   },
   "include": ["index.ts"]
 }
