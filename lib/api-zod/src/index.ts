@@ -1,4 +1,10 @@
 export * from "./generated/api";
-export * from "./generated/types";
-export { CreateGeminiConversationBody, SendGeminiMessageBody } from "./generated/api";
-export type { CreateGeminiConversationBody, SendGeminiMessageBody } from "./generated/types";
+export type {
+  CreateGeminiConversationBody,
+  GeminiConversation,
+  GeminiConversationWithMessages,
+  GeminiError,
+  GeminiMessage,
+  HealthStatus,
+  SendGeminiMessageBody,
+} from "./generated/types";
