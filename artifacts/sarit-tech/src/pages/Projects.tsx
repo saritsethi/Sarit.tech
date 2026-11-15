@@ -29,10 +29,12 @@ function VideoModal({
   onClose: () => void;
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
     document.body.style.overflow = 'hidden';
-    setTimeout(() => videoRef.current?.play().catch(() => {}), 300);
+    videoRef.current?.play().catch(() => {});
     return () => { document.body.style.overflow = ''; };
   }, []);
 
@@ -74,9 +76,21 @@ function VideoModal({
             src={videoUrl}
             controls
             playsInline
+            preload="auto"
+            autoPlay
+            onCanPlay={() => setIsLoading(false)}
+            onWaiting={() => setIsLoading(true)}
+            onPlaying={() => setIsLoading(false)}
+            onError={() => { setIsLoading(false); setHasError(true); }}
             className="w-full h-full object-contain"
           />
         </div>
+        {isLoading && !hasError && (
+          <p className="mt-3 text-center text-sm text-white/60">Loading video...</p>
+      )}
+        {hasError && (
+          <p className="mt-3 text-center text-sm text-red-300">This video could not be loaded. Please check your connection and try again.</p>p>
+      )}
       </motion.div>
     </motion.div>
   );
