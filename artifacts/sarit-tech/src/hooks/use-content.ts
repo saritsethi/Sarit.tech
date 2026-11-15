@@ -181,6 +181,12 @@ const FALLBACK_ABOUT: AboutContent = {
 
 const FALLBACK_TIMELINE: TimelineItem[] = [
   {
+    year: 'October 2026 — present',
+    title: 'Lead AI Product Manager',
+    company: 'PPC Partners',
+    description: 'Lead AI Product Manager at PPC Partners.',
+  },
+  {
     year: '2024–2026',
     title: 'Product Management Director',
     company: 'Fortune 200 Enterprise',
