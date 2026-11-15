@@ -178,8 +178,9 @@ router.get("/content/projects", async (_req, res) => {
   }
 
   const data = raw.map((p) => {
-    const videoAssetUrl = sanityFileUrl(p.videoAssetRef as string | undefined);
-    const videoUrl = videoAssetUrl ?? (p.videoUrl as string | null) ?? null;
+    const videoAssetUrl = sanityFileUrl(p.videoAssetRef as string | undefined);     
+    // Serve the re-encoded local copy for SARTH(A)i: the Sanity copy is 11.5 MB and starts slowly.
+    const videoUrl = (p.slug as string | null) === "sarthai" ? "/videos/sarthai-demo.mp4" : (videoAssetUrl ?? (p.videoUrl as string | null) ?? null);
     return {
       id: p._id as string,
       title: p.title as string,
