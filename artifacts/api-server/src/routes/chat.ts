@@ -110,7 +110,7 @@ interface SanityContextCache {
   expiresAt: number;
 }
 let _sanityCache: SanityContextCache | null = null;
-const SANITY_CACHE_TTL_MS = 60_000;
+const SANITY_CACHE_TTL_MS = 60_000;  const FALLBACK_STARTER_PROMPTS: string[] = [   "What roles has Sarit held in product leadership?",   "Which product frameworks does Sarit use most?",   "What was Sarit's role in the ALOFT project?", ]; const STARTER_PROMPTS_TTL_MS = 60 * 60 * 1000; let starterPromptsCache: { prompts: string[]; fetchedAt: number } | null = null; function getCachedStarterPrompts(): string[] | null { return starterPromptsCache && Date.now() < starterPromptsCache.fetchedAt + STARTER_PROMPTS_TTL_MS ? starterPromptsCache.prompts : null; }  
 
 // ---------------------------------------------------------------------------
 // Fetch live context from Sanity (served from cache after first load)
@@ -331,7 +331,7 @@ ${projectsText}
 // Dynamically generated from Sanity context via Gemini
 // ---------------------------------------------------------------------------
 
-router.get("/chat/starter-prompts", async (_req, res) => {
+router.get("/chat/starter-prompts", async (_req, res) => { const cachedStarterPrompts = getCachedStarterPrompts(); if (cachedStarterPrompts) return res.json({ prompts: cachedStarterPrompts, cached: true });
   try {
     const ctx = await fetchSanityContext();
 
@@ -371,10 +371,10 @@ Return ONLY a JSON array of 3 strings, nothing else. Example format:
     const prompts = JSON.parse(jsonMatch[0]) as string[];
     if (!Array.isArray(prompts) || prompts.length < 3) throw new Error("Invalid prompts array");
 
-    res.json({ prompts: prompts.slice(0, 3) });
+    starterPromptsCache = { prompts: prompts.slice(0, 3), fetchedAt: Date.now() }; res.json({ prompts: prompts.slice(0, 3), cached: false });
   } catch (err) {
     console.error("[starter-prompts] Failed to generate:", err);
-    res.status(500).json({ error: "Failed to generate starter prompts" });
+    res.json({ prompts: FALLBACK_STARTER_PROMPTS, cached: false });
   }
 });
 
