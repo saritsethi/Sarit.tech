@@ -50,7 +50,7 @@ export function useGeminiChat() {
 
         const reader = response.body.getReader();
         const decoder = new TextDecoder();
-        let assistantResponse = '';
+        let assistantResponse = ''; let streamError: string | null = null;
         let buffer = '';
 
         while (true) {
@@ -68,12 +68,12 @@ export function useGeminiChat() {
                 const data = JSON.parse(line.slice(6)) as {
                   conversationId?: number;
                   done?: boolean;
-                  content?: string;
+                  content?: string; type?: string; error?: string;
                 };
                 if (data.conversationId && !conversationId) {
                   setConversationId(data.conversationId);
                 }
-                if (data.done) break;
+                if (data.type === 'error') { streamError = data.error || 'The AI response was interrupted. Please try again.'; break; } if (data.done) break;
                 if (data.content) {
                   assistantResponse += data.content;
                   setMessages((prev) =>
@@ -90,9 +90,9 @@ export function useGeminiChat() {
             }
           }
         }
-      } catch (err) {
+      if (streamError) throw new Error(streamError); } catch (err) {
         console.error(err);
-        const message = err instanceof Error ? err.message : 'An error occurred while communicating with the twin.';
+        const message = err instanceof Error ? (err.message === 'Failed to fetch' || err.message === 'NetworkError when attempting to fetch resource.' ? 'The connection to the AI Digital Twin dropped before the answer arrived. Please try again.' : err.message) : 'An error occurred while communicating with the twin.';
         setError(message);
         setMessages((prev) => {
           const lastMsg = prev[prev.length - 1];

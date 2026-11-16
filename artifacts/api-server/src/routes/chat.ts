@@ -110,7 +110,7 @@ interface SanityContextCache {
   expiresAt: number;
 }
 let _sanityCache: SanityContextCache | null = null;
-const SANITY_CACHE_TTL_MS = 60_000;
+const SANITY_CACHE_TTL_MS = 60_000;  const FALLBACK_STARTER_PROMPTS: string[] = [   "What roles has Sarit held in product leadership?",   "Which product frameworks does Sarit use most?",   "What was Sarit's role in the ALOFT project?", ]; const STARTER_PROMPTS_TTL_MS = 60 * 60 * 1000; let starterPromptsCache: { prompts: string[]; fetchedAt: number } | null = null; function getCachedStarterPrompts(): string[] | null { return starterPromptsCache && Date.now() < starterPromptsCache.fetchedAt + STARTER_PROMPTS_TTL_MS ? starterPromptsCache.prompts : null; }  
 
 // ---------------------------------------------------------------------------
 // Fetch live context from Sanity (served from cache after first load)
@@ -331,7 +331,7 @@ ${projectsText}
 // Dynamically generated from Sanity context via Gemini
 // ---------------------------------------------------------------------------
 
-router.get("/chat/starter-prompts", async (_req, res) => {
+router.get("/chat/starter-prompts", async (_req, res) => { const cachedStarterPrompts = getCachedStarterPrompts(); if (cachedStarterPrompts) return res.json({ prompts: cachedStarterPrompts, cached: true });
   try {
     const ctx = await fetchSanityContext();
 
@@ -371,10 +371,10 @@ Return ONLY a JSON array of 3 strings, nothing else. Example format:
     const prompts = JSON.parse(jsonMatch[0]) as string[];
     if (!Array.isArray(prompts) || prompts.length < 3) throw new Error("Invalid prompts array");
 
-    res.json({ prompts: prompts.slice(0, 3) });
+    starterPromptsCache = { prompts: prompts.slice(0, 3), fetchedAt: Date.now() }; res.json({ prompts: prompts.slice(0, 3), cached: false });
   } catch (err) {
     console.error("[starter-prompts] Failed to generate:", err);
-    res.status(500).json({ error: "Failed to generate starter prompts" });
+    res.json({ prompts: FALLBACK_STARTER_PROMPTS, cached: false });
   }
 });
 
@@ -455,13 +455,13 @@ router.post("/chat", async (req, res) => {
   res.setHeader("Content-Type", "text/event-stream");
   res.setHeader("Cache-Control", "no-cache");
   res.setHeader("Connection", "keep-alive");
-  res.flushHeaders();
+  res.flushHeaders(); const chatHeartbeat = setInterval(() => { if (!res.writableEnded) res.write(": ping" + String.fromCharCode(10, 10)); }, 15000); res.on("close", () => clearInterval(chatHeartbeat));
 
   res.write(`data: ${JSON.stringify({ conversationId })}\n\n`);
 
   let fullResponse = "";
 
-  const stream = await ai.models.generateContentStream({
+  try { const stream = await ai.models.generateContentStream({
     model: "gemini-3.5-flash-lite",
     contents: allMessages.map((m) => ({
       role: m.role === "assistant" ? ("model" as const) : ("user" as const),
@@ -538,7 +538,11 @@ router.post("/chat", async (req, res) => {
   }
 
   res.write(`data: ${JSON.stringify({ done: true, conversationId })}\n\n`);
-  res.end();
+  clearInterval(chatHeartbeat); res.end(); } catch (streamError) { clearInterval(chatHeartbeat); console.error("[chat] Stream failed:", streamError); if (!res.writableEnded) { res.write(`data: ${JSON.stringify({ type: "error", error: "The AI response was interrupted. Please try again." })}
+
+`); res.write(`data: ${JSON.stringify({ done: true, conversationId, error: "stream interrupted" })}
+
+`); res.end(); } }
 });
 
 // ---------------------------------------------------------------------------
