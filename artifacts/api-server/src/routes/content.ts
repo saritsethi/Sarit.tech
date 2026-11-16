@@ -155,7 +155,7 @@ router.get("/content/pillars", async (_req, res) => {
 
 router.get("/content/projects", async (_req, res) => {
   const raw = await querySanity<Array<Record<string, unknown>> | null>(
-    `*[_type == "project"] | order(order asc){
+    `*[_type == "project" && !(_id in path("drafts.**"))] | order(order asc){
       _id,
       title,
       "slug": slug.current,
