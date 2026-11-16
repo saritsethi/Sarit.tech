@@ -455,13 +455,13 @@ router.post("/chat", async (req, res) => {
   res.setHeader("Content-Type", "text/event-stream");
   res.setHeader("Cache-Control", "no-cache");
   res.setHeader("Connection", "keep-alive");
-  res.flushHeaders();
+  res.flushHeaders(); const chatHeartbeat = setInterval(() => { if (!res.writableEnded) res.write(": ping" + String.fromCharCode(10, 10)); }, 15000); res.on("close", () => clearInterval(chatHeartbeat));
 
   res.write(`data: ${JSON.stringify({ conversationId })}\n\n`);
 
   let fullResponse = "";
 
-  const stream = await ai.models.generateContentStream({
+  try { const stream = await ai.models.generateContentStream({
     model: "gemini-3.5-flash-lite",
     contents: allMessages.map((m) => ({
       role: m.role === "assistant" ? ("model" as const) : ("user" as const),
@@ -538,7 +538,11 @@ router.post("/chat", async (req, res) => {
   }
 
   res.write(`data: ${JSON.stringify({ done: true, conversationId })}\n\n`);
-  res.end();
+  clearInterval(chatHeartbeat); res.end(); } catch (streamError) { clearInterval(chatHeartbeat); console.error("[chat] Stream failed:", streamError); if (!res.writableEnded) { res.write(`data: ${JSON.stringify({ type: "error", error: "The AI response was interrupted. Please try again." })}
+
+`); res.write(`data: ${JSON.stringify({ done: true, conversationId, error: "stream interrupted" })}
+
+`); res.end(); } }
 });
 
 // ---------------------------------------------------------------------------
