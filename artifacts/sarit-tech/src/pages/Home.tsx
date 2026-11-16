@@ -70,14 +70,14 @@ export default function Home() {
         {/* Hero — occupies the 1fr grid row */}
         <div className="relative z-10 flex flex-col items-center justify-center text-center px-6 pt-20 pb-8 min-h-0 overflow-hidden">
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
+            initial={{ opacity: 1, y: 0 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: 'easeOut' }}
             className="space-y-3 w-full max-w-4xl"
           >
             {/* Subtle portrait — face to the voice */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
+              initial={{ opacity: 1, scale: 1 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, delay: 0.2 }}
               className="flex justify-center"
@@ -85,7 +85,7 @@ export default function Home() {
               <div className="relative w-12 h-12 rounded-full overflow-hidden border border-white/10 ring-1 ring-primary/20 shadow-lg shadow-primary/10">
                 <img
                   src={homeContent.heroImageUrl || `${BASE}/images/sarit-portrait.png`}
-                  alt="Sarit Sethi"
+                  alt="Sarit Sethi" fetchPriority="high" loading="eager" decoding="async" width={192} height={255}
                   className="w-full h-full object-cover object-top opacity-85 mix-blend-luminosity hover:opacity-100 hover:mix-blend-normal transition-all duration-500"
                 />
               </div>
